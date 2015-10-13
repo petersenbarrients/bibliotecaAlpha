@@ -17,8 +17,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 | environments.
 |
 */
-//dominio principal de nuestra base de datos
-$config['base_url'] = 'http://localhost/Codeigniter/';
+$config['base_url'] = '';
 
 /*
 |--------------------------------------------------------------------------
@@ -59,7 +58,7 @@ $config['uri_protocol']	= 'REQUEST_URI';
 |
 | http://codeigniter.com/user_guide/general/urls.html
 */
-$config['url_suffix'] = '.do';
+$config['url_suffix'] = '';
 
 /*
 |--------------------------------------------------------------------------
@@ -71,7 +70,7 @@ $config['url_suffix'] = '.do';
 | than english.
 |
 */
-$config['language'] = 'english';
+$config['language']	= 'english';
 
 /*
 |--------------------------------------------------------------------------
@@ -95,7 +94,6 @@ $config['charset'] = 'UTF-8';
 | setting this variable to TRUE (boolean).  See the user guide for details.
 |
 */
-//modificaciones al core de codeigniter
 $config['enable_hooks'] = FALSE;
 
 /*
@@ -110,8 +108,6 @@ $config['enable_hooks'] = FALSE;
 | http://codeigniter.com/user_guide/general/creating_libraries.html
 |
 */
-
-//cuando creamos nuestras propias librerias
 $config['subclass_prefix'] = 'MY_';
 
 /*
