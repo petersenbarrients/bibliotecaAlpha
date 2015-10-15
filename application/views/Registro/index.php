@@ -2,6 +2,26 @@
 <html>
   <?php $this->load->view('/Shared/Partial/head');?>
   <head>
+
+
+<script type="text/javascript" charset="utf8" src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.8.2.min.js"></script>
+<script type="text/javascript" charset="utf8" src="http://ajax.aspnetcdn.com/ajax/jquery.dataTables/1.9.4/jquery.dataTables.min.js"></script>
+  
+<style type="text/css">
+    #btnBuscarTitulo{
+        margin-left: 330px;
+    }
+
+    #title{
+        margin-left: 0px;
+    }
+
+    #textAut{
+        margin-left: 130px;
+    }
+
+</style>
+
     <script type="text/javascript">
       $(document).ready(function() {
 
@@ -10,6 +30,21 @@
         });
 
       });
+
+$(function(){
+        $("#example").dataTable();
+    })
+
+    var obj = null;
+    function viewHide(id){
+        var targetId, srcElement, targeElement;
+        var targeElement = document.getElementById(id);
+        if(obj!=null)
+            obj.style.display = 'none';
+        obj = targeElement;
+        targeElement.style.display = "";
+    }
+
     </script>
   </head>
 
@@ -50,8 +85,32 @@
 
 
                 <div id="en_base" class="tab-pane fade">
-                        <button class="btn btn-primary">segunda vista</button>
-                </div>
+        <!--        <button class="btn btn-primary">segunda vista</button> -->
+<!--******************* BUSQUEDA DE FILTRAR EN EL CAMPO DE TEXTO, HACER CONSULTA A LA BASE DE DATOS PARA VERIFICAR QUE EXISTA ***************************-->                
+<!--1) La tabla aparecerá oculta
+    2) Si la tabla no encuentra resultados que devuelva un mensaje que no se han encontrado resultados
+    3) Al encontrar datos devuelve la tabla llena-->
+                <p id="textAut">Escriba parte de título o autor <input type="text" id="title"><br><br></p>
+                <button class="btn btn-primary" id="btnBuscarTitulo" onclick="viewHide('example')">Buscar</button>                
+                <br><br>
+                <table id="example" style="display:none">
+        <thead>
+            <tr>
+            <th>ISBN</th>
+            <th>Clasificacion decimal Dewey</th>
+            <th>Autor Personal</th>
+            <th>Asiento por titulo uniforme</th>
+            <th>Titulo uniforme</th>
+            <th>Edicion o mencion de edicion</th>
+            <th>Lugar de editorial</th>
+            <th>Volumen</th>
+            <th>Editorial</th>
+            </tr>
+        </thead>
+        <tbody>
+        </tbody>
+    </table>
+        </div>
 
                 <div id="nueva_ficha" class="tab-pane fade">
 
