@@ -32,5 +32,11 @@
     height: 40px;
     float: right;
 }
+
+#submi{
+
+  width: 100px;
+}
+
     </style>
 </head>
