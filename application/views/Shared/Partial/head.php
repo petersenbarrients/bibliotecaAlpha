@@ -8,6 +8,9 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
     <link href='https://fonts.googleapis.com/css?family=Bree+Serif' rel='stylesheet' type='text/css'>
+    <script type="text/javascript" charset="utf8" src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.8.2.min.js"></script>
+    <script type="text/javascript" charset="utf8" src="http://ajax.aspnetcdn.com/ajax/jquery.dataTables/1.9.4/jquery.dataTables.min.js"></script>
+
     <style>
     .mainFooter {
     top:402px;
@@ -36,6 +39,17 @@
 #submi{
 
   width: 100px;
+}
+#btnBuscarTitulo{
+    margin-left: 330px;
+}
+
+#title{
+    margin-left: 0px;
+}
+
+#textAut{
+    margin-left: 130px;
 }
 
     </style>
