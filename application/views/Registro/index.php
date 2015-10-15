@@ -27,11 +27,27 @@
             </ul>
             <div class="tab-content">
 
-                <div id="nuevo_registro" class="tab-pane fade in active">
-                    <form>
-                        <button class="btn btn-primary">primer vista</button>
-                    </form>
-                </div>
+                    <div id="nuevo_registro" class="tab-pane fade in active">
+
+                    <div class="form-group">
+                    </br>
+                      <div class="container">
+                        <div class="row">
+                          <center><div class="col-xs-12 col-sm-3 col-md-3"> <input style="max-width:90%;"type="text" id="numero_adqui" class="form-control" placeholder="Número(s) de adquisicion(s)"> </div></center>
+                          <center><div class="col-xs-12 col-sm-3 col-md-3"><button style="max-width:90%; " class="btn btn-success btn-block margin-bottom-lg" id="btnRegistro">Agregar</button></div></center>
+                          <center><div class="col-xs-12 col-sm-2 col-md-2" id="registros">
+                          </div></center>
+                        </div>
+                      </div>
+                    </div>
+            <div class="container">
+            <div class="row" id="buttons">
+              <center><div class="col-xs-12 col-sm-3 col-md-4"><button style="max-width:90%; " class="btn btn-warning btn-lg" id="btnRegistro">Continuar recepción</button></div></center>
+              <center><div class="col-xs-12 col-sm-3 col-md-3"><button  onclick="inicio()" style="max-width:90%; " class="btn btn-danger btn-lg" id="btnRegistro">Cancelar recepción</button></div></center>
+            </div>
+            </div>
+          </div>
+
 
                 <div id="en_base" class="tab-pane fade">
                         <button class="btn btn-primary">segunda vista</button>
@@ -145,4 +161,63 @@
 <footer>
 	<?php $this->load->view('/Shared/Partial/footer');?>
 </footer>
+
+
+
+<script type="text/javascript">
+var numeros_array = new Array();
+var tam = 0;
+  show();
+$( document ).ready(function() {
+    $( "#btnRegistro" ).click(function() {
+        var numero_de_adquisicion = $("#numero_adqui").val();
+        numerosDeAdquisicion(numero_de_adquisicion);
+        $("#numero_adqui").val("");
+        show();
+    });
+  });
+
+  function numerosDeAdquisicion(numero)
+  {
+    var clic = "eliminar('class"+numero+"','"+numero+"')";
+    numeros_array.push(numero);
+    tam= tam + 1;
+    var html = "<div class=class"+numero+"><button class='btn-link' onclick="+clic+"><span class='glyphicon glyphicon-remove' aria-hidden='true'></span>"+numero+"</button></br></div>"
+    $("#registros").append(html);
+    console.log(numeros_array);
+  }
+
+  function eliminar(id,numero)
+  {
+
+    console.log(id);
+    $("."+id).remove();
+    var index = numeros_array.indexOf(numero);
+    delete numeros_array[index];
+    console.log(numeros_array);
+    tam=tam - 1;
+    show();
+  }
+
+function show()
+{
+  console.log(tam);
+  if(tam>0)
+  {
+
+    $( "div#buttons" ).show( "fast" );
+
+  }
+  else if(tam<1)
+  {
+
+    $( "div#buttons" ).hide();
+
+  }
+
+}
+
+
+</script>
+
 </html>
