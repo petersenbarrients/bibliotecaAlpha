@@ -33,13 +33,12 @@
         targeElement.style.display = "";
     }
 
-
       function numerosDeAdquisicion(numero)
       {
         var clic = "eliminar('class"+numero+"','"+numero+"')";
         numeros_array.push(numero);
         tam= tam + 1;
-        var html = "<div class=class"+numero+"><button class='btn-link' onclick="+clic+"><span class='glyphicon glyphicon-remove' aria-hidden='true'></span>"+numero+"</button></br></div>"
+        var html = "<div class=class"+numero+"><button class='btn-link ' onclick="+clic+"><span class='glyphicon glyphicon-remove' aria-hidden='true'></span>"+numero+"</button></br></div>"
         $("#registros").append(html);
         console.log(numeros_array);
       }
@@ -73,10 +72,27 @@
       }
 
     }
+
+    function inicio()
+    {
+
+      location.href = "home/";
+
+    }
+
+    function continuar()
+    {
+
+           $('#myModal').modal('show');
+
+    }
+
+
     function sel_nueva_ficha(){
       $('.nav a[href="#nueva_ficha"]').tab('show');
     }
     </script> <!-- fin definiciones de javascript-->
+
   </head>
 
 <body>
@@ -87,9 +103,9 @@
         <div class="panel-heading"><center>Seleccione opción para registro de material<center></div>
         <div class="panel-body">
             <ul class="nav nav-tabs nav-justified">
-                <li role="presentation" class="active"><a  data-toggle="tab" href="#nuevo_registro">Recepción de nuevo material</a></li>
-                <li role="presentation"><a data-toggle="tab" href="#en_base">En base a acervo existente</a></li>
-                <li role="presentation"><a data-toggle="tab" href="#nueva_ficha">Nueva ficha</a></li>
+                <li role="presentation" class="active"><a  data-toggle="tab" href="#nuevo_registro"><span class="glyphicon glyphicon-tasks">Recepción de nuevo material</span></a></li>
+                <li role="presentation"><a data-toggle="tab" href="#en_base"><span class="glyphicon glyphicon-tasks">En base a acervo existente</span></a></li>
+                <li role="presentation"><a data-toggle="tab" href="#nueva_ficha"><span class="glyphicon glyphicon-tasks">Nueva ficha</span></a></li>
             </ul>
             <div class="tab-content">
 
@@ -100,7 +116,7 @@
                       <div class="container">
                         <div class="row">
                           <center><div class="col-xs-12 col-sm-3 col-md-3"> <input style="max-width:90%;"type="text" id="numero_adqui" class="form-control" placeholder="Número(s) de adquisicion(s)"> </div></center>
-                          <center><div class="col-xs-12 col-sm-3 col-md-3"><button style="max-width:90%; " class="btn btn-success btn-block margin-bottom-lg" id="btnRegistro">Agregar</button></div></center>
+                          <center><div class="col-xs-12 col-sm-3 col-md-3"><button style="max-width:90%; " class="btn btn-success btn-block margin-bottom-lg" id="btnRegistro"><span class="glyphicon glyphicon-plus" aria-hidden="true">Agregar</span></button></div></center>
                           <center><div class="col-xs-12 col-sm-2 col-md-2" id="registros">
                           </div></center>
                         </div>
@@ -109,8 +125,8 @@
             <div class="container">
             <div class="row" id="buttons">
               <fieldset>
-              <center><div class="col-xs-12 col-sm-3 col-md-4"><button style="max-width:90%; " class="btn btn-warning btn-lg" id="btnRegistro">Continuar recepción</button></div></center>
-              <center><div class="col-xs-12 col-sm-3 col-md-3"><button  onclick="inicio()" style="max-width:90%; " class="btn btn-danger btn-lg" id="btnRegistro">Cancelar recepción</button></div></center>
+              <center><div class="col-xs-12 col-sm-3 col-md-4"><button data-toggle="modal" data-target="#myModal" style="max-width:100%; " class="btn btn-primary " id="btnRegistro"><span class="glyphicon glyphicon-ok" aria-hidden="true">Continuar recepción</span></button></div></center>
+              <center><div class="col-xs-12 col-sm-3 col-md-3"><button  onclick="inicio()" style="max-width:100%; " class="btn btn-danger fa fa-times" id="btnRegistro">Cancelar recepción</button></div></center>
             </fieldset>
             </div>
             </div>
@@ -143,277 +159,11 @@
         <tbody>
         </tbody>
     </table>
+</div>
 
+        <?php $this->load->view('Shared/Partial/nuevaficha'); ?>
 
-        </div>
-
-        <?php
-
-          echo div_open('tab-pane fade','nueva_ficha');
-
-            echo div_open('container','');
-              echo div_open('row','');
-                echo div_open('col-md-6','');
-
-                  $attributes = array('class' => 'form-horizontal col-xs-6 col-sm-6 col-md-6 col-xl-6', 'role' => 'form');
-                  echo form_open('catalogacion/nueva', $attributes);
-                    echo div_open('form-group','');
-                      echo br(1);
-                      $attributes = array(
-                        'class' => 'sr-only control-label'
-                      );
-                      echo form_label('ISBN','isbn',$attributes);
-                      $data = array(
-                        'class' => 'form-control',
-                        'id' => 'isbn',
-                        'name' => 'isbn',
-                        'placeholder' => 'ISBN',
-                        'required' => 'required'
-                      );
-                      echo form_input($data);
-                    echo div_close(); //close form-group
-
-                    echo div_open('form-group','');
-                      $attributes = array(
-                        'class' => 'sr-only control-label'
-                      );
-
-                      echo form_label('Clasificación Decimal Dewey','clasificacion_dewey',$attributes);
-                      $data = array(
-                        'class' => 'form-control',
-                        'id' => 'clasificacion_dewey',
-                        'name' => 'clasificacion_dewey',
-                        'placeholder' => 'Clasificación Decimal'
-                      );
-                      echo form_input($data);
-
-                    echo div_close(); //close form-group2
-
-                    echo div_open('form-group','');
-
-                      $attributes = array(
-                        'class' => 'sr-only control-label'
-                      );
-
-                      echo form_label('Autor Personal','autor_personal',$attributes);
-                      $data = array(
-                        'class' => 'form-control',
-                        'id' => 'autor_personal',
-                        'name' => 'autor_personal',
-                        'placeholder' => 'Autor Personal'
-                      );
-                      echo form_input($data);
-                  echo div_close(); // close form group 3
-
-                  echo div_open('form-group','');
-
-                  $attributes = array(
-                    'class' => 'sr-only control-label'
-                  );
-
-                  echo form_label('Autor Corporativo:','autor_corporativo',$attributes);
-                  $data = array(
-                    'class' => 'form-control',
-                    'id' => 'autor_corporativo',
-                    'name' => 'autor_corporativo',
-                    'placeholder' => 'Autor Corporativo'
-                  );
-                  echo form_input($data);
-                  echo div_close(); //close form group 4
-
-                  echo div_open('form-group','');
-
-                  $attributes = array(
-                    'class' => 'sr-only control-label'
-                  );
-
-                  echo form_label('Asiento por Titulo:','asiento_por_titulo',$attributes);
-                  $data = array(
-                    'class' => 'form-control',
-                    'id' => 'asiento_por_titulo',
-                    'name' => 'asiento_por_titulo',
-                    'placeholder' => 'Asiento por Titulo'
-                  );
-                  echo form_input($data);
-                  echo div_close(); //close form group 5
-
-                  echo div_open('form-group','');
-
-                  $attributes = array(
-                    'class' => 'sr-only control-label'
-                  );
-
-                  echo form_label('Titulo Uniforme:','titulo_uniforme',$attributes);
-                  $data = array(
-                    'class' => 'form-control',
-                    'id' => 'titulo_uniforme',
-                    'name' => 'titulo_uniforme',
-                    'placeholder' => 'Titulo Uniforme'
-                  );
-                  echo form_input($data);
-
-                  echo div_close(); //close form group 6
-
-                  echo div_open('form-group','');
-
-                  $attributes = array(
-                    'class' => 'sr-only control-label'
-                  );
-
-                  echo form_label('Variante de Titulo:','variante_titulo',$attributes);
-                  $data = array(
-                    'class' => 'form-control',
-                    'id' => 'variante_titulo',
-                    'name' => 'variante_titulo',
-                    'placeholder' => 'Variante de Titulo'
-                  );
-                  echo form_input($data);
-
-                  echo div_close(); //close form group 4
-
-                  echo div_open('form-group','');
-
-                  $attributes = array(
-                    'class' => 'sr-only control-label'
-                  );
-
-                  echo form_label('Edición Mención:','edicion_mencion',$attributes);
-                  $data = array(
-                    'class' => 'form-control',
-                    'id' => 'edicion_mencion',
-                    'name' => 'edicion_mencion',
-                    'placeholder' => 'Edición Mensión'
-                  );
-                  echo form_input($data);
-                  echo div_close(); //close form group 4
-
-                  echo div_open('form-group','');
-
-                  $attributes = array(
-                    'class' => 'sr-only control-label'
-                  );
-
-                  echo form_label('Lugar Editorial:','lugar_editorial',$attributes);
-                  $data = array(
-                    'class' => 'form-control',
-                    'id' => 'lugar_editorial',
-                    'name' => 'lugar_editorial',
-                    'placeholder' => 'Lugar Editorial'
-                  );
-                  echo form_input($data);
-
-                  echo div_close(); //close form group 4
-
-                  echo div_open('form-group','');
-
-                  $attributes = array(
-                    'class' => 'sr-only control-label'
-                  );
-
-                  echo form_label('Volumen:','volumen',$attributes);
-                  $data = array(
-                    'class' => 'form-control',
-                    'id' => 'volumen',
-                    'name' => 'volumen',
-                    'placeholder' => 'Volumen'
-                  );
-                  echo form_input($data);
-                  echo div_close(); //close form group 4
-                  echo div_open('form-group','');
-
-                  $attributes = array(
-                    'class' => 'sr-only control-label'
-                  );
-
-                  echo form_label('Notas Generales:','notas_generales',$attributes);
-                  $data = array(
-                    'class' => 'form-control',
-                    'id' => 'notas_generales',
-                    'name' => 'notas_generales',
-                    'placeholder' => 'Notas Generales'
-                  );
-                  echo form_input($data);
-                  echo div_close(); //close form group 4
-
-                  echo div_open('form-group','');
-
-                  $attributes = array(
-                    'class' => 'sr-only control-label'
-                  );
-
-                  echo form_label('Notas de Contenido:','notas_contenido',$attributes);
-                  $data = array(
-                    'class' => 'form-control',
-                    'id' => 'notas_contenido',
-                    'name' => 'notas_contenido',
-                    'placeholder' => 'Notas de Contenido'
-                  );
-                  echo form_input($data);
-                  echo div_close(); //close form group 4
-
-                  echo div_open('form-group','');
-
-                  $attributes = array(
-                    'class' => 'sr-only control-label'
-                  );
-
-                  echo form_label('Liga a Recursos Electronicos:','liga_recursos',$attributes);
-                  $data = array(
-                    'class' => 'form-control',
-                    'id' => 'liga_recursos',
-                    'name' => 'liga_recursos',
-                    'placeholder' => 'Liga a Recursos Electronicos'
-                  );
-                  echo form_input($data);
-                  echo div_close(); //close form group 4
-
-                  echo div_open('form-group','');
-
-                  $attributes = array(
-                    'class' => 'sr-only control-label'
-                  );
-
-                  echo form_label('Fecha de Publicación:','fecha_publicacion',$attributes);
-                  $data = array(
-                    'class' => 'form-control',
-                    'id' => 'fecha_publicacion',
-                    'name' => 'fecha_publicacion',
-                    'placeholder' => 'Fecha de Publicación'
-                  );
-                  echo form_input($data);
-                  echo div_close(); //close form group 4
-
-                  echo div_open('form-group','');
-
-                  $attributes = array(
-                    'class' => 'sr-only control-label'
-                  );
-
-                  echo form_label('Editorial:','editorial',$attributes);
-                  $data = array(
-                    'class' => 'form-control',
-                    'id' => 'editorial',
-                    'name' => 'editorial',
-                    'placeholder' => 'Editorial'
-                  );
-                  echo form_input($data);
-                echo div_close(); //close form group 4
-                $data = array(
-                  'id' => 'submi',
-                  'class' => 'form-control btn-primary',
-                  'value' => 'Registrar'
-
-                );
-                echo form_submit($data);
-                echo form_close();
-                echo div_close(); //close col-md-6
-              echo div_close(); // close row
-            echo div_close(); // close container
-          echo div_close(); //close tab-pane fade
-
-          ?>
-
-            </div>
+          </div>
         </div>
     </div>
 </div>
@@ -423,5 +173,109 @@
 <footer>
 	<?php $this->load->view('/Shared/Partial/footer');?>
 </footer>
+<!-- Modal -->
+<div id="myModal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
 
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+      </div>
+      <div class="modal-body">
+
+        <?php
+        $inputNo_Adqui = array(
+              'name'          => 'numero_adqui',
+              'value'       => '',
+              'maxlength'   => '7',
+              'size'        => '50',
+              'style'       => 'width:50%',
+              'class'       => 'form-control',
+              'placeholder' =>'Número de adquisición',
+              'required' =>'required',
+              'autofocus' =>'autofocus'
+            );
+
+            $input_submit = array(
+                  'type'       => 'submit',
+                  'style'       => 'width:50%',
+                  'value'       =>'Siguiente',
+                  'class'       => 'btn-primary'
+
+                );
+                $input_cancel = array(
+                      'type'       => 'button',
+                      'style'       => 'width:50%',
+                      'value'       =>'Cancelar recepción',
+                      'class'       => 'btn-danger'
+                    );
+        $input_Ejemplar = array(
+                  'name'          => 'numero_ejemplar',
+                  'type'        =>'number',
+                  'min'        =>'1',
+                  'max'         =>'5',
+                  'step'        =>'1',
+                  'maxlength'   => '7',
+                  'size'        => '50',
+                  'style'       => 'width:50%',
+                  'class'       => 'form-control',
+                  'placeholder' =>'Número de ejemplar',
+                  'required' =>'required'
+                );
+
+        $input_Tomo = array(
+                          'name'          => 'numero_tomo',
+                          'type'        =>'number',
+                          'min'        =>'1',
+                          'step'        =>'1',
+                          'maxlength'   => '7',
+                          'size'        => '50',
+                          'style'       => 'width:50%',
+                          'class'       => 'form-control',
+                          'placeholder' =>'Tomo'
+                        );
+        $atributos_form = array('id' => 'form');
+        echo form_open('libro/nuevoLibro', $atributos_form)."</br>";
+          echo form_label('Número de adquisición');
+          echo form_input($inputNo_Adqui)."</br>";
+          echo form_label('Selecciona la colección');
+          echo form_dropdown('coleccion',$colecciones,'', 'class="form-control" id="my_id" style="max-width:30%; required"')."</br>";
+          echo form_label('Selecciona la escuela');
+          echo form_dropdown('escuela',$escuelas,'', 'class="form-control" id="my_id" required style="max-width:30%;"')."</br>";
+          echo form_label('Selecciona la biblioteca');
+          echo form_dropdown('biblioteca',$bibliotecas,'', 'class="form-control" required id="my_id" style="max-width:30%;"')."</br>";
+          echo form_label('Tipo de material');
+          echo form_dropdown('material',$tipos_material,'', 'class="form-control" required id="my_id" style="max-width:30%;"')."</br>";
+          echo form_label('Número de ejemplar').'</br>';
+          echo form_input($input_Ejemplar)."</br>";
+
+          echo form_label('Disponible para prestamo').'</br>';
+          ?>
+          SI<input type="radio" name="myradio" value="1" <?php echo  set_radio('Si', '1'); ?> />
+          N0<input type="radio" name="myradio" value="0" <?php echo  set_radio('No', '0',TRUE); ?> /></br>
+          <?php
+
+          echo form_label('Es complementario').'</br>';
+          ?>
+          SI<input type="radio" name="myradio1" value="1" <?php echo  set_radio('Si', '1'); ?> />
+          N0<input type="radio" name="myradio1" value="0" <?php echo  set_radio('No', '0',TRUE); ?> /></br>
+          <?php
+
+          echo form_label('Tomo').'</br>';
+          echo form_input($input_Tomo)."</br>";
+
+          echo form_submit($input_submit);
+          echo form_button($input_cancel,"Cancelar Recepción");
+        echo form_close();
+          ?>
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+
+  </div>
+</div>
 </html>

@@ -4,9 +4,10 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 class CatalogacionModel extends CI_Model{
 
   public function __construct(){
-
-      parent::__construct();
+      parent::__construct();/*constructor de la clase padre Model*/
+      $this->load->database();/*Permite accesos a la base de datos*/
   }
+
 
   public function insert_nueva(
     $isbn,
@@ -42,7 +43,7 @@ class CatalogacionModel extends CI_Model{
       'fecha_publicacion' =>  $fecha_publicacion,
       'editorial' =>  $editorial
     );
-    
+
 
     $this->db->insert('etiqueta_marc', $data);
   }
