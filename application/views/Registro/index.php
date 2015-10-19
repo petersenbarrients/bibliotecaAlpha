@@ -32,13 +32,12 @@
         targeElement.style.display = "";
     }
 
-
       function numerosDeAdquisicion(numero)
       {
         var clic = "eliminar('class"+numero+"','"+numero+"')";
         numeros_array.push(numero);
         tam= tam + 1;
-        var html = "<div class=class"+numero+"><button class='btn-link' onclick="+clic+"><span class='glyphicon glyphicon-remove' aria-hidden='true'></span>"+numero+"</button></br></div>"
+        var html = "<div class=class"+numero+"><button class='btn-link ' onclick="+clic+"><span class='glyphicon glyphicon-remove' aria-hidden='true'></span>"+numero+"</button></br></div>"
         $("#registros").append(html);
         console.log(numeros_array);
       }
@@ -72,6 +71,20 @@
       }
 
     }
+
+    function inicio()
+    {
+
+      location.href = "home/";
+
+    }
+
+    function continuar()
+    {
+
+           $('#myModal').modal('show');
+
+    }
     </script>
   </head>
 
@@ -83,9 +96,9 @@
         <div class="panel-heading"><center>Seleccione opción para registro de material<center></div>
         <div class="panel-body">
             <ul class="nav nav-tabs nav-justified">
-                <li role="presentation" class="active"><a  data-toggle="tab" href="#nuevo_registro">Recepción de nuevo material</a></li>
-                <li role="presentation"><a data-toggle="tab" href="#en_base">En base a acervo existente</a></li>
-                <li role="presentation"><a data-toggle="tab" href="#nueva_ficha">Nueva ficha</a></li>
+                <li role="presentation" class="active"><a  data-toggle="tab" href="#nuevo_registro"><span class="glyphicon glyphicon-tasks">Recepción de nuevo material</span></a></li>
+                <li role="presentation"><a data-toggle="tab" href="#en_base"><span class="glyphicon glyphicon-tasks">En base a acervo existente</span></a></li>
+                <li role="presentation"><a data-toggle="tab" href="#nueva_ficha"><span class="glyphicon glyphicon-tasks">Nueva ficha</span></a></li>
             </ul>
             <div class="tab-content">
 
@@ -96,7 +109,7 @@
                       <div class="container">
                         <div class="row">
                           <center><div class="col-xs-12 col-sm-3 col-md-3"> <input style="max-width:90%;"type="text" id="numero_adqui" class="form-control" placeholder="Número(s) de adquisicion(s)"> </div></center>
-                          <center><div class="col-xs-12 col-sm-3 col-md-3"><button style="max-width:90%; " class="btn btn-success btn-block margin-bottom-lg" id="btnRegistro">Agregar</button></div></center>
+                          <center><div class="col-xs-12 col-sm-3 col-md-3"><button style="max-width:90%; " class="btn btn-success btn-block margin-bottom-lg" id="btnRegistro"><span class="glyphicon glyphicon-plus" aria-hidden="true">Agregar</span></button></div></center>
                           <center><div class="col-xs-12 col-sm-2 col-md-2" id="registros">
                           </div></center>
                         </div>
@@ -105,8 +118,8 @@
             <div class="container">
             <div class="row" id="buttons">
               <fieldset>
-              <center><div class="col-xs-12 col-sm-3 col-md-4"><button style="max-width:90%; " class="btn btn-warning btn-lg" id="btnRegistro">Continuar recepción</button></div></center>
-              <center><div class="col-xs-12 col-sm-3 col-md-3"><button  onclick="inicio()" style="max-width:90%; " class="btn btn-danger btn-lg" id="btnRegistro">Cancelar recepción</button></div></center>
+              <center><div class="col-xs-12 col-sm-3 col-md-4"><button data-toggle="modal" data-target="#myModal" style="max-width:100%; " class="btn btn-primary " id="btnRegistro"><span class="glyphicon glyphicon-ok" aria-hidden="true">Continuar recepción</span></button></div></center>
+              <center><div class="col-xs-12 col-sm-3 col-md-3"><button  onclick="inicio()" style="max-width:100%; " class="btn btn-danger fa fa-times" id="btnRegistro">Cancelar recepción</button></div></center>
             </fieldset>
             </div>
             </div>
@@ -114,35 +127,11 @@
 
 
                 <div id="en_base" class="tab-pane fade">
-        <!--        <button class="btn btn-primary">segunda vista</button> -->
-<!--******************* BUSQUEDA DE FILTRAR EN EL CAMPO DE TEXTO, HACER CONSULTA A LA BASE DE DATOS PARA VERIFICAR QUE EXISTA ***************************-->
-<!--1) La tabla aparecerá oculta
-    2) Si la tabla no encuentra resultados que devuelva un mensaje que no se han encontrado resultados
-    3) Al encontrar datos devuelve la tabla llena-->
-                <p id="textAut">Escriba parte de título o autor <input type="text" id="title"><br><br></p>
-                <button class="btn btn-primary" id="btnBuscarTitulo" onclick="viewHide('example')">Buscar</button>
-                <br><br>
-                <table id="example" style="display:none">
-        <thead>
-            <tr>
-            <th>ISBN</th>
-            <th>Clasificacion decimal Dewey</th>
-            <th>Autor Personal</th>
-            <th>Asiento por titulo uniforme</th>
-            <th>Titulo uniforme</th>
-            <th>Edicion o mencion de edicion</th>
-            <th>Lugar de editorial</th>
-            <th>Volumen</th>
-            <th>Editorial</th>
-            </tr>
-        </thead>
-        <tbody>
-        </tbody>
-    </table>
-        </div>
+                    texto 2
+
+                </div>
 
                 <div id="nueva_ficha" class="tab-pane fade">
-
                     <div class="container">
                       <div class="row">
 
@@ -249,5 +238,109 @@
 <footer>
 	<?php $this->load->view('/Shared/Partial/footer');?>
 </footer>
+<!-- Modal -->
+<div id="myModal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
 
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+      </div>
+      <div class="modal-body">
+
+        <?php
+        $inputNo_Adqui = array(
+              'name'          => 'numero_adqui',
+              'value'       => '',
+              'maxlength'   => '7',
+              'size'        => '50',
+              'style'       => 'width:50%',
+              'class'       => 'form-control',
+              'placeholder' =>'Número de adquisición',
+              'required' =>'required',
+              'autofocus' =>'autofocus'
+            );
+
+            $input_submit = array(
+                  'type'       => 'submit',
+                  'style'       => 'width:50%',
+                  'value'       =>'Siguiente',
+                  'class'       => 'btn-primary'
+
+                );
+                $input_cancel = array(
+                      'type'       => 'button',
+                      'style'       => 'width:50%',
+                      'value'       =>'Cancelar recepción',
+                      'class'       => 'btn-danger'
+                    );
+        $input_Ejemplar = array(
+                  'name'          => 'numero_ejemplar',
+                  'type'        =>'number',
+                  'min'        =>'1',
+                  'max'         =>'5',
+                  'step'        =>'1',
+                  'maxlength'   => '7',
+                  'size'        => '50',
+                  'style'       => 'width:50%',
+                  'class'       => 'form-control',
+                  'placeholder' =>'Número de ejemplar',
+                  'required' =>'required'
+                );
+
+        $input_Tomo = array(
+                          'name'          => 'numero_tomo',
+                          'type'        =>'number',
+                          'min'        =>'1',
+                          'step'        =>'1',
+                          'maxlength'   => '7',
+                          'size'        => '50',
+                          'style'       => 'width:50%',
+                          'class'       => 'form-control',
+                          'placeholder' =>'Tomo'
+                        );
+        $atributos_form = array('id' => 'form');
+        echo form_open('libro/nuevoLibro', $atributos_form)."</br>";
+          echo form_label('Número de adquisición');
+          echo form_input($inputNo_Adqui)."</br>";
+          echo form_label('Selecciona la colección');
+          echo form_dropdown('coleccion',$colecciones,'', 'class="form-control" id="my_id" style="max-width:30%; required"')."</br>";
+          echo form_label('Selecciona la escuela');
+          echo form_dropdown('escuela',$escuelas,'', 'class="form-control" id="my_id" required style="max-width:30%;"')."</br>";
+          echo form_label('Selecciona la biblioteca');
+          echo form_dropdown('biblioteca',$bibliotecas,'', 'class="form-control" required id="my_id" style="max-width:30%;"')."</br>";
+          echo form_label('Tipo de material');
+          echo form_dropdown('material',$tipos_material,'', 'class="form-control" required id="my_id" style="max-width:30%;"')."</br>";
+          echo form_label('Número de ejemplar').'</br>';
+          echo form_input($input_Ejemplar)."</br>";
+
+          echo form_label('Disponible para prestamo').'</br>';
+          ?>
+          SI<input type="radio" name="myradio" value="1" <?php echo  set_radio('Si', '1'); ?> />
+          N0<input type="radio" name="myradio" value="0" <?php echo  set_radio('No', '0',TRUE); ?> /></br>
+          <?php
+
+          echo form_label('Es complementario').'</br>';
+          ?>
+          SI<input type="radio" name="myradio1" value="1" <?php echo  set_radio('Si', '1'); ?> />
+          N0<input type="radio" name="myradio1" value="0" <?php echo  set_radio('No', '0',TRUE); ?> /></br>
+          <?php
+
+          echo form_label('Tomo').'</br>';
+          echo form_input($input_Tomo)."</br>";
+
+          echo form_submit($input_submit);
+          echo form_button($input_cancel,"Cancelar Recepción");
+        echo form_close();
+          ?>
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+
+  </div>
+</div>
 </html>
