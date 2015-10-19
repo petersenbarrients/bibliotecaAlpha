@@ -10,7 +10,6 @@
     <link href='https://fonts.googleapis.com/css?family=Bree+Serif' rel='stylesheet' type='text/css'>
     <script type="text/javascript" charset="utf8" src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.8.2.min.js"></script>
     <script type="text/javascript" charset="utf8" src="http://ajax.aspnetcdn.com/ajax/jquery.dataTables/1.9.4/jquery.dataTables.min.js"></script>
-<p>cesar y pedro<p>
     <style>
     .mainFooter {
     top:402px;
@@ -36,10 +35,12 @@
     float: right;
 }
 
+// boton submit del boton nueva_ficha
 #submi{
 
   width: 100px;
 }
+
 #btnBuscarTitulo{
     margin-left: 330px;
 }

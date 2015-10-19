@@ -8,6 +8,7 @@
       var obj = null;
     show();
       $(document).ready(function() {
+
         show();
         $( "#btnRegistro" ).click(function() {
             var numero_de_adquisicion = $("#numero_adqui").val();
@@ -72,7 +73,10 @@
       }
 
     }
-    </script>
+    function sel_nueva_ficha(){
+      $('.nav a[href="#nueva_ficha"]').tab('show');
+    }
+    </script> <!-- fin definiciones de javascript-->
   </head>
 
 <body>
@@ -139,105 +143,275 @@
         <tbody>
         </tbody>
     </table>
+
+
         </div>
 
-                <div id="nueva_ficha" class="tab-pane fade">
+        <?php
 
-                    <div class="container">
-                      <div class="row">
+          echo div_open('tab-pane fade','nueva_ficha');
 
-                        <div class="col-md-6">
-                          <form class="form-horizontal col-xs-6 col-sm-6 col-md-6 col-xl-6" role="form" method="post" action="Catalogacion/nuevaFicha">
+            echo div_open('container','');
+              echo div_open('row','');
+                echo div_open('col-md-6','');
 
-              							<div class="form-group">
-                              <br>
-              								<label for="isbn" class="sr-only control-label">ISBN:</label>
-              								<input type="text" class="form-control" name="isbn" id="isbn" placeholder="ISBN">
-              							</div>
+                  $attributes = array('class' => 'form-horizontal col-xs-6 col-sm-6 col-md-6 col-xl-6', 'role' => 'form');
+                  echo form_open('catalogacion/nueva', $attributes);
+                    echo div_open('form-group','');
+                      echo br(1);
+                      $attributes = array(
+                        'class' => 'sr-only control-label'
+                      );
+                      echo form_label('ISBN','isbn',$attributes);
+                      $data = array(
+                        'class' => 'form-control',
+                        'id' => 'isbn',
+                        'name' => 'isbn',
+                        'placeholder' => 'ISBN',
+                        'required' => 'required'
+                      );
+                      echo form_input($data);
+                    echo div_close(); //close form-group
 
-              							<div class="form-group">
-              								<label for="clasificacion_dewey" class="sr-only control-label">Clasificación Decimal Dewey:</label>
-              								<input type="text" class="form-control" name="clasificacion_dewey" id="clasificacion_dewey" placeholder="Clasificación Decimal Dewey">
-              							</div>
+                    echo div_open('form-group','');
+                      $attributes = array(
+                        'class' => 'sr-only control-label'
+                      );
 
-                            <div class="form-group">
-                              <label for="autor_personal" class="sr-only control-label">Autor Personal:</label>
-                              <input type="text" class="form-control" name="autor_personal" id="autor_personal" placeholder="Autor Personal">
-                            </div>
+                      echo form_label('Clasificación Decimal Dewey','clasificacion_dewey',$attributes);
+                      $data = array(
+                        'class' => 'form-control',
+                        'id' => 'clasificacion_dewey',
+                        'name' => 'clasificacion_dewey',
+                        'placeholder' => 'Clasificación Decimal'
+                      );
+                      echo form_input($data);
 
-                            <div class="form-group">
-                              <label for="autor_corporativo" class="sr-only control-label">Autor Corporativo:</label>
-                              <input type="text" class="form-control" name="autor_corporativo" id="autor_corporativo" placeholder="Autor Corporativo">
-                            </div>
+                    echo div_close(); //close form-group2
 
-                            <div class="form-group">
-                              <label for="asiento_por_titulo" class="sr-only control-label">Asiento por Titulo:</label>
-                              <input type="text" class="form-control" name="asiento_por_titulo" id="asiento_por_titulo" placeholder="Asiento por Titulo">
-                            </div>
+                    echo div_open('form-group','');
 
-                            <div class="form-group">
-                              <label for="titulo_uniforme" class="sr-only control-label">Titulo Uniforme:</label>
-                              <input type="text" class="form-control" name="titulo_uniforme" id="titulo_uniforme" placeholder="Titulo Uniforme">
-                            </div>
+                      $attributes = array(
+                        'class' => 'sr-only control-label'
+                      );
 
-                            <div class="form-group">
-                              <label for="variante_titulo" class="sr-only control-label">Variante de Titulo:</label>
-                              <input type="text" class="form-control" name="variante_titulo" id="variante_titulo" placeholder="Variante de Titulo">
-                            </div>
+                      echo form_label('Autor Personal','autor_personal',$attributes);
+                      $data = array(
+                        'class' => 'form-control',
+                        'id' => 'autor_personal',
+                        'name' => 'autor_personal',
+                        'placeholder' => 'Autor Personal'
+                      );
+                      echo form_input($data);
+                  echo div_close(); // close form group 3
 
-                            <div class="form-group">
-                              <label for="edicion_mencion" class="sr-only control-label">Edición Mención:</label>
-                              <input type="text" class="form-control" name="edicion_mencion" id="edicion_mencion" placeholder="Edición Mensión">
-                            </div>
+                  echo div_open('form-group','');
 
-                            <div class="form-group">
-                              <label for="lugar_editorial" class="sr-only control-label">Lugar Editorial:</label>
-                              <input type="text" class="form-control" name="lugar_editorial" id="lugar_editorial" placeholder="Lugar Editorial">
-                            </div>
+                  $attributes = array(
+                    'class' => 'sr-only control-label'
+                  );
 
-                            <div class="form-group">
-                              <label for="volumen" class="sr-only control-label">Volumen:</label>
-                              <input type="text" class="form-control" name="volumen" id="volumen" placeholder="Volumen">
-                            </div>
+                  echo form_label('Autor Corporativo:','autor_corporativo',$attributes);
+                  $data = array(
+                    'class' => 'form-control',
+                    'id' => 'autor_corporativo',
+                    'name' => 'autor_corporativo',
+                    'placeholder' => 'Autor Corporativo'
+                  );
+                  echo form_input($data);
+                  echo div_close(); //close form group 4
 
-                            <div class="form-group">
-                              <label for="notas_generales" class="sr-only control-label">Notas Generales:</label>
-                              <input type="text" class="form-control" name="notas_generales" id="notas_generales" placeholder="Notas Generales">
-                            </div>
+                  echo div_open('form-group','');
 
-                            <div class="form-group">
-                              <label for="notas_contenido" class="sr-only control-label">Notas de Contenido:</label>
-                              <input type="text" class="form-control" name="notas_contenido" id="notas_contenido" placeholder="Notas de Contenido">
-                            </div>
+                  $attributes = array(
+                    'class' => 'sr-only control-label'
+                  );
 
-                            <div class="form-group">
-                              <label for="liga_recursos" class="sr-only control-label">Liga a Recursos Electronicos:</label>
-                              <input type="text" class="form-control" name="liga_recursos" id="liga_recursos" placeholder="Liga a Recursos Electronicos">
-                            </div>
+                  echo form_label('Asiento por Titulo:','asiento_por_titulo',$attributes);
+                  $data = array(
+                    'class' => 'form-control',
+                    'id' => 'asiento_por_titulo',
+                    'name' => 'asiento_por_titulo',
+                    'placeholder' => 'Asiento por Titulo'
+                  );
+                  echo form_input($data);
+                  echo div_close(); //close form group 5
 
-                            <div class="form-group">
-                              <label for="fecha_publicacion" class="sr-only control-label">Fecha de Publicación:</label>
-                              <input type="text" class="form-control" name="fecha_publicacion" id="fecha_publicacion" placeholder="Fecha de Publicación">
-                            </div>
+                  echo div_open('form-group','');
 
-                            <div class="form-group">
-                              <label for="editorial" class="sr-only control-label">Editorial:</label>
-                              <input type="text" class="form-control" name="editorial" id="editorial" placeholder="Editorial">
-                              <br>
-                              <input type="submit" class="form-control btn-primary" id="submi">
-                            </div>
+                  $attributes = array(
+                    'class' => 'sr-only control-label'
+                  );
 
-              						</form>
-                        </div>
+                  echo form_label('Titulo Uniforme:','titulo_uniforme',$attributes);
+                  $data = array(
+                    'class' => 'form-control',
+                    'id' => 'titulo_uniforme',
+                    'name' => 'titulo_uniforme',
+                    'placeholder' => 'Titulo Uniforme'
+                  );
+                  echo form_input($data);
 
-                        <div class="col-md-6">
+                  echo div_close(); //close form group 6
 
-                        </div>
+                  echo div_open('form-group','');
 
-                      </div>
-                    </div>
+                  $attributes = array(
+                    'class' => 'sr-only control-label'
+                  );
 
-                </div>
+                  echo form_label('Variante de Titulo:','variante_titulo',$attributes);
+                  $data = array(
+                    'class' => 'form-control',
+                    'id' => 'variante_titulo',
+                    'name' => 'variante_titulo',
+                    'placeholder' => 'Variante de Titulo'
+                  );
+                  echo form_input($data);
+
+                  echo div_close(); //close form group 4
+
+                  echo div_open('form-group','');
+
+                  $attributes = array(
+                    'class' => 'sr-only control-label'
+                  );
+
+                  echo form_label('Edición Mención:','edicion_mencion',$attributes);
+                  $data = array(
+                    'class' => 'form-control',
+                    'id' => 'edicion_mencion',
+                    'name' => 'edicion_mencion',
+                    'placeholder' => 'Edición Mensión'
+                  );
+                  echo form_input($data);
+                  echo div_close(); //close form group 4
+
+                  echo div_open('form-group','');
+
+                  $attributes = array(
+                    'class' => 'sr-only control-label'
+                  );
+
+                  echo form_label('Lugar Editorial:','lugar_editorial',$attributes);
+                  $data = array(
+                    'class' => 'form-control',
+                    'id' => 'lugar_editorial',
+                    'name' => 'lugar_editorial',
+                    'placeholder' => 'Lugar Editorial'
+                  );
+                  echo form_input($data);
+
+                  echo div_close(); //close form group 4
+
+                  echo div_open('form-group','');
+
+                  $attributes = array(
+                    'class' => 'sr-only control-label'
+                  );
+
+                  echo form_label('Volumen:','volumen',$attributes);
+                  $data = array(
+                    'class' => 'form-control',
+                    'id' => 'volumen',
+                    'name' => 'volumen',
+                    'placeholder' => 'Volumen'
+                  );
+                  echo form_input($data);
+                  echo div_close(); //close form group 4
+                  echo div_open('form-group','');
+
+                  $attributes = array(
+                    'class' => 'sr-only control-label'
+                  );
+
+                  echo form_label('Notas Generales:','notas_generales',$attributes);
+                  $data = array(
+                    'class' => 'form-control',
+                    'id' => 'notas_generales',
+                    'name' => 'notas_generales',
+                    'placeholder' => 'Notas Generales'
+                  );
+                  echo form_input($data);
+                  echo div_close(); //close form group 4
+
+                  echo div_open('form-group','');
+
+                  $attributes = array(
+                    'class' => 'sr-only control-label'
+                  );
+
+                  echo form_label('Notas de Contenido:','notas_contenido',$attributes);
+                  $data = array(
+                    'class' => 'form-control',
+                    'id' => 'notas_contenido',
+                    'name' => 'notas_contenido',
+                    'placeholder' => 'Notas de Contenido'
+                  );
+                  echo form_input($data);
+                  echo div_close(); //close form group 4
+
+                  echo div_open('form-group','');
+
+                  $attributes = array(
+                    'class' => 'sr-only control-label'
+                  );
+
+                  echo form_label('Liga a Recursos Electronicos:','liga_recursos',$attributes);
+                  $data = array(
+                    'class' => 'form-control',
+                    'id' => 'liga_recursos',
+                    'name' => 'liga_recursos',
+                    'placeholder' => 'Liga a Recursos Electronicos'
+                  );
+                  echo form_input($data);
+                  echo div_close(); //close form group 4
+
+                  echo div_open('form-group','');
+
+                  $attributes = array(
+                    'class' => 'sr-only control-label'
+                  );
+
+                  echo form_label('Fecha de Publicación:','fecha_publicacion',$attributes);
+                  $data = array(
+                    'class' => 'form-control',
+                    'id' => 'fecha_publicacion',
+                    'name' => 'fecha_publicacion',
+                    'placeholder' => 'Fecha de Publicación'
+                  );
+                  echo form_input($data);
+                  echo div_close(); //close form group 4
+
+                  echo div_open('form-group','');
+
+                  $attributes = array(
+                    'class' => 'sr-only control-label'
+                  );
+
+                  echo form_label('Editorial:','editorial',$attributes);
+                  $data = array(
+                    'class' => 'form-control',
+                    'id' => 'editorial',
+                    'name' => 'editorial',
+                    'placeholder' => 'Editorial'
+                  );
+                  echo form_input($data);
+                echo div_close(); //close form group 4
+                $data = array(
+                  'id' => 'submi',
+                  'class' => 'form-control btn-primary',
+                  'value' => 'Registrar'
+
+                );
+                echo form_submit($data);
+                echo form_close();
+                echo div_close(); //close col-md-6
+              echo div_close(); // close row
+            echo div_close(); // close container
+          echo div_close(); //close tab-pane fade
+
+          ?>
 
             </div>
         </div>

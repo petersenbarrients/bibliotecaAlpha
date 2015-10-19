@@ -8,27 +8,43 @@ class CatalogacionModel extends CI_Model{
       parent::__construct();
   }
 
-  public function insert_nueva_ficha(){
+  public function insert_nueva(
+    $isbn,
+    $clasificacion_decimal_dewey,
+    $autor_personal,
+    $autor_cooporativo,
+    $asiento_por_titulo_uniforme,
+    $titulo_uniforme,
+    $variante_de_titulo,
+    $edicion_mencion_edicion,
+    $lugar_editorial,
+    $volumen,
+    $notas_generales,
+    $liga_a_recursos_electronicos,
+    $fecha_publicacion,
+    $editorial)
+  {
 
-    $this->isbn = $_POST['isbn'];
-    $this->clasificacion_decimal_dewey = $_POST['clasificacion_dewey'];
-    $this->autor_personal = $_POST['autor_personal'];
-    $this->autor_cooporativo = $_POST['autor_corporativo'];
-    $this->asiento_por_titulo_uniforme = $_POST['asiento_por_titulo'];
-    $this->titulo_uniforme = $_POST['titulo_uniforme'];
-    $this->variante_de_titulo = $_POST['variante_titulo'];
-    $this->edicion_mencion_edicion = $_POST['edicion_mencion'];
-    $this->lugar_editorial = $_POST['lugar_editorial'];
-    $this->volumen = $_POST['volumen'];
-    $this->notas_generales = $_POST['notas_generales'];
-    $this->notas_de_contenido = $_POST['notas_contenido'];
-    $this->liga_a_recursos_electronicos = $_POST['liga_recursos'];
-    $this->fecha_publicacion = $_POST['fecha_publicacion'];
-    $this->editorial = $_POST['editorial'];
+    $data = array(
 
+      'isbn' => $isbn,
+      'clasificacion_decimal_dewey' =>  $clasificacion_decimal_dewey,
+      'autor_personal'  =>  $autor_personal,
+      'autor_cooporativo' => $autor_cooporativo,
+      'asiento_por_titulo_uniforme' =>  $asiento_por_titulo_uniforme,
+      'titulo_uniforme' =>  $titulo_uniforme,
+      'variante_de_titulo'  =>  $variante_de_titulo,
+      'edicion_mencion_edicion' =>  $edicion_mencion_edicion,
+      'lugar_editorial' =>  $lugar_editorial,
+      'volumen' =>  $volumen,
+      'notas_generales' =>  $notas_generales,
+      'liga_a_recursos_electronicos'  =>  $liga_a_recursos_electronicos,
+      'fecha_publicacion' =>  $fecha_publicacion,
+      'editorial' =>  $editorial
+    );
+    
 
-
-    $this->db->insert('etiqueta_marc', $this);
+    $this->db->insert('etiqueta_marc', $data);
   }
 
 }
