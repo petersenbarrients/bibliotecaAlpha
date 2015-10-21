@@ -38,7 +38,7 @@
 // boton submit del boton nueva_ficha
 #submi{
 
-  width: 100px;
+  
 }
 
 #btnBuscarTitulo{
