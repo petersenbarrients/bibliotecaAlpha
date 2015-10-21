@@ -11,7 +11,7 @@ class registro extends CI_Controller {
 		 $this->load->helper('form');
 
 	}
-	
+
 	public function index()
 	{
 		$this->load->model('libroModel');

@@ -48,4 +48,10 @@ class CatalogacionModel extends CI_Model{
     $this->db->insert('etiqueta_marc', $data);
   }
 
+  public function select_id($isbn){
+    $this->db->select('id');
+    $query = $this->db->get_where('etiqueta_marc', array('isbn' => $isbn));
+    return $query;
+  }
+
 }
