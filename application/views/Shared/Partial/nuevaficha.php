@@ -1,6 +1,6 @@
 <?php
 
-  echo div_open('tab-pane fade','nueva_ficha');
+
 
     echo div_open('container','');
       echo div_open('row','');
@@ -262,6 +262,5 @@
         echo div_close(); //close col-md-6
       echo div_close(); // close row
     echo div_close(); // close container
-  echo div_close(); //close tab-pane fade
 
   ?>

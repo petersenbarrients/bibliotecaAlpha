@@ -4,7 +4,7 @@ $inputNo_Adqui = array(
       'value'       => '',
       'maxlength'   => '7',
       'size'        => '50',
-      'style'       => 'width:50%',
+      'style'       => 'max-width:60%',
       'class'       => 'form-control',
       'placeholder' =>'Número de adquisición',
       'required' =>'required',
@@ -13,16 +13,17 @@ $inputNo_Adqui = array(
 
     $input_submit = array(
           'type'       => 'submit',
-          'style'       => 'width:50%',
+          'id'          =>'btn_enviar',
+          'style'       => 'max-width:60%',
           'value'       =>'Siguiente',
-          'class'       => 'btn-primary'
+          'class'       => 'form-control btn-primary glyphicon glyphicon-ok'
 
         );
         $input_cancel = array(
               'type'       => 'button',
-              'style'       => 'width:50%',
+              'style'       => 'max-width:60%',
               'value'       =>'Cancelar recepción',
-              'class'       => 'btn-danger'
+              'class'       => 'form-control btn-danger'
             );
 $input_Ejemplar = array(
           'name'          => 'numero_ejemplar',
@@ -32,7 +33,7 @@ $input_Ejemplar = array(
           'step'        =>'1',
           'maxlength'   => '7',
           'size'        => '50',
-          'style'       => 'width:50%',
+            'style'       => 'max-width:60%',
           'class'       => 'form-control',
           'placeholder' =>'Número de ejemplar',
           'required' =>'required'
@@ -45,22 +46,23 @@ $input_Tomo = array(
                   'step'        =>'1',
                   'maxlength'   => '7',
                   'size'        => '50',
-                  'style'       => 'width:50%',
+                    'style'       => 'max-width:60%',
                   'class'       => 'form-control',
-                  'placeholder' =>'Tomo'
+                  'placeholder' =>'Tomo',
+                  'required' =>'required'
                 );
 $atributos_form = array('id' => 'form');
 echo form_open('libro/nuevoLibro', $atributos_form)."</br>";
   echo form_label('Número de adquisición');
   echo form_input($inputNo_Adqui)."</br>";
   echo form_label('Selecciona la colección');
-  echo form_dropdown('coleccion',$colecciones,'', 'class="form-control" id="my_id" style="max-width:30%; required"')."</br>";
+  echo form_dropdown('coleccion',$colecciones,'', 'class="form-control" id="my_id" style="max-width:60%; required"')."</br>";
   echo form_label('Selecciona la escuela');
-  echo form_dropdown('escuela',$escuelas,'', 'class="form-control" id="my_id" required style="max-width:30%;"')."</br>";
+  echo form_dropdown('escuela',$escuelas,'', 'class="form-control" id="my_id" required style="max-width:60%;"')."</br>";
   echo form_label('Selecciona la biblioteca');
-  echo form_dropdown('biblioteca',$bibliotecas,'', 'class="form-control" required id="my_id" style="max-width:30%;"')."</br>";
+  echo form_dropdown('biblioteca',$bibliotecas,'', 'class="form-control" required id="my_id" style="max-width:60%;"')."</br>";
   echo form_label('Tipo de material');
-  echo form_dropdown('material',$tipos_material,'', 'class="form-control" required id="my_id" style="max-width:30%;"')."</br>";
+  echo form_dropdown('material',$tipos_material,'', 'class="form-control" required id="my_id" style="max-width:60%;"')."</br>";
   echo form_label('Número de ejemplar').'</br>';
   echo form_input($input_Ejemplar)."</br>";
 
@@ -77,6 +79,7 @@ echo form_open('libro/nuevoLibro', $atributos_form)."</br>";
   <?php
 
   echo form_label('Tomo').'</br>';
+
   echo form_input($input_Tomo)."</br>";
 
   echo form_submit($input_submit);
