@@ -221,13 +221,14 @@
     2) Si la tabla no encuentra resultados que devuelva un mensaje que no se han encontrado resultados
     3) Al encontrar datos devuelve la tabla llena-->
                 <p id="textAut">Escriba parte de título o autor <input type="text" id="title"><br><br></p>
-                <button class="btn btn-primary" id="btnBuscarTitulo" onclick="viewHide('example')">Buscar</button>
+                <center><div class="col-xs-12 col-sm-3 col-md-4"><button style="max-width:90%; " onclick="viewHide('example')" class="btn btn-primary btn-block margin-bottom-lg" id="btnBuscar"><span aria-hidden="true">Buscar</span></button></div></center>
+                <!-- <button class="btn btn-primary" id="btnBuscarTitulo" >Buscar</button> -->
                 <br><br>
-                <table id="example" style="display:none">
+                <div class="table-responsive">
+                <table id="example" style="display:none" class="table">
         <thead>
             <tr>
             <th>ISBN</th>
-            <th>Clasificacion decimal Dewey</th>
             <th>Autor Personal</th>
             <th>Asiento por titulo uniforme</th>
             <th>Titulo uniforme</th>
@@ -240,6 +241,7 @@
         <tbody>
         </tbody>
     </table>
+                </div>
 </div>
 <?php
 
