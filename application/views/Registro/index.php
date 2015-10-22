@@ -47,9 +47,75 @@
 
          return false; // Evitar ejecutar el submit del formulario.
       });
-});
 
-    function viewHide(id){
+ /*$("#btnBuscar").click(function(){
+
+            var url = "Catalogacion/recibirDatoTextField"; // El controller/action a dónde se realizará la petición.
+            var valorId=document.getElementById("busquedaAutor").value;
+        
+        //alert("Tengo: "+valorId);
+            $.ajax({
+                url: url,
+                type: "POST",
+                data:{ datoRecibido: valorId},// Adjuntar los campos del formulario enviado.
+                success: function(response)
+                {
+                    console.log(response);                    
+                    $("#tablaDatosConsulta").DataTable(            
+            {
+                                data:response,
+                                columns: [
+                                {title: "ISBN"},
+                                {title: "Autor Personal"},
+                                {title: "Asiento por titulo uniforme"},
+                                {title: "Titulo uniforme"},
+                                {title: "Edicion o mencion de  edicion"},
+                                {title: "Lugar de editorial"},
+                                {title: "Volumen"},
+                                {title: "Editorial"}
+                                ]
+                            }                            
+                        );
+                    muestraTabla("tablaDatosConsulta");
+                }
+              });
+
+         return false;
+      });*/
+
+$("#btnBuscar").click(function(){
+
+            var url = "Catalogacion/recibirDatoTextField"; // El controller/action a dónde se realizará la petición.
+            var valorId=document.getElementById("busquedaAutor").value;
+        
+        //alert("Tengo: "+valorId);
+            $('#tablaDatosConsulta').DataTable( {
+        "processing": true,
+        "serverSide": true,
+        "ajax": {
+            "url": "Catalogacion/recibirDatoTextField",
+            "type": "POST", 
+            "data": {"datoRecibido": valorId}
+        },
+        "columns": [
+            {title: "ISBN"},
+            {title: "Autor Personal"},
+            {title: "Asiento por titulo uniforme"},
+            {title: "Titulo uniforme"},
+            {title: "Edicion o mencion de  edicion"},
+            {title: "Lugar de editorial"},
+            {title: "Volumen"},
+            {title: "Editorial"}
+        ]
+    } );
+
+         return false;
+      });
+
+
+});
+//******************************************************************************
+    function muestraTabla(id){
         var targetId, srcElement, targeElement;
         var targeElement = document.getElementById(id);
         if(obj!=null)
@@ -58,6 +124,7 @@
         targeElement.style.display = "";
     }
 
+//*******************************************************************************
       function numerosDeAdquisicion(numero)
       {
         var clic = "eliminar('class"+numero+"','"+numero+"')";
@@ -158,6 +225,7 @@
       return numeros_array.length;
 
     }
+
     </script> <!-- fin definiciones de javascript-->
 
   </head>
@@ -175,6 +243,8 @@
                 <li role="presentation"><a data-toggle="tab" href="#nueva_ficha"><span class="glyphicon glyphicon-tasks">Nueva ficha</span></a></li>
             </ul>
             <div class="tab-content">
+
+
 
                     <div id="nuevo_registro" class="tab-pane fade in active">
 
@@ -215,34 +285,38 @@
 
 
                 <div id="en_base" class="tab-pane fade">
-        <!--        <button class="btn btn-primary">segunda vista</button> -->
 <!--******************* BUSQUEDA DE FILTRAR EN EL CAMPO DE TEXTO, HACER CONSULTA A LA BASE DE DATOS PARA VERIFICAR QUE EXISTA ***************************-->
 <!--1) La tabla aparecerá oculta
     2) Si la tabla no encuentra resultados que devuelva un mensaje que no se han encontrado resultados
     3) Al encontrar datos devuelve la tabla llena-->
-                <p id="textAut">Escriba parte de título o autor <input type="text" id="title"><br><br></p>
-                <center><div class="col-xs-12 col-sm-3 col-md-4"><button style="max-width:90%; " onclick="viewHide('example')" class="btn btn-primary btn-block margin-bottom-lg" id="btnBuscar"><span aria-hidden="true">Buscar</span></button></div></center>
-                <!-- <button class="btn btn-primary" id="btnBuscarTitulo" >Buscar</button> -->
+                
+                <div class="tab-content">
+                    <div id="nuevaBusquedaAutor" class="tab-pane fade in active">
+                    <div class="form-group">
+                    </br>
+                      <div class="panel panel-info">
+                        <div class="panel-body">
+                          <div class="container">
+                              <div class="row">
+                                  <center><div class="col-xs-12 col-sm-3 col-md-3"> <input style="max-width:90%;"type="text" id="busquedaAutor" class="form-control" placeholder="Escriba parte del titulo o autor"> </div></center>
+                                  <center>
+                                    <div class="col-xs-12 col-sm-3 col-md-3">
+                                        <button style="max-width:90%;" class="btn btn-primary btn-block margin-bottom-lg" id="btnBuscar">
+                                        <span aria-hidden="true">Buscar</span>
+                                        </button>
+                                    </div>
+                                    </center>                                  
+        </div>
+        </div>
+        </div>
+        </div>
+        </div>
+        </div>
+
                 <br><br>
                 <div class="table-responsive">
-                <table id="example" style="display:none" class="table">
-        <thead>
-            <tr>
-            <th>ISBN</th>
-            <th>Autor Personal</th>
-            <th>Asiento por titulo uniforme</th>
-            <th>Titulo uniforme</th>
-            <th>Edicion o mencion de edicion</th>
-            <th>Lugar de editorial</th>
-            <th>Volumen</th>
-            <th>Editorial</th>
-            </tr>
-        </thead>
-        <tbody>
-        </tbody>
-    </table>
+                <table id="tablaDatosConsulta" style="display:none" class="display table"></table>
                 </div>
-</div>
 <?php
 
     echo div_open('tab-pane fade','nueva_ficha');

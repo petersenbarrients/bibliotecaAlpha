@@ -20,7 +20,7 @@
                             <li><a href="#">Catálogo de usuarios</a></li>
                             <li><a href="#">Préstamos</a></li>
                             <li><a href="#">Devoluciones</a></li>
-    							          <li><a href="#">Consultas</a></li>
+    						<li><a href="#">Consultas</a></li>
                         </ul>
                        <ul class="nav navbar-nav navbar-right">
                               <li><?php echo anchor('registro/', 'Catalogacion de material o recepcion de materiales')?></li>

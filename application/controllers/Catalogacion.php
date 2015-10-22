@@ -56,5 +56,15 @@ public function nueva(){
     $this->load->view('Registro/index');
 }
 
+//recibir parametro tipo post, vaiable del text field
+function recibirDatoTextField(){
+  $dataText = $this->input->post('datoRecibido');
+  //echo $dataText;
+  $this->load->model('CatalogacionModel');
+  $Consulta =  $this->CatalogacionModel->consultarDatos($dataText);
+  //echo $Consulta;
+  //echo  var_dump($Consulta);
+  echo json_encode($Consulta);
+}
 
 }
