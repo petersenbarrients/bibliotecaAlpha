@@ -50,26 +50,40 @@
       $("#btn_enviar_modal").click(function(){
          //  var url = "libro/nuevoLibro"; El controller/action a dónde se realizará la petición.
            numeros_array_aux = numeros_array;
-           $("#formModal").submit(
-             $.ajax({
-                 url: 'Catalogacion/nueva',
-                 type: 'POST',
-                 data: $("#formModal").serialize() +"&listas="+numeros_array_aux,// Adjuntar los campos del formulario enviado.
-                 success: function(response)
-                 {
-                   /*negocio->La lista de adquiciones debe estar vacia para poder mostrar el modal de marcs*/
-                  alert(response);
-                  return false;
-                 }
-               });
-           );
+
+      
+
 
 
         return false; // Evitar ejecutar el submit del formulario.
      });
 
 
-});
+
+      $("#form").submit(function(){
+          var isbn = $('#isbn').val();
+           $.ajax({
+               url: $(this).attr("action"),
+               type: $(this).attr("method"),
+               data: $(this).serialize(),// Adjuntar los campos del formulario enviado.
+               success: function(data)
+               {
+
+                   $("#add-here").html(data);
+
+                   $("#unicos_modal").modal('show');
+                   console.log(isbn);
+                   $("#isbnoculto").val(isbn);
+                   var prueba = $("#isbnoculto").val();
+                   alert(prueba);
+               }
+             });
+
+        return false; // Evitar ejecutar el submit del formulario.
+
+     });
+}); // close prevent default
+
 
 
     function removeBufferAction()
@@ -78,6 +92,7 @@
       $("form#for_hide").attr('action','catalogacion/nueva');
 
     }
+
     function viewHide(id){
         var targetId, srcElement, targeElement;
         var targeElement = document.getElementById(id);
@@ -161,6 +176,7 @@
       $("#verAdqui").empty();
 
     }
+
     function sel_nueva_ficha(){
       $('.nav a[href="#nueva_ficha"]').tab('show');
     }
@@ -171,6 +187,31 @@
       return numeros_array.length;
 
     }
+
+    //activar datos unicos desde nueva ficha
+
+
+    /*function nuevaFichaUnicos(){
+      var isbn = $('#isbn').val();
+      var autor_personal = $('#autor_personal').val();
+      var asiento_por_titulo = $('#asiento_por_titulo').val();
+      var titulo_uniforme = $('#titulo_uniforme').val();
+      var variante_titulo = $('#variante_titulo').val();
+      var editorial = $('#editorial').val();
+
+      if(
+        isbn !='' &&
+        autor_personal !='' &&
+        asiento_por_titulo !='' &&
+        titulo_uniforme !='' &&
+        variante_titulo !='' &&
+        editorial !=''
+      ){
+        $('#unicos_modal').modal('show');
+      }
+
+    }
+    */
     </script> <!-- fin definiciones de javascript-->
 
   </head>
@@ -234,13 +275,14 @@
     2) Si la tabla no encuentra resultados que devuelva un mensaje que no se han encontrado resultados
     3) Al encontrar datos devuelve la tabla llena-->
                 <p id="textAut">Escriba parte de título o autor <input type="text" id="title"><br><br></p>
-                <button class="btn btn-primary" id="btnBuscarTitulo" onclick="viewHide('example')">Buscar</button>
+                <center><div class="col-xs-12 col-sm-3 col-md-4"><button style="max-width:90%; " onclick="viewHide('example')" class="btn btn-primary btn-block margin-bottom-lg" id="btnBuscar"><span aria-hidden="true">Buscar</span></button></div></center>
+                <!-- <button class="btn btn-primary" id="btnBuscarTitulo" >Buscar</button> -->
                 <br><br>
-                <table id="example" style="display:none">
+                <div class="table-responsive">
+                <table id="example" style="display:none" class="table">
         <thead>
             <tr>
             <th>ISBN</th>
-            <th>Clasificacion decimal Dewey</th>
             <th>Autor Personal</th>
             <th>Asiento por titulo uniforme</th>
             <th>Titulo uniforme</th>
@@ -253,6 +295,7 @@
         <tbody>
         </tbody>
     </table>
+                </div>
 </div>
 <?php
 
@@ -261,9 +304,6 @@
     echo div_close(); //close tab-pane fade
 
  ?>
-
-
-
           </div>
         </div>
     </div>

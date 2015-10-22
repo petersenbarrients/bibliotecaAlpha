@@ -82,7 +82,11 @@ echo form_open('libro/nuevoLibro', $atributos_form)."</br>";
 
   echo form_input($input_Tomo)."</br>";
 
-  echo form_submit($input_submit);
-  echo form_button($input_cancel,"Cancelar Recepción");
+
+?>
+  <input type="hidden" id="isbnoculto" value="" name="isbn">
+<?php
+echo form_submit($input_submit);
+echo form_button($input_cancel,"Cancelar Recepción");
 echo form_close();
   ?>

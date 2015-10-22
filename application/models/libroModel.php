@@ -20,7 +20,7 @@ class libroModel extends CI_Model{
       $this->load->database();/*Permite accesos a la base de datos*/
   }
 
-  public function crearModelo($numero_adqui,$biblioteca,$escuela,$coleccion,$numero_ejemplar,$se_presta,$material,$es_complementario,$marc,$disponible,$numero_tomo)
+  public function crearModelo($numero_adqui,$biblioteca,$escuela,$coleccion,$numero_ejemplar,$se_presta,$material,$es_complementario,$id,$disponible,$numero_tomo)
   {
     $this->numero_de_adquisicion=$numero_adqui;
     $this->biblioteca=$biblioteca;
@@ -30,7 +30,7 @@ class libroModel extends CI_Model{
     $this->se_presta=$se_presta;
     $this->tipo_de_material=$material;
     $this->es_complementario=$es_complementario;
-    $this->idEtiquetaMarc=$marc;
+    $this->idEtiquetaMarc=$id;
     $this->disponible = $disponible;
     $this->tomo = $numero_tomo;
 

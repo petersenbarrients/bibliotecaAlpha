@@ -1,8 +1,7 @@
-<?php
 
+    <?php
 
-
-    echo div_open('container','');
+      echo "<br>";
       echo div_open('row','');
         echo div_open('col-md-6','');
 
