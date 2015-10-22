@@ -57,7 +57,7 @@ class libro extends CI_Controller {
 								</br></br><div class='col-xs-6 col-md-3'>
 										<div class='panel panel-primary' style='max-width:60%;float:left;'>
 												<div class='panel-heading' class='col-xs-6 col-md-3'>
-														<h2 class='panel-title'><span class='glyphicon glyphicon-list-alt'></span><p style='font-size:9px;'>Números de adquisición</p></h2>
+														<h2 class='panel-title'><span class='glyphicon glyphicon-list-alt'></span><p style='font-size:9px;'>Números de adquisición a ser asociados</p></h2>
 												</div>
 												<div class='panel-body'>
 														<div id='verAdqui'></div>

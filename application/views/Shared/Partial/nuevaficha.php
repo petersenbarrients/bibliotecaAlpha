@@ -6,7 +6,7 @@
       echo div_open('row','');
         echo div_open('col-md-6','');
 
-          $attributes = array('class' => 'form-horizontal col-xs-6 col-sm-6 col-md-6 col-xl-6', 'role' => 'form');
+          $attributes = array('class' => 'form-horizontal col-xs-6 col-sm-6 col-md-6 col-xl-6','id'=>'myForm', 'role' => 'form');
           echo form_open('catalogacion/nueva', $attributes);
             echo div_open('form-group','');
               echo br(1);
@@ -253,11 +253,13 @@
         echo div_close(); //close form group 4
         $data = array(
           'id' => 'submi',
+          'type'       => 'submit',
           'class' => 'form-control btn-primary',
-          'value' => 'Registrar'
+          'value' => 'Registrar',
 
         );
-        echo form_submit($data);
+        $js = array('onClick' => 'return sendData();');
+        echo form_submit($data,"Registrar",$js);
         echo form_close();
         echo div_close(); //close col-md-6
       echo div_close(); // close row

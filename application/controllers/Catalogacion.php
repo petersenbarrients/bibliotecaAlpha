@@ -34,7 +34,8 @@ public function nueva(){
   $liga_a_recursos_electronicos = $this->input->post('liga_recursos');
   $fecha_publicacion = $this->input->post('fecha_publicacion');
   $editorial = $this->input->post('editorial');
-
+  /*recibe json con los numeros de adquisicion*/
+  $data = json_decode(stripslashes($this->input->post('listas')));
   $this->load->model('CatalogacionModel');
 
   $this->CatalogacionModel->insert_nueva(
@@ -53,7 +54,24 @@ public function nueva(){
     $fecha_publicacion,
     $editorial
   );
-    $this->load->view('Registro/index');
+
+  /*si los numeros de adquisicion son nullo, entonces el post no se envio desde recepcion,
+  **se envio desde catalogacion
+  **
+  */
+  $res = $data;
+  if ($res != null) {
+        echo var_dump( $res  )." --- isbn".$isbn;
+  }
+  else {
+    echo $isbn;
+  }
+
+}
+/*Recibir datos del form y json de numeros de adqusicion*/
+public function nuevaAsociacion()
+{
+
 }
 
 

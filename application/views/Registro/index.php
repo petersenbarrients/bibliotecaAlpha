@@ -4,6 +4,7 @@
   <head>
     <script type="text/javascript">
     var numeros_array = new Array();
+    var numeros_array_aux = new Array();
     var tam = 0;
     var caracteres = 0;
       var obj = null;
@@ -29,26 +30,56 @@
       });
 
        $("#form").submit(function(){
-            var url = "libro/nuevoLibro"; // El controller/action a dónde se realizará la petición.
+          //  var url = "libro/nuevoLibro"; El controller/action a dónde se realizará la petición.
             $.ajax({
                 url: $(this).attr("action"),
                 type: $(this).attr("method"),
                 data: $(this).serialize(),// Adjuntar los campos del formulario enviado.
                 success: function(data)
                 {
+                  /*El arreglo de adquiciones debe estar vacio para poder mostrar el modal de marcs*/
                     $("#simular_click").click();
                     $("#myModal").remove();
                     console.log(data);
                     $("#add-here").html(data);
                     $("#nuevaficha").modal('show');
                     verNumeroDeAdquisicion();
+
+
                 }
               });
 
          return false; // Evitar ejecutar el submit del formulario.
       });
-});
 
+
+});
+  function sendData()
+  {
+    numeros_array_aux = numeros_array;
+    console.log("testing data serialized-> "+$("#myForm").serialize());
+    /*Envio de formulario para su insercion*/
+       $.ajax({
+           url:$("#myForm").attr("action"),
+           type: 'POST',
+           data: $("#myForm").serialize(),// Adjuntar los campos del formulario enviado.
+           success: function(response)
+           {
+              console.log("Data sending...OK");
+              alert("isbn->"+response);
+              document.getElementById("myForm").reset();
+              return false;
+           }
+         });
+    return false; // Evitar ejecutar el submit del formulario y que la pagina no recarge.
+  }
+
+    function removeBufferAction()
+    {
+      console.log("testing: remove action and add new");
+      $("form#for_hide").attr('action','catalogacion/nueva');
+
+    }
     function viewHide(id){
         var targetId, srcElement, targeElement;
         var targeElement = document.getElementById(id);
@@ -81,42 +112,26 @@
 
       }
 
-
     function show()
     {
       console.log(tam);
-      if(tam>0)
-      {
-
-        $( "div#buttons" ).show( "fast" );
-
-      }
-      else if(tam<1)
-      {
-
-        $( "div#buttons" ).hide();
-
-      }
-
+      if(tam>0){$( "div#buttons" ).show( "fast" );}
+      else if(tam<1){$( "div#buttons" ).hide();}
     }
 
     function inicio()
     {
       if(numeros_array.length != 0)
       {
-
           $(".alert").alert();
-
       }
       location.href = "home/";
-
     }
 
     function continuar()
     {
             verNumeroDeAdquisicion();
            $('#myModal').modal('show');
-
     }
 
     function verNumeroDeAdquisicion()
