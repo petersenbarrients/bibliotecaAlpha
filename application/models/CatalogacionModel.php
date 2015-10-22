@@ -48,7 +48,6 @@ class CatalogacionModel extends CI_Model{
     $this->db->insert('etiqueta_marc', $data);
   }
 
-//*************************************************
   public function consultarDatos($cadena){
     //$tableInfo = array ("isbn","autor_personal");
     $this->db->select("isbn, autor_personal, asiento_por_titulo_uniforme, titulo_uniforme, edicion_mencion_edicion, lugar_editorial, volumen, editorial");
@@ -68,4 +67,11 @@ class CatalogacionModel extends CI_Model{
     return $arregloPadre;
 
   }
+
+  public function select_id($isbn){
+    $this->db->select('id');
+    $query = $this->db->get_where('etiqueta_marc', array('isbn' => $isbn));
+    return $query;
+  }
+
 }

@@ -16,6 +16,5 @@ class home extends CI_Controller {
 
 	 $this->load->view('Principal/Index');
 
-
 	}
 }

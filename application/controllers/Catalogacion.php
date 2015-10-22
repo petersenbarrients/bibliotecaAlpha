@@ -15,8 +15,6 @@ public function index(){
 
 }
 
-
-
 public function nueva(){
 
   $isbn = $this->input->post('isbn');
@@ -34,7 +32,8 @@ public function nueva(){
   $liga_a_recursos_electronicos = $this->input->post('liga_recursos');
   $fecha_publicacion = $this->input->post('fecha_publicacion');
   $editorial = $this->input->post('editorial');
-
+  /*recibe json con los numeros de adquisicion*/
+  $data = json_decode(stripslashes($this->input->post('listas')));
   $this->load->model('CatalogacionModel');
 
   $this->CatalogacionModel->insert_nueva(
@@ -53,7 +52,47 @@ public function nueva(){
     $fecha_publicacion,
     $editorial
   );
-    $this->load->view('Registro/index');
+
+<<<<<<< HEAD
+  /*si los numeros de adquisicion son nullo, entonces el post no se envio desde recepcion,
+  **se envio desde catalogacion
+  **
+  */
+    $ret = "listas->".var_dump($data)."- isbn->".$isbn;
+    echo $ret;
+
+=======
+  $this->load->model('libroModel');
+  $datos['colecciones'] =$this->libroModel->listarColecciones();
+  $datos['escuelas'] =$this->libroModel->listarEscuelas();
+  $datos['bibliotecas'] =$this->libroModel->listarBiblioteca();
+  $datos['tipos_material'] =$this->libroModel->listarMaterial();
+
+    $data = $this->load->view('Shared/Partial/datosUnicos',$datos,TRUE);
+    $modal ="
+      <div id='unicos_modal' class='modal fade' role='dialog'>
+      <div class='modal-dialog'>
+
+  <div class='modal-content'>
+    <div class='modal-header'>
+      <button type='button' class='close' data-dismiss='modal'>&times;</button>
+      <h4 class='modal-title'>Etiquetas Únicas del Ejemplar</h4>
+    </div>
+    <div class='modal-body'>
+      '.$data.'
+
+    </div>
+    <div class='modal-footer'>
+      <button type='button' class='btn btn-default' data-dismiss='modal'>Close</button>
+    </div>
+  </div>
+
+</div>
+</div>
+";
+echo $modal;
+>>>>>>> e882847ca51ae2fd4fa7c9783463f3d6a9ad362d
+
 }
 
 //recibir parametro tipo post, vaiable del text field

@@ -46,7 +46,7 @@ $input_Tomo = array(
                   'step'        =>'1',
                   'maxlength'   => '7',
                   'size'        => '50',
-                    'style'       => 'max-width:60%',
+                  'style'       => 'max-width:60%',
                   'class'       => 'form-control',
                   'placeholder' =>'Tomo',
                   'required' =>'required'
@@ -69,20 +69,24 @@ echo form_open('libro/nuevoLibro', $atributos_form)."</br>";
   echo form_label('Disponible para prestamo').'</br>';
   ?>
   SI<input type="radio" name="myradio" value="1" <?php echo  set_radio('Si', '1'); ?> />
-  N0<input type="radio" name="myradio" value="0" <?php echo  set_radio('No', '0',TRUE); ?> /></br>
+  NO<input type="radio" name="myradio" value="0" <?php echo  set_radio('No', '0',TRUE); ?> /></br>
   <?php
 
   echo form_label('Es complementario').'</br>';
   ?>
   SI<input type="radio" name="myradio1" value="1" <?php echo  set_radio('Si', '1'); ?> />
-  N0<input type="radio" name="myradio1" value="0" <?php echo  set_radio('No', '0',TRUE); ?> /></br>
+  NO<input type="radio" name="myradio1" value="0" <?php echo  set_radio('No', '0',TRUE); ?> /></br>
   <?php
 
   echo form_label('Tomo').'</br>';
 
   echo form_input($input_Tomo)."</br>";
 
-  echo form_submit($input_submit);
-  echo form_button($input_cancel,"Cancelar Recepción");
+
+?>
+  <input type="hidden" id="isbnoculto" value="" name="isbn">
+<?php
+echo form_submit($input_submit);
+echo form_button($input_cancel,"Cancelar Recepción");
 echo form_close();
   ?>
