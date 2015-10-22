@@ -20,15 +20,9 @@
             numerosDeAdquisicion(numero_de_adquisicion);
             $("#numero_adqui").val("");
             show();
-
-
-        $("#example").dataTable();
-        $('#lanzar_alerta').click(function() {
-          alert('hola mundo!');
-        });
-
       });
 
+      /*Registra etiquetas unicas via ajax y retorna el modal para continuar con el registro de las etiquetas marc.*/
        $("#form").submit(function(){
           //  var url = "libro/nuevoLibro"; El controller/action a dónde se realizará la petición.
             $.ajax({
@@ -49,30 +43,34 @@
                 }
               });
 
-         return false; // Evitar ejecutar el submit del formulario.
+         return false;
       });
+
+        /*Registra etiquetas que estan sobre el modal de etiquetas marc via ajax.*/
+      $("#btn_enviar_modal").click(function(){
+         //  var url = "libro/nuevoLibro"; El controller/action a dónde se realizará la petición.
+           numeros_array_aux = numeros_array;
+           $("#formModal").submit(
+             $.ajax({
+                 url: 'Catalogacion/nueva',
+                 type: 'POST',
+                 data: $("#formModal").serialize() +"&listas="+numeros_array_aux,// Adjuntar los campos del formulario enviado.
+                 success: function(response)
+                 {
+                   /*negocio->La lista de adquiciones debe estar vacia para poder mostrar el modal de marcs*/
+                  alert(response);
+                  return false;
+                 }
+               });
+           );
+
+
+        return false; // Evitar ejecutar el submit del formulario.
+     });
 
 
 });
-  function sendData()
-  {
-    numeros_array_aux = numeros_array;
-    console.log("testing data serialized-> "+$("#myForm").serialize());
-    /*Envio de formulario para su insercion*/
-       $.ajax({
-           url:$("#myForm").attr("action"),
-           type: 'POST',
-           data: $("#myForm").serialize(),// Adjuntar los campos del formulario enviado.
-           success: function(response)
-           {
-              console.log("Data sending...OK");
-              alert("isbn->"+response);
-              document.getElementById("myForm").reset();
-              return false;
-           }
-         });
-    return false; // Evitar ejecutar el submit del formulario y que la pagina no recarge.
-  }
+
 
     function removeBufferAction()
     {
@@ -259,7 +257,7 @@
 <?php
 
     echo div_open('tab-pane fade','nueva_ficha');
-        $this->load->view('Shared/Partial/nuevaficha');
+        $this->load->view('Shared/templates/nuevaficha');
     echo div_close(); //close tab-pane fade
 
  ?>
@@ -290,7 +288,7 @@
         <div class="container">
           <div class="row" id="insertar">
             <div class="col-xs-6 col-md-4" id="borrar">
-              <?php $this->load->view('/Shared/Partial/datosUnicos');?></br>
+              <?php $this->load->view('/Shared/templates/datosUnicos');?></br>
             </div>
           </br></br><div class="col-xs-6 col-md-3">
               <div class="panel panel-primary" style="max-width:60%;float:left;">

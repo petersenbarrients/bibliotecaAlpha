@@ -38,7 +38,7 @@ class libro extends CI_Controller {
 						$this->libroModel->nuevoLibro();
 					//$view = $this->load->view('Shared/Partial/nuevaficha','',true);
 					//$msg = ;
-					$data = $this->load->view('Shared/Partial/nuevaficha','', TRUE);
+					$data = $this->load->view('Shared/templates/nuevaFichaModal','', TRUE);
 
 					$modal = "<div id='nuevaficha' class='modal fade' role='dialog' >
 					<div class='modal-dialog' style='max-width:80%;'>
