@@ -59,18 +59,9 @@ public function nueva(){
   **se envio desde catalogacion
   **
   */
-  $res = $data;
-  if ($res != null) {
-        echo var_dump( $res  )." --- isbn".$isbn;
-  }
-  else {
-    echo $isbn;
-  }
+    $ret = "listas->".var_dump($data)."- isbn->".$isbn;
+    echo $ret;
 
-}
-/*Recibir datos del form y json de numeros de adqusicion*/
-public function nuevaAsociacion()
-{
 
 }
 
