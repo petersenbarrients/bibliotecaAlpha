@@ -49,9 +49,18 @@ class CatalogacionModel extends CI_Model{
   }
 
   public function select_id($isbn){
-    $this->db->select('id');
-    $query = $this->db->get_where('etiqueta_marc', array('isbn' => $isbn));
-    return $query;
+
+    $query = $this->db->get_where('etiqueta_marc',array('isbn' => $isbn));
+    if($query->num_rows() > 0 )
+    {
+
+        $row = $query->row();
+        return (int)$row->id;
+    }
+    else {
+      echo 'no hay registros';
+    }
+
   }
 
 }

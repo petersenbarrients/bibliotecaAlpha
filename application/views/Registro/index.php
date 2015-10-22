@@ -11,6 +11,8 @@
     show();
 
       $(document).ready(function() {
+
+
         numeros_array = new Array();
 
         show();
@@ -51,19 +53,19 @@
          //  var url = "libro/nuevoLibro"; El controller/action a dónde se realizará la petición.
            numeros_array_aux = numeros_array;
 
-      
+
 
 
 
         return false; // Evitar ejecutar el submit del formulario.
      });
 
-
-
-      $("#form").submit(function(){
+      // enviar datos de nueva_ficha
+      $("#fichaform").submit(function(){
           var isbn = $('#isbn').val();
+          var urli = 'Catalogacion/nueva';
            $.ajax({
-               url: $(this).attr("action"),
+               url: urli ,
                type: $(this).attr("method"),
                data: $(this).serialize(),// Adjuntar los campos del formulario enviado.
                success: function(data)
@@ -75,15 +77,31 @@
                    console.log(isbn);
                    $("#isbnoculto").val(isbn);
                    var prueba = $("#isbnoculto").val();
-                   alert(prueba);
+      
                }
              });
 
         return false; // Evitar ejecutar el submit del formulario.
 
      });
-}); // close prevent default
 
+     //guardar datos unicos en base a ficha
+     $("#formunicosmodal").submit(function(){
+        //  var url = "libro/nuevoLibro"; El controller/action a dónde se realizará la petición.
+          $.ajax({
+              url: $(this).attr("action"),
+              type: $(this).attr("method"),
+              data: $(this).serialize(),// Adjuntar los campos del formulario enviado.
+              success: function(data)
+              {
+                /*El arreglo de adquiciones debe estar vacio para poder mostrar el modal de marcs*/
+
+              }
+            });
+
+       return false;
+    });
+}); // fin cierre funcion para usar jquery
 
 
     function removeBufferAction()
