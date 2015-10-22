@@ -46,21 +46,12 @@
          return false;
       });
 
-        /*Registra etiquetas que estan sobre el modal de etiquetas marc via ajax.*/
-      $("#btn_enviar_modal").click(function(){
-         //  var url = "libro/nuevoLibro"; El controller/action a dónde se realizará la petición.
-           numeros_array_aux = numeros_array;
-
-      
 
 
 
-        return false; // Evitar ejecutar el submit del formulario.
-     });
 
 
-
-      $("#form").submit(function(){
+  /*  parte de pedro  $("#form").submit(function(){
           var isbn = $('#isbn').val();
            $.ajax({
                url: $(this).attr("action"),
@@ -81,10 +72,38 @@
 
         return false; // Evitar ejecutar el submit del formulario.
 
-     });
-}); // close prevent default
+     });*/
+});
+    function sendSubmitModal()
+    {
+      $.ajax({
+          url: 'Catalogacion/nueva',
+          type: 'POST',
+          data: $("#formModal").serialize(),// Adjuntar los campos del formulario enviado.
+          success: function(data)
+          {
+            numeros_array_aux  = numeros_array;
+            ///
+            var jsonString = JSON.stringify(numeros_array_aux);
+            $.ajax({
+                url: 'libro/modificarMarcLibro',
+                type: 'POST',
+                data: {listas:jsonString,isbn:data},// Adjuntar los campos del formulario enviado.
+                success: function(data)
+                {
+                  alert(data);
 
+                }
+          });
+            ///
 
+              alert(data);
+              return false;
+          }
+    });
+
+    return false;
+  }
 
     function removeBufferAction()
     {

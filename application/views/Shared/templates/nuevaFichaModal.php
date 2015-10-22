@@ -4,12 +4,7 @@
 Vistas auxiliares para cargar el modal en modulo de catalogacion y registro.
 */
 
-    echo div_open('container','');
-      echo div_open('row','');
-        echo div_open('col-md-6','');
 
-          $attributes = array('class' => 'form-horizontal col-xs-6 col-sm-6 col-md-6 col-xl-6','id'=>'formModal');
-          echo form_open('', $attributes);
             echo div_open('form-group','');
               echo br(1);
 
@@ -192,9 +187,6 @@ Vistas auxiliares para cargar el modal en modulo de catalogacion y registro.
 
             );
         echo form_submit($input_submit);
-        echo form_close();
-        echo div_close(); //close col-md-6
-      echo div_close(); // close row
-    echo div_close(); // close container
+  
 
   ?>

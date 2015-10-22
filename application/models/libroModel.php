@@ -38,7 +38,7 @@ class libroModel extends CI_Model{
 
   public function nuevoLibro()
   {
-    /*modifique tabla libro campos de bit a int*/
+    /*modifique tabla libro todos los campos de bit a int*/
     $this->db->set($this);
     $this->db->insert($this->db->dbprefix . 'libro');
   }
@@ -99,6 +99,18 @@ class libroModel extends CI_Model{
     }
     $query->free_result();
     return $toReturn;
+  }
+
+  public function modificarEtiquetaMarcLibro($id,$listas)
+  {
+    $data = array(
+               'idEtiquetaMarc' => $id
+            );
+
+            $this->db->where('numero_adqui', $numero_adqui);
+            $this->db->update('libro', $data);
+
+
   }
 
 

@@ -27,34 +27,24 @@ class libro extends CI_Controller {
             $coleccion= $this ->input ->post('coleccion');
             $material= $this ->input ->post('material');
             $se_presta = $this->input->post('myradio');
-
             $es_complementario = $this->input->post('myradio1');
-							$isbn = $this->input->post('isbn');
 						$marc = null;
 						if($numero_ejemplar!=1)
 						{
 							/*marcar como no disponible por que es el primer ejemplar*/
 							$disponible = 1;
 						}
-						$this->load->model('CatalogacionModel');
-						$id = $this->CatalogacionModel->select_id($isbn);
-						echo $id;
 						$this->load->model('libroModel');
-						$this->libroModel->crearModelo($numero_adqui,$biblioteca,$escuela,$coleccion,$numero_ejemplar,$se_presta,$material,$es_complementario,$id,$disponible,$numero_tomo);
+						$this->libroModel->crearModelo($numero_adqui,$biblioteca,$escuela,$coleccion,$numero_ejemplar,$se_presta,$material,$es_complementario,$marc,$disponible,$numero_tomo);
 						$this->libroModel->nuevoLibro();
 
+						/*data es la variabla para guardar la vista parcial con los campos, estos campos deberan ser agregardos al form declaradado dentro de la variabel modal*/
+						$data = $this->load->view('Shared/templates/nuevaFichaModal','', TRUE);
 
-
-
-					//$view = $this->load->view('Shared/Partial/nuevaficha','',true);
-					//$msg = ;
-<<<<<<< HEAD
-					$data = $this->load->view('Shared/templates/nuevaFichaModal','', TRUE);
-=======
 					//$data = $this->load->view('Shared/Partial/nuevaficha','', TRUE);
->>>>>>> e882847ca51ae2fd4fa7c9783463f3d6a9ad362d
 
-					/*$modal = "<div id='nuevaficha' class='modal fade' role='dialog' >
+					/*Retorna modal para registrar datos de la etiqueta marc..*/
+					$modal = "<div id='nuevaficha' class='modal fade' role='dialog' >
 					<div class='modal-dialog' style='max-width:80%;'>
 						<!-- Modal content-->
 						<div class='modal-content'>
@@ -66,7 +56,20 @@ class libro extends CI_Controller {
 							<div class='container'>
 								<div class='row' id='insertar'>
 									<div class='col-xs-6 col-md-4' id='borrar'>
-										'.$data.'
+									<div class='container'>
+											<div class='row'>
+												<div class='col-md-6'>
+
+												<form id='formModal' onsubmit='sendSubmitModal();' method='POST'>
+
+													".$data."
+
+												</form>
+
+												</div>
+											</div>
+									</div>
+
 									</div>
 								</br></br><div class='col-xs-6 col-md-3'>
 										<div class='panel panel-primary' style='max-width:60%;float:left;'>
@@ -87,8 +90,19 @@ class libro extends CI_Controller {
 					</div>
 				</div>
 					</div>
-					"; */
-						//echo $numero_tomo.'</br>'.$numero_ejemplar.'</br>'.$numero_adqui.'</br>'.$biblioteca.'</br>'.$escuela.'</br>'.$coleccion.'</br>'.$material.'</br>'.$se_presta.'</br>'.$es_complementario;
-		//	echo $modal;
+					";
+			echo $modal;
 	}
+
+
+	public function modificarMarcLibro()
+	{
+		  $isbn = $this->input->post('isbn');
+			$listas = $this->input->post('listas');
+			echo "isbn ->".$isbn." listas".var_dump($listas);
+
+
+	}
+
+
 }

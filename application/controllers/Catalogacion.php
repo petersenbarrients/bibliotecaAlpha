@@ -53,15 +53,13 @@ public function nueva(){
     $editorial
   );
 
-<<<<<<< HEAD
   /*si los numeros de adquisicion son nullo, entonces el post no se envio desde recepcion,
   **se envio desde catalogacion
   **
   */
-    $ret = "listas->".var_dump($data)."- isbn->".$isbn;
+    $ret = $isbn;
     echo $ret;
-
-=======
+/*
   $this->load->model('libroModel');
   $datos['colecciones'] =$this->libroModel->listarColecciones();
   $datos['escuelas'] =$this->libroModel->listarEscuelas();
@@ -80,7 +78,6 @@ public function nueva(){
     </div>
     <div class='modal-body'>
       '.$data.'
-
     </div>
     <div class='modal-footer'>
       <button type='button' class='btn btn-default' data-dismiss='modal'>Close</button>
@@ -90,8 +87,8 @@ public function nueva(){
 </div>
 </div>
 ";
-echo $modal;
->>>>>>> e882847ca51ae2fd4fa7c9783463f3d6a9ad362d
+echo $modal;*/
+
 
 }
 
