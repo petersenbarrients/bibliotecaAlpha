@@ -32,8 +32,7 @@ public function nueva(){
   $liga_a_recursos_electronicos = $this->input->post('liga_recursos');
   $fecha_publicacion = $this->input->post('fecha_publicacion');
   $editorial = $this->input->post('editorial');
-  /*recibe json con los numeros de adquisicion*/
-  $data = json_decode(stripslashes($this->input->post('listas')));
+
   $this->load->model('CatalogacionModel');
 
   $this->CatalogacionModel->insert_nueva(
@@ -53,22 +52,15 @@ public function nueva(){
     $editorial
   );
 
-<<<<<<< HEAD
-  /*si los numeros de adquisicion son nullo, entonces el post no se envio desde recepcion,
-  **se envio desde catalogacion
-  **
-  */
-    $ret = "listas->".var_dump($data)."- isbn->".$isbn;
-    echo $ret;
-
-=======
+  /*recibe json con los numeros de adquisicion*/
+  $data = json_decode(stripslashes($this->input->post('listas')));
   $this->load->model('libroModel');
   $datos['colecciones'] =$this->libroModel->listarColecciones();
   $datos['escuelas'] =$this->libroModel->listarEscuelas();
   $datos['bibliotecas'] =$this->libroModel->listarBiblioteca();
   $datos['tipos_material'] =$this->libroModel->listarMaterial();
 
-    $data = $this->load->view('Shared/Partial/datosUnicos',$datos,TRUE);
+    $data = $this->load->view('Shared/templates/datosUnicosModal',$datos,TRUE);
     $modal ="
       <div id='unicos_modal' class='modal fade' role='dialog'>
       <div class='modal-dialog'>
@@ -91,8 +83,6 @@ public function nueva(){
 </div>
 ";
 echo $modal;
->>>>>>> e882847ca51ae2fd4fa7c9783463f3d6a9ad362d
-
 }
 
 //recibir parametro tipo post, vaiable del text field
@@ -104,6 +94,6 @@ function recibirDatoTextField(){
   //echo $Consulta;
   //echo  var_dump($Consulta);
   echo json_encode($Consulta);
-}
+
 
 }

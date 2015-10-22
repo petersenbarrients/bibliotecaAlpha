@@ -5,7 +5,7 @@
       echo div_open('row','');
         echo div_open('col-md-6','');
 
-          $attributes = array('class' => 'form-horizontal col-xs-6 col-sm-6 col-md-6 col-xl-6','id'=>'myForm', 'role' => 'form');
+          $attributes = array('class' => 'form-horizontal col-xs-6 col-sm-6 col-md-6 col-xl-6','id'=>'fichaform', 'role' => 'form');
           echo form_open('', $attributes);
             echo div_open('form-group','');
               echo br(1);

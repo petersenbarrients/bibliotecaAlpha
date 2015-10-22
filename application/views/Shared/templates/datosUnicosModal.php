@@ -58,8 +58,8 @@ $input_Tomo = array(
                   'placeholder' =>'Tomo',
                   'required' =>'required'
                 );
-$atributos_form = array('id' => 'form');
-echo form_open('libro/nuevoLibro', $atributos_form)."</br>";
+$atributos_form = array('id' => 'formunicosmodal');
+echo form_open('libro/NuevoBaseFicha', $atributos_form)."</br>";
   echo form_label('Número de adquisición');
   echo form_input($inputNo_Adqui)."</br>";
   echo form_label('Selecciona la colección');
@@ -83,6 +83,8 @@ echo form_open('libro/nuevoLibro', $atributos_form)."</br>";
   ?>
   SI<input type="radio" name="myradio1" value="1" <?php echo  set_radio('Si', '1'); ?> />
   NO<input type="radio" name="myradio1" value="0" <?php echo  set_radio('No', '0',TRUE); ?> /></br>
+
+  <input type="hidden" id="isbnoculto" value="" name="isbn"/>
   <?php
 
   echo form_label('Tomo').'</br>';
@@ -91,5 +93,5 @@ echo form_open('libro/nuevoLibro', $atributos_form)."</br>";
 
   echo form_submit($input_submit);
   echo form_button($input_cancel,"Cancelar Recepción");
-echo form_close();
+  echo form_close();
   ?>
