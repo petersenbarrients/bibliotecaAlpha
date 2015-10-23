@@ -5,12 +5,18 @@
     <script type="text/javascript">
     var numeros_array = new Array();
     var numeros_array_aux = new Array();
+    var aux_para_eliminar_de_arreglo = 0;
     var tam = 0;
+    var isbnGlobal = 0;
+    var contador_caractes_adqui = 0;
     var caracteres = 0;
       var obj = null;
+      var json = null;
     show();
 
       $(document).ready(function() {
+
+
         numeros_array = new Array();
 
         show();
@@ -24,7 +30,8 @@
 
       /*Registra etiquetas unicas via ajax y retorna el modal para continuar con el registro de las etiquetas marc.*/
        $("#form").submit(function(){
-          //  var url = "libro/nuevoLibro"; El controller/action a dónde se realizará la petición.
+            var numero = aux_para_eliminar_de_arreglo;
+            eliminarValorDelArregloAdqui(numero)
             $.ajax({
                 url: $(this).attr("action"),
                 type: $(this).attr("method"),
@@ -32,6 +39,10 @@
                 success: function(data)
                 {
                   /*El arreglo de adquiciones debe estar vacio para poder mostrar el modal de marcs*/
+                  alert("Ejemplar" + aux_para_eliminar_de_arreglo+ " registrado!");
+                  if(tam < 1)
+                  {
+
                     $("#simular_click").click();
                     $("#myModal").remove();
                     console.log(data);
@@ -39,6 +50,9 @@
                     $("#nuevaficha").modal('show');
                     verNumeroDeAdquisicion();
 
+                  }
+
+                //  $("#form input[name='numero_adqui']" ).val("");
 
                 }
               });
@@ -47,18 +61,72 @@
       });
 
 
+      $('#numero_adqui').keyup(function() {
 
+          var $th = $(this);
+          contador_caractes_adqui = contador_caractes_adqui +1;
+          console.log(contador_caractes_adqui);
+          if(contador_caractes_adqui > 6)
+          {
+            alert("solo 6 numeros");
+            $("#numero_adqui").val('');
+            contador_caractes_adqui = 0;
+            return '';
 
+          }
+          $th.val( $th.val().replace(/[^0-9]/g, function(str)
+          {
 
-
+            contador_caractes_adqui = contador_caractes_adqui -1;
+            alert('" ' + str + ' ".\n\nSolo numeros.'); return '';
+          } ) );
+        });
   /*  parte de pedro  $("#form").submit(function(){
+=======
+
+        /*Registra etiquetas que estan sobre el modal de etiquetas marc via ajax.*/
+      $("#btn_enviar_modal").click(function(){
+         //  var url = "libro/nuevoLibro"; El controller/action a dónde se realizará la petición.
+           numeros_array_aux = numeros_array;
+
+
+
+
+
+        return false; // Evitar ejecutar el submit del formulario.
+     });
+
+     //guardar datos unicos en base a ficha
+     $("#formunicosmodal").submit(function(){
+        //  var url = "libro/nuevoLibro"; El controller/action a dónde se realizará la petición.
+          $.ajax({
+              url: $(this).attr("action"),
+              type: $(this).attr("method"),
+              data: $(this).serialize(),// Adjuntar los campos del formulario enviado.
+              success: function(data)
+              {
+                /*El arreglo de adquiciones debe estar vacio para poder mostrar el modal de marcs*/
+
+              }
+            });
+
+       return false;
+    });
+
+
+
+
+      // enviar datos de nueva_ficha
+      $("#fichaform").submit(function(){
           var isbn = $('#isbn').val();
+          var urli = 'Catalogacion/nueva';
            $.ajax({
-               url: $(this).attr("action"),
+               url: urli ,
                type: $(this).attr("method"),
                data: $(this).serialize(),// Adjuntar los campos del formulario enviado.
                success: function(data)
                {
+
 
                    $("#add-here").html(data);
 
@@ -66,53 +134,118 @@
                    console.log(isbn);
                    $("#isbnoculto").val(isbn);
                    var prueba = $("#isbnoculto").val();
-                   alert(prueba);
+
                }
              });
 
         return false; // Evitar ejecutar el submit del formulario.
 
-     });*/
 });
+
+
+$("#btnBuscar").click(function(){
+
+            var url = "Catalogacion/recibirDatoTextField"; // El controller/action a dónde se realizará la petición.
+            var valorId=document.getElementById("busquedaAutor").value;
+
+        //alert("Tengo: "+valorId);
+            $('#tablaDatosConsulta').DataTable( {
+        "processing": true,
+        "serverSide": true,
+        "ajax": {
+            "url": "Catalogacion/recibirDatoTextField",
+            "type": "POST",
+            "data": {"datoRecibido": valorId}
+        },
+        "columns": [
+            {title: "ISBN"},
+            {title: "Autor Personal"},
+            {title: "Asiento por titulo uniforme"},
+            {title: "Titulo uniforme"},
+            {title: "Edicion o mencion de  edicion"},
+            {title: "Lugar de editorial"},
+            {title: "Volumen"},
+            {title: "Editorial"}
+        ]
+    } );
+
+         return false;
+      });
+
+});
+
+
+function eliminarValorDelArregloAdqui(numero)
+{
+  console.log("numero a registrado y  eliminado "+numero);
+  var index = numeros_array.indexOf(numero);
+  delete numeros_array[index];
+  tam = tam -1;
+  console.log("tamaño de arreglo" + tam);
+}
+
     function sendSubmitModal()
     {
       $.ajax({
-          url: 'Catalogacion/nueva',
+          url: 'Catalogacion/nuevaRecepcion',
           type: 'POST',
           data: $("#formModal").serialize(),// Adjuntar los campos del formulario enviado.
-          success: function(data)
+          success:function(response){
+              isbnGlobal = response;
+              numeros_array_aux = numeros_array;
+
+              json = JSON.stringify(numeros_array_aux);
+
+              alert(" 1 respuesta del servidor ->"+isbnGlobal +"-- variable del cliente->"+ json);
+
+            //  sendSecondAjaxRequest(response,jsonString);
+          },
+          complete:function()
           {
-            numeros_array_aux  = numeros_array;
-            ///
-            var jsonString = JSON.stringify(numeros_array_aux);
-            $.ajax({
-                url: 'libro/modificarMarcLibro',
-                type: 'POST',
-                data: {listas:jsonString,isbn:data},// Adjuntar los campos del formulario enviado.
-                success: function(data)
-                {
-                  alert(data);
 
-                }
-          });
-            ///
+              sendSecondAjaxRequest();
 
-              alert(data);
-              return false;
           }
-    });
-
-    return false;
+      });
   }
 
-    function removeBufferAction()
-    {
-      console.log("testing: remove action and add new");
-      $("form#for_hide").attr('action','catalogacion/nueva');
+  function sendSecondAjaxRequest()
+  {
+    alert(" 2 Parametro de segundo ajax ->"+isbnGlobal+" json ->"+json);
+    $.ajax({
+        url: 'libro/modificarMarcLibro',
+        type: 'POST',
+        data: {listas:json,isbn:isbnGlobal},// Adjuntar los campos del formulario enviado.
+        success: function(response)
+        {
 
-    }
+            alert("3 "+response);
+        },
+        error : function(xhr, status) {
+            alert('Disculpe, existió un problema '+ status );
+        },
+        complete:function(xhr,status)
+        {
 
-    function viewHide(id){
+            alert("done!" + xhr +" status " + status);
+            return false;
+
+        },
+        statusCode: {
+            404: function() {
+              alert( "page not found" );
+            },
+            500: function() {
+              alert( "Error del servidor" );
+            }
+        }
+  });
+
+  }
+
+
+//******************************************************************************
+    function muestraTabla(id){
         var targetId, srcElement, targeElement;
         var targeElement = document.getElementById(id);
         if(obj!=null)
@@ -121,6 +254,7 @@
         targeElement.style.display = "";
     }
 
+//*******************************************************************************
       function numerosDeAdquisicion(numero)
       {
         var clic = "eliminar('class"+numero+"','"+numero+"')";
@@ -133,7 +267,6 @@
 
       function eliminar(id,numero)
       {
-
         console.log(id);
         $("."+id).remove();
         var index = numeros_array.indexOf(numero);
@@ -143,6 +276,7 @@
         show();
 
       }
+
 
     function show()
     {
@@ -168,6 +302,12 @@
 
     function verNumeroDeAdquisicion()
     {
+      if($("#numero_adqui").val() != '')
+      {
+
+
+
+      }
       console.log("testing 1,2,3..");
       $("#verAdqui").empty();
       for(var i=0;i<numeros_array.length;i++)
@@ -175,18 +315,22 @@
         console.log(">>>>testing-> "+numeros_array[i]);
         var clic = "pintarNoAdqui('"+numeros_array[i]+"')";
         if(numeros_array[i]!=undefined)
-          $("#verAdqui").append("<button id=a"+numeros_array[i]+" class='btn btn-info btn-sm' onclick="+clic+"><span id=s"+numeros_array[i]+" class='glyphicon glyphicon-plus'>"+numeros_array[i]+"</span></button></br></br>");
+          $("#verAdqui").append("<button id=a"+numeros_array[i]+" class='btn btn-info btn-sm' onclick="+clic+"><span id=s"+numeros_array[i]+" class='glyphicon glyphicon-plus'>"+numeros_array[i]+"</span></button><input type='hidden' id=hidden"+numeros_array[i]+" value="+numeros_array[i]+"></br></br>");
       }
 
     }
 
     function pintarNoAdqui(numero)
     {
+        aux_para_eliminar_de_arreglo = 0;
         console.log(numero);
+        aux_para_eliminar_de_arreglo = $("#hidden"+numero);
         $("input[name='numero_adqui']" ).val('');
         $("input[name='numero_adqui']" ).val(numero);
     /*cuando se guarde el numero de adqui desbloquearlo*/
     }
+
+
 
     function removeBuffer()
     {
@@ -207,30 +351,6 @@
 
     }
 
-    //activar datos unicos desde nueva ficha
-
-
-    /*function nuevaFichaUnicos(){
-      var isbn = $('#isbn').val();
-      var autor_personal = $('#autor_personal').val();
-      var asiento_por_titulo = $('#asiento_por_titulo').val();
-      var titulo_uniforme = $('#titulo_uniforme').val();
-      var variante_titulo = $('#variante_titulo').val();
-      var editorial = $('#editorial').val();
-
-      if(
-        isbn !='' &&
-        autor_personal !='' &&
-        asiento_por_titulo !='' &&
-        titulo_uniforme !='' &&
-        variante_titulo !='' &&
-        editorial !=''
-      ){
-        $('#unicos_modal').modal('show');
-      }
-
-    }
-    */
     </script> <!-- fin definiciones de javascript-->
 
   </head>
@@ -249,6 +369,8 @@
             </ul>
             <div class="tab-content">
 
+
+
                     <div id="nuevo_registro" class="tab-pane fade in active">
 
                     <div class="form-group">
@@ -257,7 +379,7 @@
                         <div class="panel-body">
                           <div class="container">
                               <div class="row">
-                                  <center><div class="col-xs-12 col-sm-3 col-md-3"> <input style="max-width:90%;"type="text" id="numero_adqui" class="form-control" placeholder="Número(s) de adquisicion(s)"> </div></center>
+                                  <center><div class="col-xs-12 col-sm-3 col-md-3"> <input style="max-width:90%;"type="text" id="numero_adqui" autofocus='autofocus' class="form-control" placeholder="Número(s) de adquisicion(s)"> </div></center>
                                   <center><div class="col-xs-12 col-sm-3 col-md-3"><button style="max-width:90%; " class="btn btn-success btn-block margin-bottom-lg" id="btnRegistro"><span class="glyphicon glyphicon-plus" aria-hidden="true">Agregar</span></button></div></center>
                                   <center>
                                     <div class="col-xs-12 col-sm-2 col-md-2">
@@ -288,34 +410,38 @@
 
 
                 <div id="en_base" class="tab-pane fade">
-        <!--        <button class="btn btn-primary">segunda vista</button> -->
 <!--******************* BUSQUEDA DE FILTRAR EN EL CAMPO DE TEXTO, HACER CONSULTA A LA BASE DE DATOS PARA VERIFICAR QUE EXISTA ***************************-->
 <!--1) La tabla aparecerá oculta
     2) Si la tabla no encuentra resultados que devuelva un mensaje que no se han encontrado resultados
     3) Al encontrar datos devuelve la tabla llena-->
-                <p id="textAut">Escriba parte de título o autor <input type="text" id="title"><br><br></p>
-                <center><div class="col-xs-12 col-sm-3 col-md-4"><button style="max-width:90%; " onclick="viewHide('example')" class="btn btn-primary btn-block margin-bottom-lg" id="btnBuscar"><span aria-hidden="true">Buscar</span></button></div></center>
-                <!-- <button class="btn btn-primary" id="btnBuscarTitulo" >Buscar</button> -->
+
+                <div class="tab-content">
+                    <div id="nuevaBusquedaAutor" class="tab-pane fade in active">
+                    <div class="form-group">
+                    </br>
+                      <div class="panel panel-info">
+                        <div class="panel-body">
+                          <div class="container">
+                              <div class="row">
+                                  <center><div class="col-xs-12 col-sm-3 col-md-3"> <input style="max-width:90%;"type="text" id="busquedaAutor" class="form-control" placeholder="Escriba parte del titulo o autor"> </div></center>
+                                  <center>
+                                    <div class="col-xs-12 col-sm-3 col-md-3">
+                                        <button style="max-width:90%;" class="btn btn-primary btn-block margin-bottom-lg" id="btnBuscar">
+                                        <span aria-hidden="true">Buscar</span>
+                                        </button>
+                                    </div>
+                                    </center>
+        </div>
+        </div>
+        </div>
+        </div>
+        </div>
+        </div>
+
                 <br><br>
                 <div class="table-responsive">
-                <table id="example" style="display:none" class="table">
-        <thead>
-            <tr>
-            <th>ISBN</th>
-            <th>Autor Personal</th>
-            <th>Asiento por titulo uniforme</th>
-            <th>Titulo uniforme</th>
-            <th>Edicion o mencion de edicion</th>
-            <th>Lugar de editorial</th>
-            <th>Volumen</th>
-            <th>Editorial</th>
-            </tr>
-        </thead>
-        <tbody>
-        </tbody>
-    </table>
-                </div>
-</div>
+                <table id="tablaDatosConsulta" style="display:none" class="display table"></table>
+                </div></div></div>
 <?php
 
     echo div_open('tab-pane fade','nueva_ficha');

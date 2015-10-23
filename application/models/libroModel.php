@@ -101,16 +101,14 @@ class libroModel extends CI_Model{
     return $toReturn;
   }
 
-  public function modificarEtiquetaMarcLibro($id,$listas)
+  public function modificarEtiquetaMarcLibro($idEtiquetaMarc,$numero_adqui)
   {
+    echo $idEtiquetaMarc." <--> ".$numero_adqui;
     $data = array(
-               'idEtiquetaMarc' => $id
+               'idEtiquetaMarc' => $idEtiquetaMarc
             );
-
-            $this->db->where('numero_adqui', $numero_adqui);
+            $this->db->where('numero_de_adquisicion', $numero_adqui);
             $this->db->update('libro', $data);
-
-
   }
 
 
