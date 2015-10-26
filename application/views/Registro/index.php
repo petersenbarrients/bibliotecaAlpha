@@ -102,18 +102,8 @@
 
        return false;
     });
-}); // fin cierre funcion para usar jquery
 
-
-    function removeBufferAction()
-    {
-      console.log("testing: remove action and add new");
-      $("form#for_hide").attr('action','catalogacion/nueva');
-
-    }
-
-
- /*$("#btnBuscar").click(function(){
+$("#btnBuscar").click(function(){
 
             var url = "Catalogacion/recibirDatoTextField"; // El controller/action a dónde se realizará la petición.
             var valorId=document.getElementById("busquedaAutor").value;
@@ -128,9 +118,12 @@
                     console.log(response);                    
                     $("#tablaDatosConsulta").DataTable(            
             {
-                                data:response,
+                                data:[
+                                response
+                                ],
+                                //data:response,
                                 columns: [
-                                {title: "ISBN"},
+                                {title: "isbn"},
                                 {title: "Autor Personal"},
                                 {title: "Asiento por titulo uniforme"},
                                 {title: "Titulo uniforme"},
@@ -146,39 +139,54 @@
               });
 
          return false;
-      });*/
+      });
+//SEGUNDA TABLA ***LIBROS RELACIONADOS***
+$("#").click(function(){
 
-$("#btnBuscar").click(function(){
-
-            var url = "Catalogacion/recibirDatoTextField"; // El controller/action a dónde se realizará la petición.
-            var valorId=document.getElementById("busquedaAutor").value;
+            //var url = "Catalogacion/recibirDatoTextField"; // El controller/action a dónde se realizará la petición.
+            var valorId=document.getElementById("").value;
         
         //alert("Tengo: "+valorId);
-            $('#tablaDatosConsulta').DataTable( {
-        "processing": true,
-        "serverSide": true,
-        "ajax": {
-            "url": "Catalogacion/recibirDatoTextField",
-            "type": "POST", 
-            "data": {"datoRecibido": valorId}
-        },
-        "columns": [
-            {title: "ISBN"},
-            {title: "Autor Personal"},
-            {title: "Asiento por titulo uniforme"},
-            {title: "Titulo uniforme"},
-            {title: "Edicion o mencion de  edicion"},
-            {title: "Lugar de editorial"},
-            {title: "Volumen"},
-            {title: "Editorial"}
-        ]
-    } );
+            $.ajax({
+                url: url,
+                type: "POST",
+                data:{ datoRecibido: valorId},// Adjuntar los campos del formulario enviado.
+                success: function(response)
+                {
+                    console.log(response);                    
+                    $("#tablaLibrosRelacionados").DataTable(            
+            {
+                                data:[
+                                response
+                                ],
+                                //data:response,
+                                columns: [
+                                {title: "Numero de adquisicion"},
+                                {title: "Biblioteca"},
+                                {title: "Escuela"},
+                                {title: "Coleccion"},
+                                {title: "Ejemplar"},
+                                {title: "Disponible para prestamo"},
+                                {title: "Tipo de material"},
+                                {title: "Tomo"}
+                                ]
+                            }                            
+                        );
+                    muestraTabla("tablaDatosConsulta");
+                }
+              });
 
          return false;
       });
+}); // fin cierre funcion para usar jquery
 
 
-});
+    function removeBufferAction()
+    {
+      console.log("testing: remove action and add new");
+      $("form#for_hide").attr('action','catalogacion/nueva');
+
+    }
 //******************************************************************************
     function muestraTabla(id){
         var targetId, srcElement, targeElement;
@@ -380,6 +388,7 @@ $("#btnBuscar").click(function(){
                                         <button style="max-width:90%;" class="btn btn-primary btn-block margin-bottom-lg" id="btnBuscar">
                                         <span aria-hidden="true">Buscar</span>
                                         </button>
+
                                     </div>
                                     </center>                                  
         </div>
@@ -388,11 +397,60 @@ $("#btnBuscar").click(function(){
         </div>
         </div>
         </div>
-
+<!-- -->
                 <br><br>
+                <!--
+                <div class="container">
+            <div class="row" id="buttons">
+              <fieldset>              
+              <center><div class="col-xs-12 col-sm-3 col-md-6"><button onclick="" style="max-width:100%;float:center!important; " class="btn btn-primary btn-block margin-bottom-lg" id="btnRegistro">Ver ejemplares</button></div></center>
+            </fieldset>
+            </div>
+            </div> -->
                 <div class="table-responsive">
                 <table id="tablaDatosConsulta" style="display:none" class="display table"></table>
+                </div></div>
+
+<!-- ***************************************Segunda tabla*************************************** -->
+                <br><br>
+<!--Mostrar la segunda tabla en un modal -->
+<div class="container">
+    <div class="row">
+        
+    
+<div class="col-xs-12 col-sm-3 col-md-6">
+<center>
+        <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal">ver ejemplares</button>
+</center>
+        <!-- Modal -->
+        <div id="myModal" class="modal fade" role="dialog">
+            <div class="modal-dialog">
+                <!-- Modal content -->
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title">Modal Header</h4>
+                    </div>
+                    <div class="modal-body">
+<!--   *************************************** INICIO TABLA ********************************************* -->                    
+                        <div class="table-responsive">
+                            <table id="tablaLibrosRelacionados" style="" class="">LA TABLA</table>
+                        </div></div>
+<!--   *************************************** FIN TABLA ************************************************ -->                        
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    </div>
                 </div>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+<!--**************************************************************************************************************** -->        
+
+
+                
 <?php
 
     echo div_open('tab-pane fade','nueva_ficha');

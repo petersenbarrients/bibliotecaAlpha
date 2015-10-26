@@ -85,7 +85,7 @@ public function nueva(){
 echo $modal;
 }
 
-//recibir parametro tipo post, vaiable del text field
+//recibir parametro tipo post, variable del text field
 function recibirDatoTextField(){
   $dataText = $this->input->post('datoRecibido');
   //echo $dataText;
@@ -94,6 +94,5 @@ function recibirDatoTextField(){
   //echo $Consulta;
   //echo  var_dump($Consulta);
   echo json_encode($Consulta);
-
-
+}
 }

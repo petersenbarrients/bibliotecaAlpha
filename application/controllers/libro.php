@@ -42,7 +42,6 @@ class libro extends CI_Controller {
 						$this->load->model('libroModel');
 						$this->libroModel->crearModelo($numero_adqui,$biblioteca,$escuela,$coleccion,$numero_ejemplar,$se_presta,$material,$es_complementario,$id,$disponible,$numero_tomo);
 						$this->libroModel->nuevoLibro();
-
 	}
 
 	public function NuevoBaseFicha(){
@@ -69,13 +68,10 @@ class libro extends CI_Controller {
 		$this->load->model('CatalogacionModel');
 		$id =  $this->CatalogacionModel->select_id($isbn);
 
-
 		$this->load->model('libroModel');
 		$this->libroModel->crearModelo($numero_adqui,$biblioteca,$escuela,$coleccion,$numero_ejemplar,$se_presta,$material,$es_complementario,$id,$disponible,$numero_tomo);
 		$this->libroModel->nuevoLibro();
 
 		$this->load->view('Registro/index');
 	}
-
-
 }
