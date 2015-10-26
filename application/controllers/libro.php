@@ -149,15 +149,26 @@ class libro extends CI_Controller {
 		redirect('Registro/');
 	}
 
-	function modificarDatosEjemplares($id){
+	function eliminar($id){
 		/*Carga modelo en base al param Id del action
     para despues mostrarlo en la vista*/
     $arrayData = array();
-   $this->load->model('FichaModel');
+   $this->load->model('libroModel');
    /*retorna el contenido de bd en array assc*/
-   $model = $this->FichaModel->obtenerFichaPorId($id);
+   $model = $this->libroModel->obtenerLibroPorId($id);
    $arrayData = $model;
-   $data["model"] = $arrayData;
-	 $this->load->view('Fichas/Index',$data);
+
+   $data["id"] = $arrayData['id'];
+   $data['numero_adqui'] = $arrayData['numero_de_adquisicion'];
+   $model2 = $this->libroModel->obtenerTituloDelLibro($arrayData['idEtiquetaMarc']);
+
+   $data['titulo_de_libro'] = $model2['titulo_uniforme'];
+   $data['autor_personal'] = $model2['autor_personal'];
+   $data['volumen'] = $model2['volumen'];
+	 $this->load->view('Libros/index',$data);
 	}
+
+
+
+
 }

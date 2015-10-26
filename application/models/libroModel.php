@@ -111,14 +111,27 @@ class libroModel extends CI_Model{
             $this->db->update('libro', $data);
   }
 
-  function eliminarEjemplar($idEjemplar){    
-//se crea un arreglo donde se asigna id    
-    $data = array(
-      'id'=> $id
-      );
-    $this->db->where('id', $idEjemplar);
-    //return 
-    $this->db->delete('numero_de_adquisicion, biblioteca, escuela, idColeccion, ejemplar, disponible, tipo_de_material, tomo', $data);
+public function obtenerLibroPorId($id){
+  $this->db->select('id, numero_de_adquisicion, idEtiquetaMarc');
+    $this->db->from('libro');
+    $this->db->where('id', $id);
+    $query = $this->db->get();
+    return $query->result_array();
+}
+
+public function obtenerTituloDelLibro($id){
+  $this->db->select('titulo_uniforme, autor_personal, volumen');
+  $this->db->from('etiqueta_marc');
+  $this->db->where('id', $id);
+  $query = $this->db->get();
+  return $query->result_array();
+}
+
+
+public function eliminar($id,$data)
+  {
+    $this->db->where('id', $id);
+    $this->db->update('libro', $data); 
   }
 
 
