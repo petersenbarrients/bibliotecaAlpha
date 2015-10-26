@@ -1,7 +1,7 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class CatalogacionModel extends CI_Model{
+class FichaModel extends CI_Model{
 
   public function __construct(){
       parent::__construct();/*constructor de la clase padre Model*/
@@ -10,17 +10,35 @@ class CatalogacionModel extends CI_Model{
 
   public function obtenerFichaPorId($id)
   {
-    $this->db->select('title, content, date');
-    $this->db->from('mytable');
+    /*obtener isbn, autor,titulo uniforme, numero de ejemplares relacionados a esta ficha*/
+    $this->db->select('id,
+	                    isbn,
+	                    clasificacion_decimal_dewey,
+	                    autor_personal,
+	                    autor_cooporativo,
+	                    asiento_por_titulo_uniforme,
+	                    titulo_uniforme,
+	                    variante_de_titulo,
+	                    edicion_mencion_edicion,
+	                    lugar_editorial,
+	                    volumen,
+	                    notas_generales,
+	                    notas_de_contenido,
+	                    liga_a_recursos_electronicos,
+	                    fecha_publicacion,
+	                    editorial');
+    $this->db->from('etiqueta_marc');
     $this->db->where('id', $id);
+    $query = $this->db->get();
+    return $query->result_array();
 
 
   }
-
+/*eliminar la etiqueta_marc en base al id de param*/
   public function eliminarficha($id)
   {
 
-    
+    $this->db->delete('etiqueta_marc', array('id' => $id));
 
   }
 
