@@ -79,7 +79,7 @@ class CatalogacionModel extends CI_Model{
         return (int)$row->id;
     }
     else {
-      echo 'no hay registros';
+      echo 'no hay registros'." isbn".$isbn;
     }
 
   }

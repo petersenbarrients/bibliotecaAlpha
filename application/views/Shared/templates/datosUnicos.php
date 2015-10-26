@@ -8,7 +8,8 @@ $inputNo_Adqui = array(
       'class'       => 'form-control',
       'placeholder' =>'Número de adquisición',
       'required' =>'required',
-      'autofocus' =>'autofocus'
+      'autofocus' =>'autofocus',
+      'maxlength' => '6'
     );
 
     $input_submit = array(
@@ -19,6 +20,15 @@ $inputNo_Adqui = array(
           'class'       => 'form-control btn-primary glyphicon glyphicon-ok'
 
         );
+
+    $input_submit_unico = array(
+              'type'       => 'submit',
+              'id'          =>'btn_enviar',
+              'style'       => 'max-width:60%',
+              'value'       =>'Registrar ejemplar',
+              'class'       => 'form-control btn-primary glyphicon glyphicon-ok'
+
+            );
         $input_cancel = array(
               'type'       => 'button',
               'style'       => 'max-width:60%',
@@ -40,9 +50,9 @@ $input_Ejemplar = array(
         );
 
 $input_Tomo = array(
-                  'name'          => 'numero_tomo',
+                  'name'        => 'numero_tomo',
                   'type'        =>'number',
-                  'min'        =>'1',
+                  'min'         =>'1',
                   'step'        =>'1',
                   'maxlength'   => '7',
                   'size'        => '50',
@@ -84,9 +94,11 @@ echo form_open('libro/nuevoLibro', $atributos_form)."</br>";
 
 
 ?>
-  
 <?php
-echo form_submit($input_submit);
+/*
+Bloquear boton continar hasta que que el arreglo de adquiciiones quede en 0
+*/
+echo form_submit($input_submit_unico)."</br>";
 echo form_button($input_cancel,"Cancelar Recepción");
 echo form_close();
   ?>
