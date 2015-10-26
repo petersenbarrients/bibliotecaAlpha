@@ -119,7 +119,7 @@ public function nuevaRecepcion()
     $fecha_publicacion,
     $editorial
   );
-echo $isbn;
+  echo $isbn;
 }
 
 //recibir parametro tipo post, vaiable del text field
