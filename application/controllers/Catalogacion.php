@@ -140,10 +140,10 @@ function recibirDatoTextField(){
 function eliminar(){
     $data = array(
       'eliminarEjemplar' => $this->libro_Model->eliminarEjemplar(3)
-      );    
-  }
-
-
+        );    
     }
+
+
   }
+}
 

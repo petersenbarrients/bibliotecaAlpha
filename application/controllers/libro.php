@@ -149,7 +149,15 @@ class libro extends CI_Controller {
 		redirect('Registro/');
 	}
 
-	function modificarDatosEjemplares(){
-		
+	function modificarDatosEjemplares($id){
+		/*Carga modelo en base al param Id del action
+    para despues mostrarlo en la vista*/
+    $arrayData = array();
+   $this->load->model('FichaModel');
+   /*retorna el contenido de bd en array assc*/
+   $model = $this->FichaModel->obtenerFichaPorId($id);
+   $arrayData = $model;
+   $data["model"] = $arrayData;
+	 $this->load->view('Fichas/Index',$data);
 	}
 }

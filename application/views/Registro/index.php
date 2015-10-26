@@ -59,7 +59,39 @@
 
          return false;
       });
+/* ***************************************************************************************** */
 
+   $("#btnEliminar").click(function(){
+
+            var url = "Catalogacion/recibirDatoTextField"; // El controller/action a dónde se realizará la petición.
+            var valorId=document.getElementById("busquedaAutor").value;
+
+        //alert("Tengo: "+valorId);
+            $('#tablaDatosConsulta').DataTable( {
+        "processing": true,
+        "serverSide": true,
+        "ajax": {
+            "url": "Catalogacion/recibirDatoTextField",
+            "type": "POST",
+            "data": {"datoRecibido": valorId}
+        },
+        "columns": [
+            {title: "ISBN"},
+            {title: "Autor Personal"},
+            {title: "Asiento por titulo uniforme"},
+            {title: "Titulo uniforme"},
+            {title: "Edicion o mencion de  edicion"},
+            {title: "Lugar de editorial"},
+            {title: "Volumen"},
+            {title: "Editorial"}
+        ]
+    } );
+
+         return false;
+      });
+ 
+
+/* ****************************************************************************************** */
 
       $('#numero_adqui').keyup(function() {
 
@@ -325,13 +357,16 @@ function eliminarValorDelArregloAdqui(numero)
 
 //******************************************* ELIMINAR UN EJEMPLAR *******************************************************
 
+
+/*
 function confirmarEliminacion(){
+VALIDACION PARA ELIMINAR UN EJEMPLAR
     if (confirm("¿Realmente desea eliminarlo?")){ 
         alert("El registro ha sido eliminado.") }
         else { 
         return false
-    }
-}
+    }    
+}*/
 
 //******************************************* FIN ELIMINAR UN EJEMPLAR *******************************************************
 
@@ -555,7 +590,7 @@ function confirmarEliminacion(){
 <center>
         <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal">ver ejemplares</button>
         <br> <br>        
-        <button type="button" class="btn btn-primary btn-block margin-bottom-lg" id="btnEliminar" onclick="confirmarEliminacion()">Eliminar Datos</button>
+        <button type="button" class="btn btn-primary btn-block margin-bottom-lg" id="btnEliminar">Eliminar Datos</button>
 </center>
         <!-- Modal -->
         <div id="myModal" class="modal fade" role="dialog">

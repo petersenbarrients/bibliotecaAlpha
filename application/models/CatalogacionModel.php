@@ -84,4 +84,13 @@ class CatalogacionModel extends CI_Model{
 
   }
 
+  public function eliminarEjemplar($id){
+    $data = array(
+      'id' => $id
+      );
+    echo "Data tiene esto: ".$data;
+    $this->db->where('id', $id);
+    $this->db->delete('libro', $data);
+  }
+
 }
