@@ -88,11 +88,6 @@
       $("#btn_enviar_modal").click(function(){
          //  var url = "libro/nuevoLibro"; El controller/action a dónde se realizará la petición.
            numeros_array_aux = numeros_array;
-
-
-
-
-
         return false; // Evitar ejecutar el submit del formulario.
      });
 
@@ -244,14 +239,15 @@ $("#btnBuscar").click(function(){
 
          return false;
       });
-}); // fin cierre funcion para usar jquery
 
+
+}); // fin cierre funcion para usar jquery
 
     function removeBufferAction()
     {
       console.log("testing: remove action and add new");
       $("form#for_hide").attr('action','catalogacion/nueva');
-
+      
     }
 });
 
@@ -325,8 +321,21 @@ function eliminarValorDelArregloAdqui(numero)
   }
 
 
->>>>>>> origin/master
 //******************************************************************************
+
+//******************************************* ELIMINAR UN EJEMPLAR *******************************************************
+
+function confirmarEliminacion(){
+    if (confirm("¿Realmente desea eliminarlo?")){ 
+        alert("El registro ha sido eliminado.") }
+        else { 
+        return false
+    }
+}
+
+//******************************************* FIN ELIMINAR UN EJEMPLAR *******************************************************
+
+
     function muestraTabla(id){
         var targetId, srcElement, targeElement;
         var targeElement = document.getElementById(id);
@@ -490,7 +499,7 @@ function eliminarValorDelArregloAdqui(numero)
             </div>
           </div>
 
-
+<!--********************************************************* PARTE DE CESAR *****************************************************************-->
                 <div id="en_base" class="tab-pane fade">
 <!--******************* BUSQUEDA DE FILTRAR EN EL CAMPO DE TEXTO, HACER CONSULTA A LA BASE DE DATOS PARA VERIFICAR QUE EXISTA ***************************-->
 <!--1) La tabla aparecerá oculta
@@ -545,6 +554,8 @@ function eliminarValorDelArregloAdqui(numero)
 <div class="col-xs-12 col-sm-3 col-md-6">
 <center>
         <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal">ver ejemplares</button>
+        <br> <br>        
+        <button type="button" class="btn btn-primary btn-block margin-bottom-lg" id="btnEliminar" onclick="confirmarEliminacion()">Eliminar Datos</button>
 </center>
         <!-- Modal -->
         <div id="myModal" class="modal fade" role="dialog">

@@ -148,4 +148,8 @@ class libro extends CI_Controller {
 
 		redirect('Registro/');
 	}
+
+	function modificarDatosEjemplares(){
+		
+	}
 }

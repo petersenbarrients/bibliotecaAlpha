@@ -111,5 +111,15 @@ class libroModel extends CI_Model{
             $this->db->update('libro', $data);
   }
 
+  function eliminarEjemplar($idEjemplar){    
+//se crea un arreglo donde se asigna id    
+    $data = array(
+      'id'=> $id
+      );
+    $this->db->where('id', $idEjemplar);
+    //return 
+    $this->db->delete('numero_de_adquisicion, biblioteca, escuela, idColeccion, ejemplar, disponible, tipo_de_material, tomo', $data);
+  }
+
 
 }

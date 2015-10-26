@@ -126,7 +126,6 @@ echo $isbn;
 }
 
 //recibir parametro tipo post, vaiable del text field
->>>>>>> origin/master
 function recibirDatoTextField(){
   $dataText = $this->input->post('datoRecibido');
   //echo $dataText;
@@ -135,8 +134,16 @@ function recibirDatoTextField(){
   //echo $Consulta;
   //echo  var_dump($Consulta);
   echo json_encode($Consulta);
-  } 
-}
+      } 
 
-}
+
+function eliminar(){
+    $data = array(
+      'eliminarEjemplar' => $this->libro_Model->eliminarEjemplar(3)
+      );    
+  }
+
+
+    }
+  }
 
