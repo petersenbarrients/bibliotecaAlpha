@@ -115,8 +115,6 @@ class libro extends CI_Controller {
 
 		echo "isbn -> ".$isbn."--- listas -> ".$listas." marc-> ".$idEtiquetaMarc;
 
-
-
 	}
 
 
@@ -144,7 +142,6 @@ class libro extends CI_Controller {
 		$this->load->model('CatalogacionModel');
 		$id =  $this->CatalogacionModel->select_id($isbn);
 
-
 		$this->load->model('libroModel');
 		$this->libroModel->crearModelo($numero_adqui,$biblioteca,$escuela,$coleccion,$numero_ejemplar,$se_presta,$material,$es_complementario,$id,$disponible,$numero_tomo);
 		$this->libroModel->nuevoLibro();
@@ -152,5 +149,7 @@ class libro extends CI_Controller {
 		redirect('Registro/');
 	}
 
-
+	function modificarDatosEjemplares(){
+		
+	}
 }

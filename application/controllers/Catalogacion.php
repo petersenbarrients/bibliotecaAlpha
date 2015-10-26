@@ -82,6 +82,9 @@ public function nueva(){
 echo $modal;
 }
 
+
+//recibir parametro tipo post, variable del text field
+
 public function nuevaRecepcion()
 {
 
@@ -131,8 +134,16 @@ function recibirDatoTextField(){
   //echo $Consulta;
   //echo  var_dump($Consulta);
   echo json_encode($Consulta);
+      } 
 
 
-}
+function eliminar(){
+    $data = array(
+      'eliminarEjemplar' => $this->libro_Model->eliminarEjemplar(3)
+      );    
+  }
 
-}
+
+    }
+  }
+

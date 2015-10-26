@@ -54,7 +54,7 @@ class CatalogacionModel extends CI_Model{
     $this->db->like('autor_personal', $cadena);
     $this->db->or_like('titulo_uniforme', $cadena);
     $arregloPadre = array();
-    $query = $this->db->get('etiqueta_marc');
+    $query = $this->db->get('etiqueta_marc');    
     //$query->result();
 
     $toReturn  = array();
@@ -65,6 +65,7 @@ class CatalogacionModel extends CI_Model{
     }
     $query->free_result();
     return $arregloPadre;
+    echo "Query: ".$query;
 
   }
 
