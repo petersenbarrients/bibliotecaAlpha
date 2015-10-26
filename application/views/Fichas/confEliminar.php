@@ -1,6 +1,18 @@
 <?php
 echo "<!DOCTYPE html>";
 $this->load->view('/Shared/Partial/head');
+?>
+
+  <script type="text/javascript">
+        $(document).ready(function() {
+
+        $( ".form-control" ).prop( "disabled", true );
+
+        });
+  </script>
+
+
+<?php
 echo "<body>";
 $this->load->view('/Shared/Partial/body');
 $attLabel = array(
@@ -8,7 +20,7 @@ $attLabel = array(
 );
   $attributes = array('id'=>'modificarFicha','class'=>'form-horizontal col-xs-6 col-sm-6 col-md-6 col-xl-6','role' => 'form');
 echo div_open('container','');
-  echo form_open('Ficha/actionModificar',$attributes);
+  echo form_open('Ficha/ActionEliminar',$attributes);
  foreach ($model as $key)
  {
       $data = array(
@@ -232,13 +244,12 @@ echo div_open('form-group','');
 echo div_close();
 
 $data = array(
-  'id' => 'submi',
   'type'       => 'submit',
-  'class' => 'form-control btn-primary',
+  'class' => 'btn btn-warning',
   'value' => 'Registrar',
 
 );
-echo form_submit($data,"Registrar");
+echo form_button($data,"Eliminar ficha");
  }
       echo form_close();
   echo div_close(); //close container

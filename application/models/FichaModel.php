@@ -34,6 +34,14 @@ class FichaModel extends CI_Model{
 
 
   }
+
+  public function modificar($id,$data)
+  {
+    $this->db->where('id', $id);
+    $this->db->update('etiqueta_marc', $data); 
+  }
+
+
 /*eliminar la etiqueta_marc en base al id de param*/
   public function eliminarficha($id)
   {
