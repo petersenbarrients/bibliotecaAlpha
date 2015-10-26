@@ -52,8 +52,6 @@ public function nueva(){
     $editorial
   );
 
-  /*recibe json con los numeros de adquisicion*/
-  $data = json_decode(stripslashes($this->input->post('listas')));
   $this->load->model('libroModel');
   $datos['colecciones'] =$this->libroModel->listarColecciones();
   $datos['escuelas'] =$this->libroModel->listarEscuelas();
