@@ -49,25 +49,28 @@ class CatalogacionModel extends CI_Model{
   }
 
   public function consultarDatos($cadena){
-    //$tableInfo = array ("isbn","autor_personal");
-    $this->db->select("isbn, autor_personal, asiento_por_titulo_uniforme, titulo_uniforme, edicion_mencion_edicion, lugar_editorial, volumen, editorial");
-    $this->db->like('autor_personal', $cadena);
-    $this->db->or_like('titulo_uniforme', $cadena);
-    $arregloPadre = array();
-    $query = $this->db->get('etiqueta_marc');    
-    //$query->result();
 
-    $toReturn  = array();
-    foreach ($query->result() as $row) {
-      /*Escribe la consulta en un arreglo asociativo*/
-       // $toReturn[htmlspecialchars($row->id,ENT_QUOTES)] = htmlspecialchars($row->nombre,ENT_QUOTES);
-      array_push($arregloPadre, $row);
+      $this->db->select("id,isbn,autor_personal,titulo_uniforme,lugar_editorial");
+      $this->db->like('titulo_uniforme', $cadena);
+      $query = $this->db->get('etiqueta_marc');
+
+        $results= array();
+        foreach ($query->result_array() as $row){
+
+          $results[] = array(
+            'id'=>$row['id'],
+           'isbn'=> $row['isbn'],
+           'autor' => $row['autor_personal'],
+           'titulo' => $row['titulo_uniforme'],
+           'lugar' => $row['lugar_editorial']
+          );
+
+
+        }
+
+        return $results;
+
     }
-    $query->free_result();
-    return $arregloPadre;
-    echo "Query: ".$query;
-
-  }
 
   public function select_id($isbn){
 

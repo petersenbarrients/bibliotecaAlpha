@@ -38,7 +38,7 @@ class FichaModel extends CI_Model{
   public function modificar($id,$data)
   {
     $this->db->where('id', $id);
-    $this->db->update('etiqueta_marc', $data); 
+    $this->db->update('etiqueta_marc', $data);
   }
 
 
@@ -48,6 +48,15 @@ class FichaModel extends CI_Model{
 
     $this->db->delete('etiqueta_marc', array('id' => $id));
 
+  }
+
+  public function obtenerISBN($isbn)
+  {
+    $this->db->select("id,isbn,autor_personal,titulo_uniforme");
+    $this->db->from('etiqueta_marc');
+    $this->db->where('isbn', $isbn);
+    $query = $this->db->get();
+    return $query->result_array();
   }
 
 

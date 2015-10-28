@@ -91,4 +91,30 @@ class Ficha extends CI_Controller {
 
    }
 
+	public function obtenerISBN()
+	 {
+		 	$isbn = $this->input->post('isbn');
+			$this->load->model('FichaModel');
+			$retornoACliente = $this->FichaModel->obtenerISBN($isbn);
+			if($retornoACliente == null)
+			{
+					echo "FALSE";
+			}
+			else
+			{
+				$json = array();
+				foreach ($retornoACliente as $key) {
+
+						array_push($json,$key['id']);
+						array_push($json,$key['isbn']);
+						array_push($json,$key['autor_personal']);
+						array_push($json,$key['titulo_uniforme']);
+
+				}
+
+				echo json_encode($json);
+			}
+
+	 }
+
 }

@@ -149,25 +149,167 @@ class libro extends CI_Controller {
 		redirect('Registro/');
 	}
 
-	function eliminar($id){
+	function modificar($id){
 		/*Carga modelo en base al param Id del action
     para despues mostrarlo en la vista*/
-    $arrayData = array();
+   $arrayData = array();
+
+	 $arrayDatosDeFicha = array();
+	 $isbns = array();
    $this->load->model('libroModel');
    /*retorna el contenido de bd en array assc*/
-   $model = $this->libroModel->obtenerLibroPorId($id);
-   $arrayData = $model;
+   $arrayData = $this->libroModel->obtenerLibroPorId($id);
+	 /*
+	 $this->db->select('id,numero_de_adquisicion,biblioteca,escuela,idColeccion,idEtiquetaMarc,ejemplar,se_presta,tipo_de_material,es_complementario,tomo');
+	 $this->db->from('libro');
+	 */
 
-   $data["id"] = $arrayData['id'];
-   $data['numero_adqui'] = $arrayData['numero_de_adquisicion'];
-   $model2 = $this->libroModel->obtenerTituloDelLibro($arrayData['idEtiquetaMarc']);
+	 foreach ($arrayData as $key) {
+		 $data['id'] = $key["id"];
+     $data['numero_adqui'] = $key["numero_de_adquisicion"];
+  	 $data['biblioteca'] = $key["biblioteca"];
+  	 $data['escuela'] = $key["escuela"];
+  	 $data['coleccion'] = $key["idColeccion"];
+  	 $data['ejemplar'] = $key["ejemplar"];
+  	 $data['se_presta'] = $key["se_presta"];
+  	 $data['tipo_de_material'] = $key["tipo_de_material"];
+  	 $data['es_complementario'] = $key["es_complementario"];
+  	 $data['tomo'] = $key["tomo"];
+		 $data['adqui'] = $key["idEtiquetaMarc"];
+	 }
+	 /*Carga catalogos*/
+
+	 /*idEtiquetaMarc contiene en valor de idEtiquetaMarc de la tabla libro*/
+	 $idEtiquetaMarc = $data["adqui"];
+
+	 $this->load->model('libroModel');
+	 $data['colecciones'] =$this->libroModel->listarColecciones();
+	 $data['escuelas'] =$this->libroModel->listarEscuelas();
+	 $data['bibliotecas'] =$this->libroModel->listarBiblioteca();
+	 $data['tipos_material'] =$this->libroModel->listarMaterial();
+
+	 /*carga datos de las etiquetas marc para ofrecer opcion al usuario de su modificacion*/
+
+	 /*Se cargan los datos de la etiqueta marc
+	 	isbn,titulo_uniforme, autor_personal, volumen
+	 */
+	 $arrayDatosDeFicha = $this->libroModel->obtenerInformacionDeFicha($idEtiquetaMarc);
+	 $data['etiquetas'] = $arrayDatosDeFicha;
+
+	 /*
+	 	Cargar catalogos de fichas->isbns
+	 */
+
+
+	 $this->load->view('Libros/index',$data);
+  /** $model2 = $this->libroModel->obtenerTituloDelLibro($arrayData['idEtiquetaMarc']);
 
    $data['titulo_de_libro'] = $model2['titulo_uniforme'];
    $data['autor_personal'] = $model2['autor_personal'];
    $data['volumen'] = $model2['volumen'];
-	 $this->load->view('Libros/index',$data);
+	 $this->load->view('Libros/index',$data);*/
+
 	}
 
+	public function modificarLibroAction()
+	{
+
+		$disponible = 0;
+		$id = $this ->input->post('id');
+
+
+		$numero_adqui = $this ->input -> post('numero_de_adquisicion');
+		$numero_ejemplar = $this ->input ->post('ejemplar');
+		$numero_tomo = $this ->input ->post('tomo');
+		$biblioteca= $this ->input ->post('biblioteca');
+		$escuela = $this ->input ->post('escuela');
+		$coleccion= $this ->input ->post('coleccion');
+		$material= $this ->input ->post('tipo_de_material');
+		$se_presta = $this->input->post('myradio');
+		$id_marc = $this->input->post('marc');
+		$es_complementario = $this->input->post('myradio1');
+		$id_marc = $this->input->post('idEtiquetaMarc');
+		$marc = null;
+
+		if($numero_ejemplar!=1)
+		{
+			/*marcar como no disponible por que es el primer ejemplar*/
+			$disponible = 1;
+		}
+
+
+
+		$data = array('numero_de_adquisicion'=>$numero_adqui,
+									'biblioteca'=>$biblioteca,
+									'escuela'=>$escuela,
+									'idColeccion'=>$coleccion,
+									'ejemplar'=>$numero_ejemplar,
+									'se_presta'=>$se_presta,
+									'tipo_de_material'=>$material,
+									'es_complementario'=>$es_complementario,
+									'idEtiquetaMarc'=>$id_marc,
+									'disponible'=>$disponible,
+									'tomo'=>$numero_tomo
+	 								);
+
+		$this->load->model('libroModel');
+		$this->libroModel->modificarLibro($data,$id);
+
+
+	}
+
+	public function eliminar($id)
+	{
+
+		$arrayData = array();
+
+ 	 $arrayDatosDeFicha = array();
+ 	 $isbns = array();
+    $this->load->model('libroModel');
+    /*retorna el contenido de bd en array assc*/
+    $arrayData = $this->libroModel->obtenerLibroPorId($id);
+ 	 /*
+ 	 $this->db->select('id,numero_de_adquisicion,biblioteca,escuela,idColeccion,idEtiquetaMarc,ejemplar,se_presta,tipo_de_material,es_complementario,tomo');
+ 	 $this->db->from('libro');
+ 	 */
+
+ 	 foreach ($arrayData as $key) {
+ 		 $data['id'] = $key["id"];
+      $data['numero_adqui'] = $key["numero_de_adquisicion"];
+   	 $data['biblioteca'] = $key["biblioteca"];
+   	 $data['escuela'] = $key["escuela"];
+   	 $data['coleccion'] = $key["idColeccion"];
+		  $data['tipo_de_material'] = $key["tipo_de_material"];
+ 		 $data['adqui'] = $key["idEtiquetaMarc"];
+ 	 }
+
+	 $idEtiquetaMarc = $data["adqui"];
+
+	$this->load->model('libroModel');
+	$data['colecciones'] =$this->libroModel->listarColecciones();
+	$data['escuelas'] =$this->libroModel->listarEscuelas();
+	$data['bibliotecas'] =$this->libroModel->listarBiblioteca();
+	$data['tipos_material'] =$this->libroModel->listarMaterial();
+
+	/*carga datos de las etiquetas marc para ofrecer opcion al usuario de su modificacion*/
+
+	/*Se cargan los datos de la etiqueta marc
+	 isbn,titulo_uniforme, autor_personal, volumen
+	*/
+	$arrayDatosDeFicha = $this->libroModel->obtenerInformacionDeFicha($idEtiquetaMarc);
+	$data['etiquetas'] = $arrayDatosDeFicha;
+	 $this->load->view('Libros/confEliminar',$data);
+
+	}
+
+	public function eliminarLibroAction()
+	{
+
+		$id = $this->input->post('id');
+		$this->load->model('libroModel');
+		$this->libroModel->eliminarLibro($id);
+
+	}
 
 
 

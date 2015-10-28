@@ -3,6 +3,7 @@
   <?php $this->load->view('/Shared/Partial/head');?>
   <head>
     <script type="text/javascript">
+    var cache = "";
     var numeros_array = new Array();
     var numeros_array_aux = new Array();
     var aux_para_eliminar_de_arreglo = 0;
@@ -15,7 +16,10 @@
     show();
 
       $(document).ready(function() {
-
+          $("#componentes").hide();
+          $( "#uno" ).prop( "disabled", true );
+          $( "#dos" ).prop( "disabled", true );
+          $( "#tres" ).prop( "disabled", true );
 
         numeros_array = new Array();
 
@@ -52,46 +56,13 @@
 
                   }
 
-                //  $("#form input[name='numero_adqui']" ).val("");
+
 
                 }
               });
 
          return false;
       });
-/* ***************************************************************************************** */
-
-   $("#btnEliminar").click(function(){
-
-            var url = "Catalogacion/recibirDatoTextField"; // El controller/action a dónde se realizará la petición.
-            var valorId=document.getElementById("busquedaAutor").value;
-
-        //alert("Tengo: "+valorId);
-            $('#tablaDatosConsulta').DataTable( {
-        "processing": true,
-        "serverSide": true,
-        "ajax": {
-            "url": "Catalogacion/recibirDatoTextField",
-            "type": "POST",
-            "data": {"datoRecibido": valorId}
-        },
-        "columns": [
-            {title: "ISBN"},
-            {title: "Autor Personal"},
-            {title: "Asiento por titulo uniforme"},
-            {title: "Titulo uniforme"},
-            {title: "Edicion o mencion de  edicion"},
-            {title: "Lugar de editorial"},
-            {title: "Volumen"},
-            {title: "Editorial"}
-        ]
-    } );
-
-         return false;
-      });
- 
-
-/* ****************************************************************************************** */
 
       $('#numero_adqui').keyup(function() {
 
@@ -113,10 +84,7 @@
             alert('" ' + str + ' ".\n\nSolo numeros.'); return '';
           } ) );
         });
-  /*  parte de pedro  $("#form").submit(function(){
-=======
 
-        /*Registra etiquetas que estan sobre el modal de etiquetas marc via ajax.*/
       $("#btn_enviar_modal").click(function(){
          //  var url = "libro/nuevoLibro"; El controller/action a dónde se realizará la petición.
            numeros_array_aux = numeros_array;
@@ -140,80 +108,79 @@
        return false;
     });
 
-$("#btnBuscar").click(function(){
-
-            var url = "Catalogacion/recibirDatoTextField"; // El controller/action a dónde se realizará la petición.
-            var valorId=document.getElementById("busquedaAutor").value;
-        
-        //alert("Tengo: "+valorId);
-            $.ajax({
-                url: url,
-                type: "POST",
-                data:{ datoRecibido: valorId},// Adjuntar los campos del formulario enviado.
-                success: function(response)
-                {
-                    console.log(response);                    
-                    $("#tablaDatosConsulta").DataTable(            
-            {
-                                data:[
-                                response
-                                ],
-                                //data:response,
-                                columns: [
-                                {title: "isbn"},
-                                {title: "Autor Personal"},
-                                {title: "Asiento por titulo uniforme"},
-                                {title: "Titulo uniforme"},
-                                {title: "Edicion o mencion de  edicion"},
-                                {title: "Lugar de editorial"},
-                                {title: "Volumen"},
-                                {title: "Editorial"}
-                                ]
-                            }                            
-                        );
-                    muestraTabla("tablaDatosConsulta");
-                }
-              });
-
-         return false;
-      });
-//SEGUNDA TABLA ***LIBROS RELACIONADOS***
-$("#").click(function(){
-
-            //var url = "Catalogacion/recibirDatoTextField"; // El controller/action a dónde se realizará la petición.
-            var valorId=document.getElementById("").value;
-        
-        //alert("Tengo: "+valorId);
-            $.ajax({
-                url: url,
-                type: "POST",
-                data:{ datoRecibido: valorId},// Adjuntar los campos del formulario enviado.
-                success: function(response)
-                {
-                    console.log(response);                    
-                    $("#tablaLibrosRelacionados").DataTable(            
-            {
-                                data:[
-                                response
-                                ],
-                                //data:response,
-                                columns: [
-                                {title: "Numero de adquisicion"},
-                                {title: "Biblioteca"},
-                                {title: "Escuela"},
-                                {title: "Coleccion"},
-                                {title: "Ejemplar"},
-                                {title: "Disponible para prestamo"},
-                                {title: "Tipo de material"},
-                                {title: "Tomo"}
-                                ]
-                            }                            
-                        );
-                    muestraTabla("tablaDatosConsulta");
-                }
-              });
 
 
+    $("#btnBuscar").click(function(){
+
+                var url = "Catalogacion/recibirDatoTextField"; // El controller/action a dónde se realizará la petición.
+                var valorId=document.getElementById("busquedaAutor").value;
+                $("#componentes").show();
+
+          var tab =    $('#tablaDatosConsulta').DataTable( {
+
+                  "destroy": true,
+                  'idSrc':"id",
+                  "ajax": {
+                      "url": url,
+                      "type": "POST",
+                      "data": {"datoRecibido": valorId}
+                  },
+                     "columns": [
+
+                                 { "data": "isbn" },
+                                 { "data": "autor" },
+                                 { "data": "titulo" },
+                                 { "data": "lugar" }
+                     ],
+
+                     "language":{
+                        "sProcessing":     "Procesando...",
+                        "sLengthMenu":     "Mostrar _MENU_ registros",
+                        "sZeroRecords":    "No se encontraron resultados",
+                        "sEmptyTable":     "Ningún dato disponible en esta tabla",
+                        "sInfo":           "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
+                        "sInfoEmpty":      "Mostrando registros del 0 al 0 de un total de 0 registros",
+                        "sInfoFiltered":   "(filtrado de un total de _MAX_ registros)",
+                        "sInfoPostFix":    "",
+                        "sSearch":         "Buscar:",
+                        "sUrl":            "",
+                        "sInfoThousands":  ",",
+                        "sLoadingRecords": "Cargando...",
+                        "oPaginate": {
+                            "sFirst":    "Primero",
+                            "sLast":     "Último",
+                            "sNext":     "Siguiente",
+                            "sPrevious": "Anterior"
+                        },
+                        "oAria": {
+                            "sSortAscending":  ": Activar para ordenar la columna de manera ascendente",
+                            "sSortDescending": ": Activar para ordenar la columna de manera descendente"
+                        }
+                    },
+                    "initComplete": function () {
+                        var api = this.api();
+                        api.$('tr').prop("class","");
+                        api.$('tr').click( function () {
+                            $('tr').prop("class","");
+                             $(this).prop( "class", "danger" );
+                             $( "#uno" ).prop( "disabled", false );
+                             $( "#dos" ).prop( "disabled", false );
+                             $( "#tres" ).prop( "disabled", false );
+                             cache = tab.row( this ).data().id ;
+                             console.log(cache);
+
+                        });
+
+
+                    }
+
+        }
+
+      );
+
+            //muestraTabla('tablaDatosConsulta');
+            return false;
+          });
 
 
       // enviar datos de nueva_ficha
@@ -226,8 +193,6 @@ $("#").click(function(){
                data: $(this).serialize(),// Adjuntar los campos del formulario enviado.
                success: function(data)
                {
-
-
                    $("#add-here").html(data);
 
                    $("#unicos_modal").modal('show');
@@ -240,48 +205,19 @@ $("#").click(function(){
 
         return false; // Evitar ejecutar el submit del formulario.
 
+        });
+
 });
 
 
-$("#btnBuscar").click(function(){
-
-            var url = "Catalogacion/recibirDatoTextField"; // El controller/action a dónde se realizará la petición.
-            var valorId=document.getElementById("busquedaAutor").value;
-
-        //alert("Tengo: "+valorId);
-            $('#tablaDatosConsulta').DataTable( {
-        "processing": true,
-        "serverSide": true,
-        "ajax": {
-            "url": "Catalogacion/recibirDatoTextField",
-            "type": "POST",
-            "data": {"datoRecibido": valorId}
-        },
-        "columns": [
-            {title: "ISBN"},
-            {title: "Autor Personal"},
-            {title: "Asiento por titulo uniforme"},
-            {title: "Titulo uniforme"},
-            {title: "Edicion o mencion de  edicion"},
-            {title: "Lugar de editorial"},
-            {title: "Volumen"},
-            {title: "Editorial"}
-        ]
-    } );
-
-         return false;
-      });
-
-
-}); // fin cierre funcion para usar jquery
 
     function removeBufferAction()
     {
       console.log("testing: remove action and add new");
       $("form#for_hide").attr('action','catalogacion/nueva');
-      
+
     }
-});
+
 
 
 function eliminarValorDelArregloAdqui(numero)
@@ -353,24 +289,6 @@ function eliminarValorDelArregloAdqui(numero)
   }
 
 
-//******************************************************************************
-
-//******************************************* ELIMINAR UN EJEMPLAR *******************************************************
-
-
-/*
-function confirmarEliminacion(){
-VALIDACION PARA ELIMINAR UN EJEMPLAR
-    if (confirm("¿Realmente desea eliminarlo?")){ 
-        alert("El registro ha sido eliminado.") }
-        else { 
-        return false
-    }    
-}*/
-
-//******************************************* FIN ELIMINAR UN EJEMPLAR *******************************************************
-
-
     function muestraTabla(id){
         var targetId, srcElement, targeElement;
         var targeElement = document.getElementById(id);
@@ -380,7 +298,6 @@ VALIDACION PARA ELIMINAR UN EJEMPLAR
         targeElement.style.display = "";
     }
 
-//*******************************************************************************
       function numerosDeAdquisicion(numero)
       {
         var clic = "eliminar('class"+numero+"','"+numero+"')";
@@ -430,9 +347,6 @@ VALIDACION PARA ELIMINAR UN EJEMPLAR
     {
       if($("#numero_adqui").val() != '')
       {
-
-
-
       }
       console.log("testing 1,2,3..");
       $("#verAdqui").empty();
@@ -531,8 +445,8 @@ VALIDACION PARA ELIMINAR UN EJEMPLAR
               <center><div class="col-xs-12 col-sm-3 col-md-6"><button  onclick="inicio()" style="max-width:100%;float:center!important; " class="btn btn-danger fa fa-times" id="btnRegistro">Cancelar recepción</button></div></center>
             </fieldset>
             </div>
-            </div>
           </div>
+        </div>
 
 <!--********************************************************* PARTE DE CESAR *****************************************************************-->
                 <div id="en_base" class="tab-pane fade">
@@ -564,62 +478,40 @@ VALIDACION PARA ELIMINAR UN EJEMPLAR
         </div>
         </div>
         </div>
+      </div>
 <!-- -->
                 <br><br>
-                <!--
-                <div class="container">
-            <div class="row" id="buttons">
-              <fieldset>              
-              <center><div class="col-xs-12 col-sm-3 col-md-6"><button onclick="" style="max-width:100%;float:center!important; " class="btn btn-primary btn-block margin-bottom-lg" id="btnRegistro">Ver ejemplares</button></div></center>
-            </fieldset>
-            </div>
-            </div> -->
-                <div class="table-responsive">
-                <table id="tablaDatosConsulta" style="display:none" class="display table"></table>
+                <div class="table-responsive" id="componentes">
+
+
+                      <center><div class="btn-group">
+                          <button type="button" id="uno" onclick =  'alert(cache);'  class="btn btn-info btn-sm"><span class="glyphicon glyphicon-plus">Ver ejemplares</span></button>
+                          <button type="button" id="dos" onclick =  'alert(cache);' class="btn btn-warning btn-sm"><span class="glyphicon glyphicon-pencil">Modificar ficha</span></button>
+                          <button type="button" id="tres" onclick =  'alert(cache);'  class="btn btn-danger btn-sm"><span class="glyphicon glyphicon-remove">Eliminar ficha</span></button>
+                      </div></center>
+
+                  <table id="tablaDatosConsulta"  class="display table table-hover">
+
+                    <thead>
+                        <tr>
+                          <th>ISBN</th>
+                          <th>Autor Personal</th>
+                          <th>Titulo Uniforme</th>
+                          <th>Lugar Editorial</th>
+                        </tr>
+                    </thead>
+
+
+
+                  </table>
+
 
                 </div></div>
 
-<!-- ***************************************Segunda tabla*************************************** -->
-                <br><br>
-<!--Mostrar la segunda tabla en un modal -->
-<div class="container">
-    <div class="row">
-        
-    
-<div class="col-xs-12 col-sm-3 col-md-6">
-<center>
-        <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal">ver ejemplares</button>
-        <br> <br>        
-        <button type="button" class="btn btn-primary btn-block margin-bottom-lg" id="btnEliminar">Eliminar Datos</button>
-</center>
-        <!-- Modal -->
-        <div id="myModal" class="modal fade" role="dialog">
-            <div class="modal-dialog">
-                <!-- Modal content -->
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal">&times;</button>
-                        <h4 class="modal-title">Modal Header</h4>
-                    </div>
-                    <div class="modal-body">
-<!--   *************************************** INICIO TABLA ********************************************* -->                    
-                        <div class="table-responsive">
-                            <table id="tablaLibrosRelacionados" style="" class="">LA TABLA</table>
-                        </div></div>
-<!--   *************************************** FIN TABLA ************************************************ -->                        
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-</div>
-<!--**************************************************************************************************************** -->        
 
-                </div></div></div>
+                <br><br>
+
+
 
 <?php
 
@@ -628,13 +520,10 @@ VALIDACION PARA ELIMINAR UN EJEMPLAR
     echo div_close(); //close tab-pane fade
 
  ?>
-          </div>
-        </div>
-    </div>
-</div>
+          </div></div></div></div>
 
 
-</body
+</body>
 <footer>
 	<?php $this->load->view('/Shared/Partial/footer');?>
 </footer>

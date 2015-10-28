@@ -132,18 +132,19 @@ function recibirDatoTextField(){
   $this->load->model('CatalogacionModel');
   $Consulta =  $this->CatalogacionModel->consultarDatos($dataText);
   //echo $Consulta;
-  //echo  var_dump($Consulta);
-  echo json_encode($Consulta);
-      } 
+
+  if(is_null($Consulta)){
+
+    echo '{"data":[]}';
+  }
+  else {
+    $enco = json_encode($Consulta);
+    echo '{"data":'.$enco.'}';
+  }
 
 
-function eliminar(){
-    $data = array(
-      'eliminarEjemplar' => $this->libro_Model->eliminarEjemplar(3)
-        );    
-    }
+
+}
 
 
   }
-}
-
