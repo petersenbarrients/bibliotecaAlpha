@@ -18,7 +18,7 @@
                     <div class="navbar-collapse collapse" id="bs-example-navbar-collapse-1" style="height: 1px;">
                         <ul class="nav navbar-nav">
                             <li><a href="#">Catálogo de usuarios</a></li>
-                            <li><a href="#">Préstamos</a></li>
+                            <li><?php echo anchor('prestamo/', 'Préstamos')?></li>
                             <li><a href="#">Devoluciones</a></li>
     						<li><a href="#">Consultas</a></li>
                         </ul>
