@@ -1,15 +1,67 @@
 <?php
+
+?>
+
+
+<div class="alert alert-success alert-dismissable" id="alerta2">
+                            <strong>¡Registro Exitoso!</strong>
+                        </div>
+<script type="text/javascript" >
+  //ajax, guiarse de libros-index
+
+
+$( document ).ready(function() {
+          $("#alerta").hide();
+          $("#alerta2").hide();
+            $("#alerta6").hide();
+          $("#alerta3").show();
+
+
+           $("#formunicosmodal").submit(function(){
+
+                     $.ajax({
+                         url: $(this).attr("action") ,
+                         type: $(this).attr("method"),
+                         data: $(this).serialize(),// Adjuntar los campos del formulario enviado.
+                         success: function(data)
+                         {
+
+                             //limpiar campo num adquisicion, tipos numericos
+                             $("#alerta").show();
+                             $("#alerta").hide(7000);
+                             $("#alerta2").show();
+                                $("#alerta6").show();
+                             $("#alerta2").hide(7000);
+                             $("#alerta6").hide(7000);
+                             $("#toclear").val('');
+
+                         }
+                       });
+
+                  return false; // Evitar ejecutar el submit del formulario.
+
+                  });
+
+})
+</script>
+
+<?php
+/*
+Vistas auxiliares para cargar el modales en modulo de catalogacion y registro.
+*/
+
+
 $inputNo_Adqui = array(
       'name'          => 'numero_adqui',
       'value'       => '',
       'maxlength'   => '7',
       'size'        => '50',
       'style'       => 'max-width:60%',
+      'id'       => 'toclear',
       'class'       => 'form-control',
       'placeholder' =>'Número de adquisición',
       'required' =>'required',
-      'autofocus' =>'autofocus',
-      'maxlength' => '6'
+      'autofocus' =>'autofocus'
     );
 
     $input_submit = array(
@@ -20,15 +72,6 @@ $inputNo_Adqui = array(
           'class'       => 'form-control btn-primary glyphicon glyphicon-ok'
 
         );
-
-    $input_submit_unico = array(
-              'type'       => 'submit',
-              'id'          =>'btn_enviar',
-              'style'       => 'max-width:60%',
-              'value'       =>'Registrar ejemplar',
-              'class'       => 'form-control btn-primary glyphicon glyphicon-ok'
-
-            );
         $input_cancel = array(
               'type'       => 'button',
               'style'       => 'max-width:60%',
@@ -50,9 +93,9 @@ $input_Ejemplar = array(
         );
 
 $input_Tomo = array(
-                  'name'        => 'numero_tomo',
+                  'name'          => 'numero_tomo',
                   'type'        =>'number',
-                  'min'         =>'1',
+                  'min'        =>'1',
                   'step'        =>'1',
                   'maxlength'   => '7',
                   'size'        => '50',
@@ -61,8 +104,8 @@ $input_Tomo = array(
                   'placeholder' =>'Tomo',
                   'required' =>'required'
                 );
-$atributos_form = array('id' => 'form');
-echo form_open('libro/nuevoLibro', $atributos_form)."</br>";
+$atributos_form = array('id' => 'formunicosmodal');
+echo form_open('libro/NuevoEjemplarBaseFicha', $atributos_form)."</br>";
   echo form_label('Número de adquisición');
   echo form_input($inputNo_Adqui)."</br>";
   echo form_label('Selecciona la colección');
@@ -86,21 +129,21 @@ echo form_open('libro/nuevoLibro', $atributos_form)."</br>";
   ?>
   SI<input type="radio" name="myradio1" value="1" <?php echo  set_radio('Si', '1'); ?> />
   NO<input type="radio" name="myradio1" value="0" <?php echo  set_radio('No', '0',TRUE); ?> /></br>
+
+  <input type="hidden" id="etiqueta_marc" value="" name="etiqueta_marc"/>
   <?php
 
   echo form_label('Tomo').'</br>';
 
   echo form_input($input_Tomo)."</br>";
-
-
-
 ?>
-<?php
-/*
-Bloquear boton continar hasta que que el arreglo de adquiciiones quede en 0
-*/
-echo form_submit($input_submit_unico)."</br>";
 
-echo form_button($input_cancel,"Cancelar Recepción");
-echo form_close();
+<div class="alert alert-success alert-dismissable" id="alerta6">
+                            <strong>¡Registro Exitoso!</strong>
+                        </div>
+
+<?php
+  echo form_submit($input_submit);
+  echo form_button($input_cancel,"Cancelar Recepción");
+  echo form_close();
   ?>

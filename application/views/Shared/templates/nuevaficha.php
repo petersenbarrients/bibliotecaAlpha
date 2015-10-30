@@ -17,7 +17,7 @@
                 'class' => 'form-control',
                 'id' => 'isbn',
                 'name' => 'isbn',
-                'placeholder' => 'ISBN',
+                'placeholder' => 'ISBN*',
                 'required' => 'required'
               );
               echo form_input($data);

@@ -1,26 +1,31 @@
 <?php
-echo "<!DOCTYPE html>";
-$this->load->view('/Shared/Partial/head');
-
 
 ?>
-
   <script type="text/javascript">
         $(document).ready(function() {
-         var a = new Array();
+        $("#alerta_exito_mod").hide();
+        $("#alerta_exito_mod_padre").hide();
+        var a = new Array();
         $( "#biblioteca").val(<?php echo $biblioteca ?>);
         $( "#coleccion").val(<?php echo $coleccion ?>);
         $( "#escuela").val(<?php echo $escuela ?>);
         $( "#tipo_de_material").val(<?php echo $tipo_de_material ?>);
         $("#go_etiqueta").hide();
         $("#alerta").hide();
-
+        $("#alerta4").show();
+        var isbnCliente = document.getElementById('isbn_test').value;
+        var aux_erroneo_isbn = document.getElementById('isbn_test').value;
+        var aux_id_por_erroreo_isbn = document.getElementById('hidden_idEtiquetaMarc').value;
+        $("#alerta_modificar_isbn_no_existe").hide();
+          $("div#modificar_isbn").hide();
 
                $("input[name='cb']").click(function(){
                    	if($(this).val()=="SI")
                     {
-                        $('#sp').show();
-                         $("#isbn").prop("readonly","");
+
+                      $('#sp').show();
+                      $("div#modificar_isbn").show();
+                        $("input#isbn_test").focus();
                       $("#go_etiqueta").show();
                       $("#go").hide();
                       $("#alerta").show(100);
@@ -28,33 +33,64 @@ $this->load->view('/Shared/Partial/head');
 
                     }
                     else {
-                          $("#isbn").prop("readonly","true");
-                          $("#titulo_uniforme").prop("readonly","true");
-                          $("#autor_personal").prop("readonly","true");
+                          $("div#modificar_isbn").hide();
+                          $("#titulo_uniforme").prop('readonly', true);
+                          $("#autor_personal").prop('readonly', true);
                           $("#go_etiqueta").hide();
                           $("#go").show();
                           $("#alerta").hide(100);
 
                     }
                 })
+                $("#modificarLibro").submit(function(){
+
+                     $.ajax({
+                         url: $(this).attr("action") ,
+                         type: $(this).attr("method"),
+                         data: $(this).serialize(),// Adjuntar los campos del formulario enviado.
+                         success: function(data)
+                         {
+                             $("#alerta_exito_mod").show();
+
+                              var alerta_exito = $("#alerta_exito_mod").html();
+                              $("#modificar_libro_modal").empty();
+
+
+
+                         }
+                       });
+
+                  return false; // Evitar ejecutar el submit del formulario.
+
+                  });
+
 
         $("#go_etiqueta").click(function(){
             var isbnServer = "";
-            var isbnCliente = $("#isbn").val();
+            isbnCliente = document.getElementById('isbn_test').value;
+            console.log("["+isbnCliente+"]");
             $.ajax(
               {
                 url : '<?php echo site_url('Ficha/obtenerISBN'); ?>',
                 data : { isbn :isbnCliente },
                 type : 'POST',
                 success : function(response) {
-                    if(response != null)
+                    if(response != "FALSE")
                     {
                         isbnServer =  jQuery.parseJSON(response);
 
                     }
-                    if(response =="FALSE")
+                    else if(response =="FALSE")
                     {
-                      alert("no existe isbn ingresado");
+                      $("div#modificar_isbn").hide();
+                      $("#alerta_modificar_isbn_no_existe").show();
+                      $("#alerta_modificar_isbn_no_existe").hide(4000);
+                      $("#isbn_test").val(aux_erroneo_isbn);
+                      $("#hidden_idEtiquetaMarc").val(aux_id_por_erroreo_isbn);
+                      $("#go_etiqueta").hide();
+                      $("#go").show();
+                      $("#SI").prop("checked", false);
+
                       return false;
                     }
 
@@ -63,12 +99,14 @@ $this->load->view('/Shared/Partial/head');
                 {
                   if(isbnServer != null)
                   {
-
                     console.log(isbnServer);
-                    $("#isbn").val(isbnServer[1]);
-                    $("#titulo_uniforme").val(isbnServer[2]);
-                    $("#autor_personal").val(isbnServer[3]);
+                    $("#isbn_test").val(isbnServer[1]);
+                    $("input#titulo_uniforme").val(isbnServer[2]);
+                    $("input#autor_personal").val(isbnServer[3]);
                     $("#idEtiquetaMarc").val(isbnServer[0]);
+                    $("#go_etiqueta").hide();
+                    $("#go").show();
+                    $("#SI").prop("checked", false);
                   }
 
 
@@ -84,8 +122,7 @@ $this->load->view('/Shared/Partial/head');
 
 <?php
 
-echo "<body>";
-$this->load->view('/Shared/Partial/body');
+
 $attLabel = array(
     'class' => 'control-label col-sm-2',
     'style' =>'font-size:11px;'
@@ -97,16 +134,13 @@ echo div_open('container','');
 
       $data = array(
      'type'  => 'hidden',
+     'id'=>'hidden_id',
      'name'  => 'id',
      'value' => $id);
       echo form_input($data);
 
-      $data = array(
-     'type'  => 'hidden',
-     'id' =>'idEtiquetaMarc',
-     'name'  => 'idEtiquetaMarc',
-     'value' => '');
-      echo form_input($data);
+
+
 
       $data = array(
         'type'  => 'text',
@@ -179,7 +213,8 @@ echo div_open('form-group','');
         echo div_close();
 echo div_close();
 
-
+$att_R1 = array('id' => '_seleNO', 'name'=>'myradio','checked'=>true,'value'=>'1');
+$att_R2 = array('id' =>'_seleSI', 'name'=>'myradio','checked'=>false,'value'=>'0');
 $data = array(
     'type'  => 'text',
     'name'  => 'se_presta',
@@ -191,15 +226,15 @@ echo div_open('form-group','');
         echo div_open('col-sm-10','');
         if($se_presta == 0)
         {
-        echo "SI   ". form_radio('myradio', '1', FALSE);
-        echo "NO   ".  form_radio('myradio', '0', TRUE);
+        echo "SI   ". form_radio($att_R1);
+        echo "NO   ".  form_radio($att_R2);
 
         }
         else
         {
 
-          echo "SI   ".  form_radio('myradio', '1', true);
-          echo "NO   ". form_radio('myradio', '0', false);
+          echo "SI   ".  form_radio($att_R2);
+          echo "NO   ". form_radio($att_R1);
         }
 
         echo div_close();
@@ -275,14 +310,18 @@ echo div_close();
 
      <div class="panel panel-danger" id="panel">
         <div class="panel-heading">Cambiar la etiqueta del ejemplar</div>
-      <center>  <div class="panel-body" id="panel" style="font-size:10px;">
+      <center>  <div class="panel-body" id="panel" style="font-size:11px;">
           <?php echo "SI   ". form_radio('cb', 'SI', FALSE);
           echo "NO   ".  form_radio('cb', 'NO', TRUE); ?>
         </div></center>
         <div class="alert alert-warning alert-dismissable" id="alerta">
           <strong>¡Cuidado!</strong> Es muy importante que leas este mensaje de alerta.
-          Si cambias la etiqueta del libro, deberas tener a tu alcanze el numero de adquisicion del nuevo ejemplar, para que este libro
+          Si cambias la etiqueta del libro, deberas tener a tu alcanze el <strong>ISBN</strong> del etiqueta marc, para que este libro
           sea agregado al mismo. Asegurese de escribirlo correctamente.
+          Si el <strong>ISBN</strong> es incorrecto, se conservara el actual.
+        </div>
+        <div class="alert alert-danger" id="alerta_modificar_isbn_no_existe">
+          <strong>No existe el ISBN dado</br>Se conservará el actual</strong>
         </div>
     </div>
 
@@ -293,15 +332,30 @@ echo div_close();
         foreach ($etiquetas as $key)
         {
           $data = array(
+         'type'  => 'hidden',
+         'id' =>'hidden_idEtiquetaMarc',
+         'name'  => 'idEtiquetaMarc',
+         'value' => $key['id']);
+          echo form_input($data);
+          ?>
+              <script type="text/javascript">
+                aux_id_por_erroreo_isbn = '<?php echo $key['id']; ?>'
+              </script>
+          <?php
+
+          $data = array(
               'type'  => 'text',
-              'id'    => 'isbn',
+              'id'    => 'isbn_test',
+              'name'    => 'isbn',
               'value' => $key['isbn'],
               'style' => 'max-width:60%;max-heigth:10%;',
-              'readonly'=>'readonly',
-              'class' => ' des form-control');
-            echo "<h3><span class='label label-info'>ISBN</span></h3>".form_input($data)."</br>";
-
-
+              'class' => 'des form-control');
+              ?>
+                  <script type="text/javascript">
+                    aux_erroneo_isbn = '<?php echo $key['isbn']; ?>'
+                  </script>
+              <?php
+            echo "<div id='modificar_isbn'><h3><span class='label label-info'>ISBN</span></h3>".form_input($data)."</div></br>";
               $data = array(
                   'type'  => 'text',
                   'id'    => 'titulo_uniforme',
@@ -356,13 +410,9 @@ $data = array(
 echo form_button($data,"Guardar Cambios");
       echo form_close();//cierre de formulario
   echo div_close(); //close container
-echo "</body>";
+
 ?>
 
-<footer>
-<?php $this->load->view('/Shared/Partial/footer');?>
-</footer>
-
 <?php
-echo "</html>";
+
 ?>

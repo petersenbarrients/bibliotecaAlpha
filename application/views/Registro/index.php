@@ -4,6 +4,7 @@
   <head>
     <script type="text/javascript">
     var cache = "";
+    var GETmodal = "";
     var numeros_array = new Array();
     var numeros_array_aux = new Array();
     var aux_para_eliminar_de_arreglo = 0;
@@ -11,11 +12,23 @@
     var isbnGlobal = 0;
     var contador_caractes_adqui = 0;
     var caracteres = 0;
-      var obj = null;
-      var json = null;
+    var obj = null;
+    var json = null;
     show();
 
       $(document).ready(function() {
+        contador_caractes_adqui = 0;
+           $("#alert-adqui").hide();
+             $("#alert_exitoA").hide();
+             $("#alert_exitoB").hide();
+             $("#alert_exito_fichaA").hide();
+             $("#alert_exito_fichaB").hide();
+
+            $("#ejem").hide();
+            $("#molibro").prop("disabled",true);
+            $("#elibro").prop("disabled",true);
+
+
           $("#componentes").hide();
           $( "#uno" ).prop( "disabled", true );
           $( "#dos" ).prop( "disabled", true );
@@ -25,7 +38,13 @@
 
         show();
         $( "#btnRegistro" ).click(function() {
+            if($("#numero_adqui").val() == '')
+            {
 
+                $("#alert-adqui").show();
+                $("#alert-adqui").hide(6000);
+                return false;
+            }
             var numero_de_adquisicion = $("#numero_adqui").val();
             numerosDeAdquisicion(numero_de_adquisicion);
             $("#numero_adqui").val("");
@@ -43,21 +62,30 @@
                 success: function(data)
                 {
                   /*El arreglo de adquiciones debe estar vacio para poder mostrar el modal de marcs*/
-                  alert("Ejemplar" + aux_para_eliminar_de_arreglo+ " registrado!");
+                  var auxid = $("#form input[name='numero_adqui']").val();
+
+                  alert("Ejemplar" + auxid+ " registrado!");
+                  $("#a"+auxid).prop("disabled","true");
+                  $("#form input[name='numero_adqui']").val('');
+                  $("#alert_exitoA").show();
+                  $("#alert_exitoB").show();
+                  $("#alert_exitoA").hide(4000);
+                  $("#alert_exitoB").hide(4000);
                   if(tam < 1)
                   {
 
                     $("#simular_click").click();
                     $("#myModal").remove();
                     console.log(data);
+                    $("#add-here").empty();
                     $("#add-here").html(data);
-                    $("#nuevaficha").modal('show');
+                  //  $("#nuevaficha").modal('show');
+                    $("#nuevaficha").modal();
+                    $("#nuevaficha").modal({ show: true });
+                    console.log("<<<<<<<<<<<<<<<modal>>>>>>>>>>>>>>>><");
+                    console.log(GETmodal);
                     verNumeroDeAdquisicion();
-
                   }
-
-
-
                 }
               });
 
@@ -71,17 +99,23 @@
           console.log(contador_caractes_adqui);
           if(contador_caractes_adqui > 6)
           {
-            alert("solo 6 numeros");
+            contador_caractes_adqui = 0;
             $("#numero_adqui").val('');
             contador_caractes_adqui = 0;
+            $("#alert-adqui").show();
+            $("#alert-adqui").hide(6000);
+              contador_caractes_adqui = 0;
+
             return '';
 
           }
           $th.val( $th.val().replace(/[^0-9]/g, function(str)
           {
 
-            contador_caractes_adqui = contador_caractes_adqui -1;
-            alert('" ' + str + ' ".\n\nSolo numeros.'); return '';
+            contador_caractes_adqui = 0;
+            $("#numero_adqui").val('');
+            $("#alert-adqui").show();
+            $("#alert-adqui").hide(6000); return '';
           } ) );
         });
 
@@ -236,12 +270,11 @@ function eliminarValorDelArregloAdqui(numero)
           type: 'POST',
           data: $("#formModal").serialize(),// Adjuntar los campos del formulario enviado.
           success:function(response){
+            //  alert(response);
               isbnGlobal = response;
               numeros_array_aux = numeros_array;
 
               json = JSON.stringify(numeros_array_aux);
-
-              alert(" 1 respuesta del servidor ->"+isbnGlobal +"-- variable del cliente->"+ json);
 
             //  sendSecondAjaxRequest(response,jsonString);
           },
@@ -256,7 +289,7 @@ function eliminarValorDelArregloAdqui(numero)
 
   function sendSecondAjaxRequest()
   {
-    alert(" 2 Parametro de segundo ajax ->"+isbnGlobal+" json ->"+json);
+    alert("Registro en proceso...");
     $.ajax({
         url: 'libro/modificarMarcLibro',
         type: 'POST',
@@ -267,12 +300,17 @@ function eliminarValorDelArregloAdqui(numero)
             alert("3 "+response);
         },
         error : function(xhr, status) {
-            alert('Disculpe, existió un problema '+ status );
+          console.log("warning!");
         },
         complete:function(xhr,status)
         {
 
-            alert("done!" + xhr +" status " + status);
+            $("#alert_exito_fichaA").show();
+            $("#alert_exito_fichaB").show();
+
+            $("#alert_exito_fichaA").hide(4000);
+            $("#alert_exito_fichaB").hide(4000);
+            alert("Registro completado!");
             return false;
 
         },
@@ -305,6 +343,7 @@ function eliminarValorDelArregloAdqui(numero)
         tam= tam + 1;
         var html = "<div class=class"+numero+"><span class='glyphicon glyphicon-arrow-right'></span><button class='btn btn-warning btn-sm' onclick="+clic+"><span class='glyphicon glyphicon-trash' aria-hidden='true'>"+numero+"</span></button></div></hr>"
         $("#registros").append(html);
+        contador_caractes_adqui = 0;
         console.log(numeros_array);
       }
 
@@ -345,9 +384,7 @@ function eliminarValorDelArregloAdqui(numero)
 
     function verNumeroDeAdquisicion()
     {
-      if($("#numero_adqui").val() != '')
-      {
-      }
+
       console.log("testing 1,2,3..");
       $("#verAdqui").empty();
       for(var i=0;i<numeros_array.length;i++)
@@ -391,12 +428,195 @@ function eliminarValorDelArregloAdqui(numero)
 
     }
 
+    /*funciones para modificar ficha, eliminar ficha*/
+
+    function obtenerModalFichas(id)
+    {
+      $.ajax({
+          url: "Ficha/modificar",
+          type: 'POST',
+          data:{id:id},
+          success:function(response){
+            $("#add-here").empty();
+              $("#add-here").html(response);
+              $("#ficha_modal_modificar").modal('show');
+
+
+          }
+      });
+
+    }
+
+    function eliminarLibromodal(id)
+    {
+      $.ajax({
+          url: "libro/eliminar",
+          type: 'POST',
+          data:{id:id},
+          success:function(response){
+            $("#add-here").empty();
+              $("#add-here").html(response);
+              $("#libro_modal_eliminar").modal('show');
+          }
+      });
+
+    }
+
+    function modificarLibromodal(id)
+    {
+      $.ajax({
+          url: "libro/modificar",
+          type: 'POST',
+          data:{id:id},
+          success:function(response){
+            $("#add-here").empty();
+              $("#add-here").html(response);
+              $("#libro_modal_modificar").modal('show');
+          }
+      });
+
+      }
+
+
+    function eliminarModalFicha(id)
+    {
+      $.ajax({
+          url: "Ficha/eliminar",
+          type: 'POST',
+          data:{id:id},
+          success:function(response){
+            $("#add-here").empty();
+              $("#add-here").html(response);
+              $("#ficha_modal_eliminar").modal('show');
+          }
+      });
+
+    }
+
+
+    /*funciones de pedro*/
+
+    function muestraTabla(id){
+
+         //$("#ejem").show();
+         var url = "libro/listarLibros"; // El controller/action a dónde se realizará la petición.
+         //var valorId=document.getElementById("busquedaAutor").value;
+         ocultaTabla();
+         $("#ejem").show();
+
+   var tab =    $('#ejemplares').DataTable( {
+
+           "destroy": true,
+           'idSrc':"id",
+           "ajax": {
+               "url": url,
+               "type": "POST",
+               "data": {"id": id}
+           },
+              "columns": [
+
+                          { "data": "adquisicion" },
+                          { "data": "ejemplar" }
+              ],
+
+              "language":{
+                 "sProcessing":     "Procesando...",
+                 "sLengthMenu":     "Mostrar _MENU_ registros",
+                 "sZeroRecords":    "No se encontraron resultados",
+                 "sEmptyTable":     "Ningún dato disponible en esta tabla",
+                 "sInfo":           "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
+                 "sInfoEmpty":      "Mostrando registros del 0 al 0 de un total de 0 registros",
+                 "sInfoFiltered":   "(filtrado de un total de _MAX_ registros)",
+                 "sInfoPostFix":    "",
+                 "sSearch":         "Buscar:",
+                 "sUrl":            "",
+                 "sInfoThousands":  ",",
+                 "sLoadingRecords": "Cargando...",
+                 "oPaginate": {
+                     "sFirst":    "Primero",
+                     "sLast":     "Último",
+                     "sNext":     "Siguiente",
+                     "sPrevious": "Anterior"
+                 },
+                 "oAria": {
+                     "sSortAscending":  ": Activar para ordenar la columna de manera ascendente",
+                     "sSortDescending": ": Activar para ordenar la columna de manera descendente"
+                 }
+             },
+             "initComplete": function () {
+                 var api = this.api();
+                 api.$('tr').prop("class","");
+                 api.$('tr').click( function () {
+                   api.$('tr').prop("class","");
+                   api.$(this).prop("class","active");
+                   $( "#nuovilibro" ).prop( "disabled", false );
+                   $( "#molibro" ).prop( "disabled", false );
+                   $( "#elibro" ).prop( "disabled", false );
+                      cache = tab.row( this ).data().id ;
+                      console.log(cache);
+
+                 });
+             }
+
+         });
+     }
+
+     function ocultaTabla(){
+       $("#panelAcervo").hide();
+       $("#componentes").hide();
+
+     }
+
+     /* funciones para mostrar ejemplares*/
+        function cambioEjemplares(id){
+
+          muestraTabla(id);
+        }
+
+        /*regresar a la tabla que muestra las fichas*/
+        function regresarAcervo(){
+
+          $("#ejem").hide();
+          $("#panelAcervo").show();
+          $("#componentes").show();
+          $("#btnBuscar").click();
+        }
+
+        /*agregar nuevo ejemplar a la ficha*/
+        function agregarNuevoEjemplarFicha(){
+
+          var urli = 'Catalogacion/nuevoEjemplar';
+           $.ajax({
+               url: urli ,
+               type: $(this).attr("method"),
+               data: $(this).serialize(),// Adjuntar los campos del formulario enviado.
+               success: function(data)
+               {
+                   $("#add-here").html(data);
+
+                   $("#unicos_modal_ejemplar").modal('show');
+                   console.log(cache);
+                   $("#etiqueta_marc").val(cache);
+
+
+               }
+             });
+
+             return false; // Evitar ejecutar el submit del formulario.
+        }
+
+
     </script> <!-- fin definiciones de javascript-->
 
   </head>
 
 <body>
-<?php $this->load->view('/Shared/Partial/body');?>
+<?php $this->load->view('/Shared/Partial/body');
+
+
+
+?>
+
 <div class="container" style="width:70% !important;">
     <div class="panel panel-primary" >
 
@@ -419,6 +639,7 @@ function eliminarValorDelArregloAdqui(numero)
                         <div class="panel-body">
                           <div class="container">
                               <div class="row">
+
                                   <center><div class="col-xs-12 col-sm-3 col-md-3"> <input style="max-width:90%;"type="text" id="numero_adqui" autofocus='autofocus' class="form-control" placeholder="Número(s) de adquisicion(s)"> </div></center>
                                   <center><div class="col-xs-12 col-sm-3 col-md-3"><button style="max-width:90%; " class="btn btn-success btn-block margin-bottom-lg" id="btnRegistro"><span class="glyphicon glyphicon-plus" aria-hidden="true">Agregar</span></button></div></center>
                                   <center>
@@ -433,10 +654,13 @@ function eliminarValorDelArregloAdqui(numero)
       </div>
     </div>
   </div>
+                          <!--alertas para numero de adquicion-->
+                          <div class="alert alert-danger" id="alert-adqui">
+                              <strong>Danger!</strong> El numero de esta escrito de manera incorrecta.</br>Los valores aceptador son:</br>
+                              <strong>Solo Numeros!</strong> de 6 cifras como maximo.
+                          </div>
 </div>
-
                     </br>
-
                     </div>
             <div class="container">
             <div class="row" id="buttons">
@@ -450,16 +674,11 @@ function eliminarValorDelArregloAdqui(numero)
 
 <!--********************************************************* PARTE DE CESAR *****************************************************************-->
                 <div id="en_base" class="tab-pane fade">
-<!--******************* BUSQUEDA DE FILTRAR EN EL CAMPO DE TEXTO, HACER CONSULTA A LA BASE DE DATOS PARA VERIFICAR QUE EXISTA ***************************-->
-<!--1) La tabla aparecerá oculta
-    2) Si la tabla no encuentra resultados que devuelva un mensaje que no se han encontrado resultados
-    3) Al encontrar datos devuelve la tabla llena-->
-
                 <div class="tab-content">
                     <div id="nuevaBusquedaAutor" class="tab-pane fade in active">
                     <div class="form-group">
                     </br>
-                      <div class="panel panel-info">
+                      <div class="panel panel-info" id="panelAcervo">
                         <div class="panel-body">
                           <div class="container">
                               <div class="row">
@@ -469,7 +688,6 @@ function eliminarValorDelArregloAdqui(numero)
                                         <button style="max-width:90%;" class="btn btn-primary btn-block margin-bottom-lg" id="btnBuscar">
                                         <span aria-hidden="true">Buscar</span>
                                         </button>
-
                                     </div>
                                     </center>
         </div>
@@ -482,16 +700,12 @@ function eliminarValorDelArregloAdqui(numero)
 <!-- -->
                 <br><br>
                 <div class="table-responsive" id="componentes">
-
-
                       <center><div class="btn-group">
-                          <button type="button" id="uno" onclick =  'alert(cache);'  class="btn btn-info btn-sm"><span class="glyphicon glyphicon-plus">Ver ejemplares</span></button>
-                          <button type="button" id="dos" onclick =  'alert(cache);' class="btn btn-warning btn-sm"><span class="glyphicon glyphicon-pencil">Modificar ficha</span></button>
-                          <button type="button" id="tres" onclick =  'alert(cache);'  class="btn btn-danger btn-sm"><span class="glyphicon glyphicon-remove">Eliminar ficha</span></button>
+                           <button type="button" id="uno" onclick =  'cambioEjemplares(cache);'  class="btn btn-info btn-sm"><span class="glyphicon glyphicon-plus">Ver ejemplares</span></button>
+                          <button type="button" id="dos" onclick ='obtenerModalFichas(cache);' class="btn btn-warning btn-sm"><span class="glyphicon glyphicon-pencil">Modificar ficha</span></button>
+                          <button type="button" id="tres" onclick='eliminarModalFicha(cache);'  class="btn btn-danger btn-sm"><span class="glyphicon glyphicon-remove">Eliminar ficha</span></button>
                       </div></center>
-
-                  <table id="tablaDatosConsulta"  class="display table table-hover">
-
+                  <center><table id="tablaDatosConsulta"  class="display table table-hover">
                     <thead>
                         <tr>
                           <th>ISBN</th>
@@ -500,19 +714,34 @@ function eliminarValorDelArregloAdqui(numero)
                           <th>Lugar Editorial</th>
                         </tr>
                     </thead>
+                  </table></center>
+                </div>
 
+                <div class="table-responsive" id="ejem">
 
+                <center>
+                  <div class="btn-group">
+                    <button type="button" id="nuovilibro" onclick =  'agregarNuevoEjemplarFicha();' class="btn btn-success btn-sm"><span class="glyphicon glyphicon-plus">Nuevo libro</span></button>
+                    <button type="button" id="molibro" onclick =  'modificarLibromodal(cache);' class="btn btn-warning btn-sm"><span class="glyphicon glyphicon-pencil">Modificar libro</span></button>
+                    <button type="button" id="elibro" onclick =  'eliminarLibromodal(cache);'  class="btn btn-danger btn-sm"><span class="glyphicon glyphicon-remove">Eliminar libro</span></button>
+                    <button type="button" id="regresalibro" onclick =  'regresarAcervo();' class="btn btn-info btn-sm"><span class="fa fa-undo">Regresar</span></button>
+                  </div>
+                </center>
 
-                  </table>
+                <table id="ejemplares" class="display table table-hover">
 
+                  <thead>
+                    <tr>
+                      <th>Numero Adquisición</th>
+                      <th>ejemplar</th>
+                    </tr>
+                  </thead>
+              </table>
 
-                </div></div>
+              </div>
 
-
+              </div>
                 <br><br>
-
-
-
 <?php
 
     echo div_open('tab-pane fade','nueva_ficha');
@@ -528,6 +757,7 @@ function eliminarValorDelArregloAdqui(numero)
 	<?php $this->load->view('/Shared/Partial/footer');?>
 </footer>
 <!-- Modal -->
+<div id="clear">
 <div id="myModal" class="modal fade" role="dialog">
   <div class="modal-dialog">
 
@@ -536,6 +766,9 @@ function eliminarValorDelArregloAdqui(numero)
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal">&times;</button>
         <h4 class="modal-title">Etiquetas únicas del ejemplar</h4>
+        <div class='alert alert-success' id='alert_exitoA'>
+            <strong>Action realizada!</strong> El ejemplar fue dado de alta de manera correcta.</br>
+        </div>
       </div>
       <div class="modal-body">
         <div class="container">
@@ -556,6 +789,9 @@ function eliminarValorDelArregloAdqui(numero)
           </div>
         </div>
       <div class="modal-footer">
+        <div class='alert alert-success' id='alert_exitoB'>
+            <strong>Action realizada!</strong> El ejemplar fue dado de alta de manera correcta.</br>
+        </div>
         <button type="button" id="simular_click" class="btn btn-default" onclick="removeBuffer()" data-dismiss="modal">Close</button>
       </div>
     </div>
@@ -563,9 +799,12 @@ function eliminarValorDelArregloAdqui(numero)
   </div>
 </div>
 </div>
+</div>
 <!-- Modal -->
 <div id="add-here">
-
+  <div class='alert alert-success' id='alert_exito_fichaA'>
+      <strong>Alta exisotosa!</strong></br>
+  </div>
 </div>
 
 <!--alertas -->

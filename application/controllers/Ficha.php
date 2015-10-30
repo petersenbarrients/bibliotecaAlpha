@@ -11,7 +11,8 @@ class Ficha extends CI_Controller {
 
 	}
 
-	public function modificar($id){
+	public function modificar(){
+			$id = $this->input->post('id');
     /*Carga modelo en base al param Id del action
     para despues mostrarlo en la vista*/
     $arrayData = array();
@@ -20,7 +21,34 @@ class Ficha extends CI_Controller {
    $model = $this->FichaModel->obtenerFichaPorId($id);
    $arrayData = $model;
    $data["model"] = $arrayData;
-	 $this->load->view('Fichas/Index',$data);
+	$vista = $this->load->view('Fichas/Index',$data,TRUE);
+	$modal ="
+		 <div id='ficha_modal_modificar' class='modal fade bs-example-modal-lg' role='dialog'>
+		 <div class='modal-dialog modal-lg'>
+
+ <div class='modal-content'>
+	 <div class='modal-header'>
+		 <button type='button' class='close' data-dismiss='modal'>&times;</button>
+		 <h4 class='modal-title'><div class='alert alert-warning' id='alerta4'>
+      <strong>¡Cuidado!</strong><br>Al modificar esta ficha afectarás a los ejemplares asociados.
+      </div></h4>
+			<div class='alert alert-success' id='alerta_modificar_exito_abc'>
+			  <strong>Cambios aplicados!</strong>
+			</div>
+	 </div>
+	 <div class='modal-body'>
+		<div class='container'> ".$vista."</div>
+	 </div>
+	 <div class='modal-footer'>
+		 <button type='button' class='btn btn-default'  onclick =  'regresarAcervo();' id='clic' data-dismiss='modal'>Close</button>
+	 </div>
+ </div>
+
+</div>
+</div>
+";
+echo $modal;
+
 
 	}
 
@@ -66,9 +94,9 @@ class Ficha extends CI_Controller {
   }
 
 /*Muestra en pantalla la confirmacion para realizar la eliminacion de laficha*/
-  public function eliminar($id)
+  public function eliminar()
   {
-
+ 		$id = $this->input->post('id');
 		/*Carga modelo en base al param Id del action
 		para despues mostrarlo en la vista*/
 		$arrayData = array();
@@ -76,8 +104,31 @@ class Ficha extends CI_Controller {
 	 /*retorna el contenido de bd en array assc*/
 	 $model = $this->FichaModel->obtenerFichaPorId($id);
 	 $arrayData = $model;
-	 $data["model"] = $arrayData;
-	 $this->load->view('Fichas/confEliminar',$data);
+	$data["model"] = $arrayData;
+	 $vista = $this->load->view('Fichas/confEliminar',$data,TRUE);
+	 $modal ="
+		 <div id='ficha_modal_eliminar' class='modal fade bs-example-modal-lg' role='dialog'>
+		 <div class='modal-dialog modal-lg'>
+
+	<div class='modal-content'>
+	 <div class='modal-header'>
+		 <button type='button' class='close' data-dismiss='modal'>&times;</button>
+		 <h4 class='modal-title'><div class='alert alert-danger' id='alerta4'>
+      <strong>¡Cuidado!</strong><br>Al eliminar la ficha se eliminaran sus ejemplares asociados.
+      </div></h4>
+	 </div>
+	 <div class='modal-body'>
+			<div class='container'> ".$vista."</div>
+	 </div>
+	 <div class='modal-footer'>
+		 <button type='button' class='btn btn-default'  onclick =  'regresarAcervo();' id='clic' data-dismiss='modal'>Close</button>
+	 </div>
+	</div>
+
+ </div>
+ </div>
+ ";
+ echo $modal;
 
   }
 

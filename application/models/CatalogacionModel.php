@@ -21,13 +21,13 @@ class CatalogacionModel extends CI_Model{
     $lugar_editorial,
     $volumen,
     $notas_generales,
+    $notas_de_contenido,
     $liga_a_recursos_electronicos,
     $fecha_publicacion,
     $editorial)
   {
 
     $data = array(
-
       'isbn' => $isbn,
       'clasificacion_decimal_dewey' =>  $clasificacion_decimal_dewey,
       'autor_personal'  =>  $autor_personal,
@@ -39,6 +39,7 @@ class CatalogacionModel extends CI_Model{
       'lugar_editorial' =>  $lugar_editorial,
       'volumen' =>  $volumen,
       'notas_generales' =>  $notas_generales,
+      'notas_de_contenido' =>  $notas_de_contenido,
       'liga_a_recursos_electronicos'  =>  $liga_a_recursos_electronicos,
       'fecha_publicacion' =>  $fecha_publicacion,
       'editorial' =>  $editorial

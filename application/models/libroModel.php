@@ -131,7 +131,7 @@ public function modificarLibro($data,$id)
 
 /*Para modificar el el libro, tener en cuenta isbn, titulo,autor,*/
 public function obtenerInformacionDeFicha($id){
-  $this->db->select('isbn,titulo_uniforme, autor_personal, volumen');
+  $this->db->select('id,isbn,titulo_uniforme, autor_personal, volumen');
   $this->db->from('etiqueta_marc');
   $this->db->where('id', $id);
   $query = $this->db->get();
@@ -145,6 +145,28 @@ public function eliminarLibro($id)
   {
       $this->db->delete('libro', array('id' => $id));
   }
+
+
+  /*listado de libros*/
+public function consultarLibros($cadena){
+
+    $this->db->select("id,numero_de_adquisicion,ejemplar");
+    $query = $this->db->get_where('libro',array('idEtiquetaMarc' => $cadena));
+
+    $results= array();
+    foreach ($query->result_array() as $row){
+
+      $results[] = array(
+        'id'=>$row['id'],
+       'adquisicion'=> $row['numero_de_adquisicion'],
+       'ejemplar' => $row['ejemplar']
+      );
+
+    }
+
+    return $results;
+  }
+
 
 
 }

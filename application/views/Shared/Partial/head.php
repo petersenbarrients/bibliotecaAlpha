@@ -36,6 +36,8 @@
     float: right;
 }
 
+
+
 /*boton submit del boton nueva_ficha */
 
 

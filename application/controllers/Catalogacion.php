@@ -47,6 +47,7 @@ public function nueva(){
     $lugar_editorial,
     $volumen,
     $notas_generales,
+    $notas_de_contenido,
     $liga_a_recursos_electronicos,
     $fecha_publicacion,
     $editorial
@@ -69,7 +70,7 @@ public function nueva(){
       <h4 class='modal-title'>Etiquetas Únicas del Ejemplar</h4>
     </div>
     <div class='modal-body'>
-      '.$data.'
+      ".$data."
     </div>
     <div class='modal-footer'>
       <button type='button' class='btn btn-default' data-dismiss='modal'>Close</button>
@@ -118,6 +119,7 @@ public function nuevaRecepcion()
     $lugar_editorial,
     $volumen,
     $notas_generales,
+    $notas_de_contenido,
     $liga_a_recursos_electronicos,
     $fecha_publicacion,
     $editorial
@@ -145,6 +147,40 @@ function recibirDatoTextField(){
 
 
 }
+
+public function nuevoEjemplar(){
+
+    $this->load->model('libroModel');
+    $datos['colecciones'] =$this->libroModel->listarColecciones();
+    $datos['escuelas'] =$this->libroModel->listarEscuelas();
+    $datos['bibliotecas'] =$this->libroModel->listarBiblioteca();
+    $datos['tipos_material'] =$this->libroModel->listarMaterial();
+
+      $data = $this->load->view('Shared/templates/datosUnicosEjemplarModal',$datos,TRUE);
+      $modal ="
+        <div id='unicos_modal_ejemplar' class='modal fade' role='dialog'>
+        <div class='modal-dialog'>
+
+    <div class='modal-content'>
+      <div class='modal-header'>
+        <button type='button' class='close' data-dismiss='modal'>&times;</button>
+        <h4 class='modal-title'><div class='alert alert-info' id='alerta3'>
+      <strong>¡Registro de nuevo libro!</strong>
+      </div></h4>
+      </div>
+      <div class='modal-body'>
+        ".$data."
+      </div>
+      <div class='modal-footer'>
+        <button type='button' id='simular_click'  onclick =  'regresarAcervo();' class='btn btn-default' data-dismiss='modal'>Close</button>
+      </div>
+    </div>
+
+  </div>
+  </div>
+  ";
+  echo $modal;
+  }
 
 
   }

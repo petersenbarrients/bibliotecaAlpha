@@ -13,6 +13,7 @@ class libro extends CI_Controller {
 
 	public function index()
 	{
+
 	}
 
   public function nuevoLibro()
@@ -44,13 +45,18 @@ class libro extends CI_Controller {
 					//$data = $this->load->view('Shared/Partial/nuevaficha','', TRUE);
 
 					/*Retorna modal para registrar datos de la etiqueta marc..*/
-					$modal = "<div id='nuevaficha' class='modal fade' role='dialog' >
+					$modal = "
+					<div id='nuevaficha' class='modal fade' role='dialog'  data-keyboard='false' data-backdrop='static' >
 					<div class='modal-dialog' style='max-width:80%;'>
 						<!-- Modal content-->
 						<div class='modal-content'>
 							<div class='modal-header'>
 								<button type='button' onclick='window.location.reload()' class='close' data-dismiss='modal'>&times;</button>
-								<h4 class='modal-title'>Etiquetas marc del ejemplar(es)</h4>
+								<h4 class='modal-title'><div class='alert alert-warning' id='alerta4'>
+      <strong>¡Cuidado!</strong><br>Está a punto de modificar una etiqueta MARC de un libro registrado,
+      podría afectar su ficha base.
+      </div></h4>
+
 							</div>
 							<div class='modal-body'>
 							<div class='container'>
@@ -68,7 +74,7 @@ class libro extends CI_Controller {
 
 									</div>
 								</br></br><div class='col-xs-6 col-md-3'>
-										<div class='panel panel-primary' style='max-width:60%;float:left;'>
+										<div class='panel panel-warning' style='max-width:60%;float:left;'>
 												<div class='panel-heading' class='col-xs-6 col-md-3'>
 														<h2 class='panel-title'><span class='glyphicon glyphicon-list-alt'></span><p style='font-size:9px;'>Números de adquisición a ser asociados</p></h2>
 												</div>
@@ -88,6 +94,7 @@ class libro extends CI_Controller {
 					</div>
 					";
 			echo $modal;
+
 	}
 
 /*metodo para actualizar los idEtiquetaMarc de la tabla libro
@@ -113,7 +120,6 @@ class libro extends CI_Controller {
 
 			}
 
-		echo "isbn -> ".$isbn."--- listas -> ".$listas." marc-> ".$idEtiquetaMarc;
 
 	}
 
@@ -149,9 +155,10 @@ class libro extends CI_Controller {
 		redirect('Registro/');
 	}
 
-	function modificar($id){
+	function modificar(){
 		/*Carga modelo en base al param Id del action
     para despues mostrarlo en la vista*/
+		$id = $this->input->post('id');
    $arrayData = array();
 
 	 $arrayDatosDeFicha = array();
@@ -201,13 +208,42 @@ class libro extends CI_Controller {
 	 */
 
 
-	 $this->load->view('Libros/index',$data);
+	$data =  $this->load->view('Libros/index',$data,TRUE);
   /** $model2 = $this->libroModel->obtenerTituloDelLibro($arrayData['idEtiquetaMarc']);
 
    $data['titulo_de_libro'] = $model2['titulo_uniforme'];
    $data['autor_personal'] = $model2['autor_personal'];
    $data['volumen'] = $model2['volumen'];
 	 $this->load->view('Libros/index',$data);*/
+	 $modal ="
+		<div id='libro_modal_modificar' class='modal fade bs-example-modal-lg' role='dialog'>
+		<div class='modal-dialog modal-lg'>
+
+ <div class='modal-content'>
+	<div class='modal-header'>
+		<button type='button' class='close' data-dismiss='modal'>&times;</button>
+		<h4 class='modal-title'><div class='alert alert-warning' id='alerta4'>
+		 <strong>¡Cuidado!</strong><br>Está a punto de modificar un libro registrado,
+		 podría afectar su ficha base.
+		 </div></h4>
+	</div>
+	<div class='modal-body'>
+
+	<div class='alert alert-success' id='alerta_exito_mod'>
+		<strong>¡Registro modificado!</strong>
+	</div>
+
+	 <div class='container' id='modificar_libro_modal'> '.$data.'</div>
+	</div>
+	<div class='modal-footer'>
+		<button type='button' class='btn btn-default' onclick =  'regresarAcervo();' id='clic' data-dismiss='modal'>Close</button>
+	</div>
+ </div>
+
+</div>
+</div>
+";
+echo $modal;
 
 	}
 
@@ -258,9 +294,9 @@ class libro extends CI_Controller {
 
 	}
 
-	public function eliminar($id)
+	public function eliminar()
 	{
-
+		$id = $this->input->post('id');
 		$arrayData = array();
 
  	 $arrayDatosDeFicha = array();
@@ -298,7 +334,37 @@ class libro extends CI_Controller {
 	*/
 	$arrayDatosDeFicha = $this->libroModel->obtenerInformacionDeFicha($idEtiquetaMarc);
 	$data['etiquetas'] = $arrayDatosDeFicha;
-	 $this->load->view('Libros/confEliminar',$data);
+	$view= $this->load->view('Libros/confEliminar',$data,TRUE);
+
+
+	$modal ="
+		<div id='libro_modal_eliminar' class='modal fade bs-example-modal-lg' role='dialog'>
+		<div class='modal-dialog modal-lg'>
+
+<div class='modal-content'>
+	<div class='modal-header'>
+		<button type='button' class='close' data-dismiss='modal'>&times;</button>
+		<h4 class='modal-title'><div class='alert alert-danger' id='alerta4'>
+	<strong>¡Cuidado!</strong> Está a punto de eliminar un registro.
+	</div></h4>
+	</div>
+	<div class='modal-body'>
+	<div class='alert alert-success' id='alerta_exito_eliminar'>
+		<strong>Registro eliminado!</strong>
+	</div>
+	 <div class='container' id='eliminar_libro_modal'> ".$view."</div>
+	</div>
+	<div class='modal-footer'>
+		<button type='button' class='btn btn-default' onclick =  'regresarAcervo();' id='clic' data-dismiss='modal'>Close</button>
+	</div>
+</div>
+</div>
+</div>
+";
+echo $modal;
+
+
+
 
 	}
 
@@ -310,6 +376,50 @@ class libro extends CI_Controller {
 		$this->libroModel->eliminarLibro($id);
 
 	}
+
+
+	/* agregar nuevo ejemplar a ficha*/
+	public function NuevoEjemplarBaseFicha(){
+		$disponible = 0;
+
+		$numero_adqui = $this -> input -> post('numero_adqui');
+		$numero_ejemplar = $this -> input ->post('numero_ejemplar');
+		$numero_tomo = $this -> input ->post('numero_tomo');
+		$biblioteca= $this ->input ->post('biblioteca');
+		$escuela = $this ->input ->post('escuela');
+		$coleccion= $this ->input ->post('coleccion');
+		$material= $this ->input ->post('material');
+		$se_presta = $this->input->post('myradio');
+
+		$es_complementario = $this->input->post('myradio1');
+		$marc = $this->input->post('etiqueta_marc');
+		if($numero_ejemplar!=1)
+		{
+			/*marcar como no disponible por que es el primer ejemplar*/
+			$disponible = 1;
+		}
+
+		$this->load->model('libroModel');
+		$this->libroModel->crearModelo($numero_adqui,$biblioteca,$escuela,$coleccion,$numero_ejemplar,$se_presta,$material,$es_complementario,$marc,$disponible,$numero_tomo);
+		$this->libroModel->nuevoLibro();
+
+		//redirect('Registro/');
+	}
+
+	/* listado de libros*/
+public function listarLibros(){
+
+	$dataText = $this->input->post('id');
+	$this->load->model('libroModel');
+	$Consulta =  $this->libroModel->consultarLibros($dataText);
+	if(is_null($Consulta)){
+		echo '{"data":[]}';
+	}
+	else {
+		$enco = json_encode($Consulta);
+		echo '{"data":'.$enco.'}';
+	}
+}
 
 
 

@@ -1,8 +1,38 @@
 <?php
-echo "<!DOCTYPE html>";
-$this->load->view('/Shared/Partial/head');
-echo "<body>";
-$this->load->view('/Shared/Partial/body');
+?>
+
+<script type="text/javascript">
+      $(document).ready(function() {
+        $("#alerta_modificar_exito_abc").hide();
+        $("#alerta_modificar_exitoB").hide();
+        $("#modificarFicha").submit(function(){
+
+             $.ajax({
+                 url: $(this).attr("action") ,
+                 type: $(this).attr("method"),
+                 data: $(this).serialize(),// Adjuntar los campos del formulario enviado.
+                 success: function(data)
+                 {
+                     $("#alerta_modificar_exito_abc").show();
+                    
+
+                   //$("div#alerta").prop("visible","true");
+                   //var alerta = $("div#alerta").html();
+                   $(".modal-body").empty();
+                  //  $(".modal-body").html(alerta);
+
+
+
+                 }
+               });
+
+          return false; // Evitar ejecutar el submit del formulario.
+
+          });
+
+      });
+</script>
+<?php
 $attLabel = array(
     'class' => 'control-label col-sm-2',
         'style' =>'font-size:11px;'
@@ -239,17 +269,13 @@ $data = array(
   'value' => 'Registrar',
 
 );
-echo form_submit($data,"Registrar");
+echo form_submit($data,"Registrar cambios");
  }
       echo form_close();
   echo div_close(); //close container
-echo "</body>";
+
 ?>
 
-<footer>
-<?php $this->load->view('/Shared/Partial/footer');?>
-</footer>
-
 <?php
-echo "</html>";
+
 ?>
